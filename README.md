@@ -1,2 +1,2 @@
 # 2650-CPU
-1 add components
+1 Updated compiler and test scripts added.
