@@ -1,0 +1,2684 @@
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 1
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+
+
+                              1 	.title	AS2650 Assembler Checks
+                              2 
+                              3 	; Assembler this file:
+                              4 	;
+                              5 	;	as2650 -gloaxff t2650
+                              6 	;
+                              7 
+                              8 	.sbttl	Absolute Code
+                              9 
+                             10 	; Absolute Variables
+                             11 
+                             12 	.define	ADDR	"0x1234"
+                             13 	.define	BADD	"0x7654"
+                             14 	.define	DATA8	"0x21"
+                             15 	.define	DATA2	"0"
+                             16 	.define	P	"0x98"
+                             17 	.define	DISP	"."
+                             18 
+                             19 
+                             20 	.area	AS2650	(ABS,OVR)
+   0000                      21 	.org	0x0000
+                             22 
+                             23 
+                             24 	.sbttl	lod_ 'Sequential' Instruction Tests
+                             25 
+                             26 ;	lodz	r0			; 00
+   0000 60            [ 2]   27 	lodz	r0			; 60
+   0001 01            [ 2]   28 	lodz	r1			; 01
+   0002 02            [ 2]   29 	lodz	r2			; 02
+   0003 03            [ 2]   30 	lodz	r3			; 03
+   0004 04 21         [ 2]   31 	lodi	r0,#DATA8		; 04 21
+   0006 05 21         [ 2]   32 	lodi	r1,#DATA8		; 05 21
+   0008 06 21         [ 2]   33 	lodi	r2,#DATA8		; 06 21
+   000A 07 21         [ 2]   34 	lodi	r3,#DATA8		; 07 21
+   000C 08 7E         [ 3]   35 	lodr	r0,DISP			; 08 7E
+   000E 09 7E         [ 3]   36 	lodr	r1,DISP			; 09 7E
+   0010 0A 7E         [ 3]   37 	lodr	r2,DISP			; 0A 7E
+   0012 0B 7E         [ 3]   38 	lodr	r3,DISP			; 0B 7E
+   0014 0C 12 34      [ 4]   39 	loda	r0,ADDR			; 0C 12 34
+   0017 0D 12 34      [ 4]   40 	loda	r1,ADDR			; 0D 12 34
+   001A 0E 12 34      [ 4]   41 	loda	r2,ADDR			; 0E 12 34
+   001D 0F 12 34      [ 4]   42 	loda	r3,ADDR			; 0F 12 34
+                             43 
+                             44 	.sbttl	lod_ 'Default Indirect' Instruction Tests
+                             45 
+   0020 08 FE         [ 3]   46 	lodr	r0,[DISP]		; 08 FE
+   0022 09 FE         [ 3]   47 	lodr	r1,[DISP]		; 09 FE
+   0024 0A FE         [ 3]   48 	lodr	r2,[DISP]		; 0A FE
+   0026 0B FE         [ 3]   49 	lodr	r3,[DISP]		; 0B FE
+                             50 
+   0028 0C 92 34      [ 4]   51 	loda	r0,[ADDR]		; 0C 92 34
+   002B 0D 92 34      [ 4]   52 	loda	r1,[ADDR]		; 0D 92 34
+   002E 0E 92 34      [ 4]   53 	loda	r2,[ADDR]		; 0E 92 34
+   0031 0F 92 34      [ 4]   54 	loda	r3,[ADDR]		; 0F 92 34
+                             55 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 2
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+lod_ 'Default Indirect' Instruction Tests
+
+   0034 0C B2 34      [ 4]   56 	loda	r0,[ADDR,+r0]		; 0C B2 34
+   0037 0D B2 34      [ 4]   57 	loda	r0,[ADDR,+r1]		; 0D B2 34
+   003A 0E B2 34      [ 4]   58 	loda	r0,[ADDR,+r2]		; 0E B2 34
+   003D 0F B2 34      [ 4]   59 	loda	r0,[ADDR,+r3]		; 0F B2 34
+                             60 
+   0040 0C D2 34      [ 4]   61 	loda	r0,[ADDR,-r0]		; 0C D2 34
+   0043 0D D2 34      [ 4]   62 	loda	r0,[ADDR,-r1]		; 0D D2 34
+   0046 0E D2 34      [ 4]   63 	loda	r0,[ADDR,-r2]		; 0E D2 34
+   0049 0F D2 34      [ 4]   64 	loda	r0,[ADDR,-r3]		; 0F D2 34
+                             65 
+   004C 0C F2 34      [ 4]   66 	loda	r0,[ADDR,r0]		; 0C F2 34
+   004F 0D F2 34      [ 4]   67 	loda	r0,[ADDR,r1]		; 0D F2 34
+   0052 0E F2 34      [ 4]   68 	loda	r0,[ADDR,r2]		; 0E F2 34
+   0055 0F F2 34      [ 4]   69 	loda	r0,[ADDR,r3]		; 0F F2 34
+                             70 
+                             71 	.sbttl	lod_ 'Alternate Indirect' Instruction Tests
+                             72 
+   0058 08 FE         [ 3]   73 	lodr	r0,@DISP		; 08 FE
+   005A 09 FE         [ 3]   74 	lodr	r1,@DISP		; 09 FE
+   005C 0A FE         [ 3]   75 	lodr	r2,@DISP		; 0A FE
+   005E 0B FE         [ 3]   76 	lodr	r3,@DISP		; 0B FE
+                             77 
+   0060 0C 92 34      [ 4]   78 	loda	r0,@ADDR		; 0C 92 34
+   0063 0D 92 34      [ 4]   79 	loda	r1,@ADDR		; 0D 92 34
+   0066 0E 92 34      [ 4]   80 	loda	r2,@ADDR		; 0E 92 34
+   0069 0F 92 34      [ 4]   81 	loda	r3,@ADDR		; 0F 92 34
+                             82 
+   006C 0C B2 34      [ 4]   83 	loda	r0,@ADDR,+r0		; 0C B2 34
+   006F 0D B2 34      [ 4]   84 	loda	r0,@ADDR,+r1		; 0D B2 34
+   0072 0E B2 34      [ 4]   85 	loda	r0,@ADDR,+r2		; 0E B2 34
+   0075 0F B2 34      [ 4]   86 	loda	r0,@ADDR,+r3		; 0F B2 34
+                             87 
+   0078 0C D2 34      [ 4]   88 	loda	r0,@ADDR,-r0		; 0C D2 34
+   007B 0D D2 34      [ 4]   89 	loda	r0,@ADDR,-r1		; 0D D2 34
+   007E 0E D2 34      [ 4]   90 	loda	r0,@ADDR,-r2		; 0E D2 34
+   0081 0F D2 34      [ 4]   91 	loda	r0,@ADDR,-r3		; 0F D2 34
+                             92 
+   0084 0C F2 34      [ 4]   93 	loda	r0,@ADDR,r0		; 0C F2 34
+   0087 0D F2 34      [ 4]   94 	loda	r0,@ADDR,r1		; 0D F2 34
+   008A 0E F2 34      [ 4]   95 	loda	r0,@ADDR,r2		; 0E F2 34
+   008D 0F F2 34      [ 4]   96 	loda	r0,@ADDR,r3		; 0F F2 34
+                             97 
+                             98 
+                             99 	.sbttl	'Sequential' Instruction Tests
+                            100 
+                            101 					; 10
+                            102 					; 11
+   0090 12            [ 2]  103 	spsu				; 12
+   0091 13            [ 2]  104 	spsl				; 13
+                            105 
+   0092 14            [ 3]  106 	retc	.eq.			; 14
+   0093 15            [ 3]  107 	retc	.gt.			; 15
+   0094 16            [ 3]  108 	retc	.lt.			; 16
+   0095 17            [ 3]  109 	retc	.un.			; 17
+                            110 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 3
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+   0096 14            [ 3]  111 	retc	#DATA2 + 0		; 14
+   0097 15            [ 3]  112 	retc	#DATA2 + 1		; 15
+   0098 16            [ 3]  113 	retc	#DATA2 + 2		; 16
+   0099 17            [ 3]  114 	retc	#DATA2 + 3		; 17
+                            115 
+                            116 	.sbttl	bctr 'Sequential' Instruction Test
+                            117 
+   009A 18 7E         [ 3]  118 	bctr	.eq.,DISP		; 18 7E
+   009C 19 7E         [ 3]  119 	bctr	.gt.,DISP		; 19 7E
+   009E 1A 7E         [ 3]  120 	bctr	.lt.,DISP		; 1A 7E
+   00A0 1B 7E         [ 3]  121 	bctr	.un.,DISP		; 1B 7E
+                            122 
+   00A2 18 7E         [ 3]  123 	bctr	#DATA2 + 0,DISP		; 18 7E
+   00A4 19 7E         [ 3]  124 	bctr	#DATA2 + 1,DISP		; 19 7E
+   00A6 1A 7E         [ 3]  125 	bctr	#DATA2 + 2,DISP		; 1A 7E
+   00A8 1B 7E         [ 3]  126 	bctr	#DATA2 + 3,DISP		; 1B 7E
+                            127 
+   00AA 18 FE         [ 3]  128 	bctr	.eq.,[DISP]		; 18 FE
+   00AC 19 FE         [ 3]  129 	bctr	.gt.,[DISP]		; 19 FE
+   00AE 1A FE         [ 3]  130 	bctr	.lt.,[DISP]		; 1A FE
+   00B0 1B FE         [ 3]  131 	bctr	.un.,[DISP]		; 1B FE
+                            132 
+   00B2 18 FE         [ 3]  133 	bctr	#DATA2 + 0,[DISP]	; 18 FE
+   00B4 19 FE         [ 3]  134 	bctr	#DATA2 + 1,[DISP]	; 19 FE
+   00B6 1A FE         [ 3]  135 	bctr	#DATA2 + 2,[DISP]	; 1A FE
+   00B8 1B FE         [ 3]  136 	bctr	#DATA2 + 3,[DISP]	; 1B FE
+                            137 
+   00BA 18 FE         [ 3]  138 	bctr	.eq.,@DISP		; 18 FE
+   00BC 19 FE         [ 3]  139 	bctr	.gt.,@DISP		; 19 FE
+   00BE 1A FE         [ 3]  140 	bctr	.lt.,@DISP		; 1A FE
+   00C0 1B FE         [ 3]  141 	bctr	.un.,@DISP		; 1B FE
+                            142 
+   00C2 18 FE         [ 3]  143 	bctr	#DATA2 + 0,@DISP	; 18 FE
+   00C4 19 FE         [ 3]  144 	bctr	#DATA2 + 1,@DISP	; 19 FE
+   00C6 1A FE         [ 3]  145 	bctr	#DATA2 + 2,@DISP	; 1A FE
+   00C8 1B FE         [ 3]  146 	bctr	#DATA2 + 3,@DISP	; 1B FE
+                            147 
+                            148 
+                            149 	.sbttl	bcta 'Sequential' Instruction Test
+                            150 
+   00CA 1C 76 54      [ 3]  151 	bcta	.eq.,BADD		; 1C 76 54
+   00CD 1D 76 54      [ 3]  152 	bcta	.gt.,BADD		; 1D 76 54
+   00D0 1E 76 54      [ 3]  153 	bcta	.lt.,BADD		; 1E 76 54
+   00D3 1F 76 54      [ 3]  154 	bcta	.un.,BADD		; 1F 76 54
+                            155 
+   00D6 1C 76 54      [ 3]  156 	bcta	#DATA2 + 0,BADD		; 1C 76 54
+   00D9 1D 76 54      [ 3]  157 	bcta	#DATA2 + 1,BADD		; 1D 76 54
+   00DC 1E 76 54      [ 3]  158 	bcta	#DATA2 + 2,BADD		; 1E 76 54
+   00DF 1F 76 54      [ 3]  159 	bcta	#DATA2 + 3,BADD		; 1F 76 54
+                            160 
+   00E2 1C F6 54      [ 3]  161 	bcta	.eq.,[BADD]		; 1C F6 54
+   00E5 1D F6 54      [ 3]  162 	bcta	.gt.,[BADD]		; 1D F6 54
+   00E8 1E F6 54      [ 3]  163 	bcta	.lt.,[BADD]		; 1E F6 54
+   00EB 1F F6 54      [ 3]  164 	bcta	.un.,[BADD]		; 1F F6 54
+                            165 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 4
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bcta 'Sequential' Instruction Test
+
+   00EE 1C F6 54      [ 3]  166 	bcta	#DATA2 + 0,[BADD]	; 1C F6 54
+   00F1 1D F6 54      [ 3]  167 	bcta	#DATA2 + 1,[BADD]	; 1D F6 54
+   00F4 1E F6 54      [ 3]  168 	bcta	#DATA2 + 2,[BADD]	; 1E F6 54
+   00F7 1F F6 54      [ 3]  169 	bcta	#DATA2 + 3,[BADD]	; 1F F6 54
+                            170 
+   00FA 1C F6 54      [ 3]  171 	bcta	.eq.,@BADD		; 1C F6 54
+   00FD 1D F6 54      [ 3]  172 	bcta	.gt.,@BADD		; 1D F6 54
+   0100 1E F6 54      [ 3]  173 	bcta	.lt.,@BADD		; 1E F6 54
+   0103 1F F6 54      [ 3]  174 	bcta	.un.,@BADD		; 1F F6 54
+                            175 
+   0106 1C F6 54      [ 3]  176 	bcta	#DATA2 + 0,@BADD	; 1C F6 54
+   0109 1D F6 54      [ 3]  177 	bcta	#DATA2 + 1,@BADD	; 1D F6 54
+   010C 1E F6 54      [ 3]  178 	bcta	#DATA2 + 2,@BADD	; 1E F6 54
+   010F 1F F6 54      [ 3]  179 	bcta	#DATA2 + 3,@BADD	; 1F F6 54
+                            180 
+                            181 
+                            182 	.sbttl	eor_ 'Sequential' Instruction Tests
+                            183 
+   0112 20            [ 2]  184 	eorz	r0			; 20
+   0113 21            [ 2]  185 	eorz	r1			; 21
+   0114 22            [ 2]  186 	eorz	r2			; 22
+   0115 23            [ 2]  187 	eorz	r3			; 23
+   0116 24 21         [ 2]  188 	eori	r0,#DATA8		; 24 21
+   0118 25 21         [ 2]  189 	eori	r1,#DATA8		; 25 21
+   011A 26 21         [ 2]  190 	eori	r2,#DATA8		; 26 21
+   011C 27 21         [ 2]  191 	eori	r3,#DATA8		; 27 21
+   011E 28 7E         [ 3]  192 	eorr	r0,DISP			; 28 7E
+   0120 29 7E         [ 3]  193 	eorr	r1,DISP			; 29 7E
+   0122 2A 7E         [ 3]  194 	eorr	r2,DISP			; 2A 7E
+   0124 2B 7E         [ 3]  195 	eorr	r3,DISP			; 2B 7E
+   0126 2C 12 34      [ 4]  196 	eora	r0,ADDR			; 2C 12 34
+   0129 2D 12 34      [ 4]  197 	eora	r1,ADDR			; 2D 12 34
+   012C 2E 12 34      [ 4]  198 	eora	r2,ADDR			; 2E 12 34
+   012F 2F 12 34      [ 4]  199 	eora	r3,ADDR			; 2F 12 34
+                            200 
+                            201 	.sbttl	eor_ 'Default Indirect' Instruction Tests
+                            202 
+   0132 28 FE         [ 3]  203 	eorr	r0,[DISP]		; 28 FE
+   0134 29 FE         [ 3]  204 	eorr	r1,[DISP]		; 29 FE
+   0136 2A FE         [ 3]  205 	eorr	r2,[DISP]		; 2A FE
+   0138 2B FE         [ 3]  206 	eorr	r3,[DISP]		; 2B FE
+                            207 
+   013A 2C 92 34      [ 4]  208 	eora	r0,[ADDR]		; 2C 92 34
+   013D 2D 92 34      [ 4]  209 	eora	r1,[ADDR]		; 2D 92 34
+   0140 2E 92 34      [ 4]  210 	eora	r2,[ADDR]		; 2E 92 34
+   0143 2F 92 34      [ 4]  211 	eora	r3,[ADDR]		; 2F 92 34
+                            212 
+   0146 2C B2 34      [ 4]  213 	eora	r0,[ADDR,+r0]		; 2C B2 34
+   0149 2D B2 34      [ 4]  214 	eora	r0,[ADDR,+r1]		; 2D B2 34
+   014C 2E B2 34      [ 4]  215 	eora	r0,[ADDR,+r2]		; 2E B2 34
+   014F 2F B2 34      [ 4]  216 	eora	r0,[ADDR,+r3]		; 2F B2 34
+                            217 
+   0152 2C D2 34      [ 4]  218 	eora	r0,[ADDR,-r0]		; 2C D2 34
+   0155 2D D2 34      [ 4]  219 	eora	r0,[ADDR,-r1]		; 2D D2 34
+   0158 2E D2 34      [ 4]  220 	eora	r0,[ADDR,-r2]		; 2E D2 34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 5
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+eor_ 'Default Indirect' Instruction Tests
+
+   015B 2F D2 34      [ 4]  221 	eora	r0,[ADDR,-r3]		; 2F D2 34
+                            222 
+   015E 2C F2 34      [ 4]  223 	eora	r0,[ADDR,r0]		; 2C F2 34
+   0161 2D F2 34      [ 4]  224 	eora	r0,[ADDR,r1]		; 2D F2 34
+   0164 2E F2 34      [ 4]  225 	eora	r0,[ADDR,r2]		; 2E F2 34
+   0167 2F F2 34      [ 4]  226 	eora	r0,[ADDR,r3]		; 2F F2 34
+                            227 
+                            228 	.sbttl	eor_ 'Alternate Indirect' Instruction Tests
+                            229 
+   016A 28 FE         [ 3]  230 	eorr	r0,@DISP		; 28 FE
+   016C 29 FE         [ 3]  231 	eorr	r1,@DISP		; 29 FE
+   016E 2A FE         [ 3]  232 	eorr	r2,@DISP		; 2A FE
+   0170 2B FE         [ 3]  233 	eorr	r3,@DISP		; 2B FE
+                            234 
+   0172 2C 92 34      [ 4]  235 	eora	r0,@ADDR		; 2C 92 34
+   0175 2D 92 34      [ 4]  236 	eora	r1,@ADDR		; 2D 92 34
+   0178 2E 92 34      [ 4]  237 	eora	r2,@ADDR		; 2E 92 34
+   017B 2F 92 34      [ 4]  238 	eora	r3,@ADDR		; 2F 92 34
+                            239 
+   017E 2C B2 34      [ 4]  240 	eora	r0,@ADDR,+r0		; 2C B2 34
+   0181 2D B2 34      [ 4]  241 	eora	r0,@ADDR,+r1		; 2D B2 34
+   0184 2E B2 34      [ 4]  242 	eora	r0,@ADDR,+r2		; 2E B2 34
+   0187 2F B2 34      [ 4]  243 	eora	r0,@ADDR,+r3		; 2F B2 34
+                            244 
+   018A 2C D2 34      [ 4]  245 	eora	r0,@ADDR,-r0		; 2C D2 34
+   018D 2D D2 34      [ 4]  246 	eora	r0,@ADDR,-r1		; 2D D2 34
+   0190 2E D2 34      [ 4]  247 	eora	r0,@ADDR,-r2		; 2E D2 34
+   0193 2F D2 34      [ 4]  248 	eora	r0,@ADDR,-r3		; 2F D2 34
+                            249 
+   0196 2C F2 34      [ 4]  250 	eora	r0,@ADDR,r0		; 2C F2 34
+   0199 2D F2 34      [ 4]  251 	eora	r0,@ADDR,r1		; 2D F2 34
+   019C 2E F2 34      [ 4]  252 	eora	r0,@ADDR,r2		; 2E F2 34
+   019F 2F F2 34      [ 4]  253 	eora	r0,@ADDR,r3		; 2F F2 34
+                            254 
+                            255 
+                            256 	.sbttl	'Sequential' Instruction Tests
+                            257 
+   01A2 30            [ 2]  258 	redc	r0			; 30
+   01A3 31            [ 2]  259 	redc	r1			; 31
+   01A4 32            [ 2]  260 	redc	r2			; 32
+   01A5 33            [ 2]  261 	redc	r3			; 33
+                            262 
+   01A6 34            [ 3]  263 	rete	.eq.			; 34
+   01A7 35            [ 3]  264 	rete	.gt.			; 35
+   01A8 36            [ 3]  265 	rete	.lt.			; 36
+   01A9 37            [ 3]  266 	rete	.un.			; 37
+                            267 
+   01AA 34            [ 3]  268 	rete	#DATA2 + 0		; 34
+   01AB 35            [ 3]  269 	rete	#DATA2 + 1		; 35
+   01AC 36            [ 3]  270 	rete	#DATA2 + 2		; 36
+   01AD 37            [ 3]  271 	rete	#DATA2 + 3		; 37
+                            272 
+                            273 	.sbttl	bstr 'Sequential' Instruction Test
+                            274 
+   01AE 38 7E         [ 3]  275 	bstr	.eq.,DISP		; 38 7E
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 6
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bstr 'Sequential' Instruction Test
+
+   01B0 39 7E         [ 3]  276 	bstr	.gt.,DISP		; 39 7E
+   01B2 3A 7E         [ 3]  277 	bstr	.lt.,DISP		; 3A 7E
+   01B4 3B 7E         [ 3]  278 	bstr	.un.,DISP		; 3B 7E
+                            279 
+   01B6 38 7E         [ 3]  280 	bstr	#DATA2 + 0,DISP		; 38 7E
+   01B8 39 7E         [ 3]  281 	bstr	#DATA2 + 1,DISP		; 39 7E
+   01BA 3A 7E         [ 3]  282 	bstr	#DATA2 + 2,DISP		; 3A 7E
+   01BC 3B 7E         [ 3]  283 	bstr	#DATA2 + 3,DISP		; 3B 7E
+                            284 
+   01BE 38 FE         [ 3]  285 	bstr	.eq.,[DISP]		; 38 FE
+   01C0 39 FE         [ 3]  286 	bstr	.gt.,[DISP]		; 39 FE
+   01C2 3A FE         [ 3]  287 	bstr	.lt.,[DISP]		; 3A FE
+   01C4 3B FE         [ 3]  288 	bstr	.un.,[DISP]		; 3B FE
+                            289 
+   01C6 38 FE         [ 3]  290 	bstr	#DATA2 + 0,[DISP]	; 38 FE
+   01C8 39 FE         [ 3]  291 	bstr	#DATA2 + 1,[DISP]	; 39 FE
+   01CA 3A FE         [ 3]  292 	bstr	#DATA2 + 2,[DISP]	; 3A FE
+   01CC 3B FE         [ 3]  293 	bstr	#DATA2 + 3,[DISP]	; 3B FE
+                            294 
+   01CE 38 FE         [ 3]  295 	bstr	.eq.,@DISP		; 38 FE
+   01D0 39 FE         [ 3]  296 	bstr	.gt.,@DISP		; 39 FE
+   01D2 3A FE         [ 3]  297 	bstr	.lt.,@DISP		; 3A FE
+   01D4 3B FE         [ 3]  298 	bstr	.un.,@DISP		; 3B FE
+                            299 
+   01D6 38 FE         [ 3]  300 	bstr	#DATA2 + 0,@DISP	; 38 FE
+   01D8 39 FE         [ 3]  301 	bstr	#DATA2 + 1,@DISP	; 39 FE
+   01DA 3A FE         [ 3]  302 	bstr	#DATA2 + 2,@DISP	; 3A FE
+   01DC 3B FE         [ 3]  303 	bstr	#DATA2 + 3,@DISP	; 3B FE
+                            304 
+                            305 
+                            306 	.sbttl	bsta 'Sequential' Instruction Test
+                            307 
+   01DE 3C 76 54      [ 3]  308 	bsta	.eq.,BADD		; 3C 76 54
+   01E1 3D 76 54      [ 3]  309 	bsta	.gt.,BADD		; 3D 76 54
+   01E4 3E 76 54      [ 3]  310 	bsta	.lt.,BADD		; 3E 76 54
+   01E7 3F 76 54      [ 3]  311 	bsta	.un.,BADD		; 3F 76 54
+                            312 
+   01EA 3C 76 54      [ 3]  313 	bsta	#DATA2 + 0,BADD		; 3C 76 54
+   01ED 3D 76 54      [ 3]  314 	bsta	#DATA2 + 1,BADD		; 3D 76 54
+   01F0 3E 76 54      [ 3]  315 	bsta	#DATA2 + 2,BADD		; 3E 76 54
+   01F3 3F 76 54      [ 3]  316 	bsta	#DATA2 + 3,BADD		; 3F 76 54
+                            317 
+   01F6 3C F6 54      [ 3]  318 	bsta	.eq.,[BADD]		; 3C F6 54
+   01F9 3D F6 54      [ 3]  319 	bsta	.gt.,[BADD]		; 3D F6 54
+   01FC 3E F6 54      [ 3]  320 	bsta	.lt.,[BADD]		; 3E F6 54
+   01FF 3F F6 54      [ 3]  321 	bsta	.un.,[BADD]		; 3F F6 54
+                            322 
+   0202 3C F6 54      [ 3]  323 	bsta	#DATA2 + 0,[BADD]	; 3C F6 54
+   0205 3D F6 54      [ 3]  324 	bsta	#DATA2 + 1,[BADD]	; 3D F6 54
+   0208 3E F6 54      [ 3]  325 	bsta	#DATA2 + 2,[BADD]	; 3E F6 54
+   020B 3F F6 54      [ 3]  326 	bsta	#DATA2 + 3,[BADD]	; 3F F6 54
+                            327 
+   020E 3C F6 54      [ 3]  328 	bsta	.eq.,@BADD		; 3C F6 54
+   0211 3D F6 54      [ 3]  329 	bsta	.gt.,@BADD		; 3D F6 54
+   0214 3E F6 54      [ 3]  330 	bsta	.lt.,@BADD		; 3E F6 54
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 7
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bsta 'Sequential' Instruction Test
+
+   0217 3F F6 54      [ 3]  331 	bsta	.un.,@BADD		; 3F F6 54
+                            332 
+   021A 3C F6 54      [ 3]  333 	bsta	#DATA2 + 0,@BADD	; 3C F6 54
+   021D 3D F6 54      [ 3]  334 	bsta	#DATA2 + 1,@BADD	; 3D F6 54
+   0220 3E F6 54      [ 3]  335 	bsta	#DATA2 + 2,@BADD	; 3E F6 54
+   0223 3F F6 54      [ 3]  336 	bsta	#DATA2 + 3,@BADD	; 3F F6 54
+                            337 
+                            338 
+                            339 	.sbttl	and_ 'Sequential' Instruction Tests
+                            340 
+   0226 40            [ 2]  341 	halt				; 40
+   0227 40            [ 2]  342 	wait				; 40
+                            343 ;	andz	r0			; 40
+   0228 41            [ 2]  344 	andz	r1			; 41
+   0229 42            [ 2]  345 	andz	r2			; 42
+   022A 43            [ 2]  346 	andz	r3			; 43
+   022B 44 21         [ 2]  347 	andi	r0,#DATA8		; 44 21
+   022D 45 21         [ 2]  348 	andi	r1,#DATA8		; 45 21
+   022F 46 21         [ 2]  349 	andi	r2,#DATA8		; 46 21
+   0231 47 21         [ 2]  350 	andi	r3,#DATA8		; 47 21
+   0233 48 7E         [ 3]  351 	andr	r0,DISP			; 48 7E
+   0235 49 7E         [ 3]  352 	andr	r1,DISP			; 49 7E
+   0237 4A 7E         [ 3]  353 	andr	r2,DISP			; 4A 7E
+   0239 4B 7E         [ 3]  354 	andr	r3,DISP			; 4B 7E
+   023B 4C 12 34      [ 4]  355 	anda	r0,ADDR			; 4C 12 34
+   023E 4D 12 34      [ 4]  356 	anda	r1,ADDR			; 4D 12 34
+   0241 4E 12 34      [ 4]  357 	anda	r2,ADDR			; 4E 12 34
+   0244 4F 12 34      [ 4]  358 	anda	r3,ADDR			; 4F 12 34
+                            359 
+                            360 	.sbttl	and_ 'Default Indirect' Instruction Tests
+                            361 
+   0247 48 FE         [ 3]  362 	andr	r0,[DISP]		; 48 FE
+   0249 49 FE         [ 3]  363 	andr	r1,[DISP]		; 49 FE
+   024B 4A FE         [ 3]  364 	andr	r2,[DISP]		; 4A FE
+   024D 4B FE         [ 3]  365 	andr	r3,[DISP]		; 4B FE
+                            366 
+   024F 4C 92 34      [ 4]  367 	anda	r0,[ADDR]		; 4C 92 34
+   0252 4D 92 34      [ 4]  368 	anda	r1,[ADDR]		; 4D 92 34
+   0255 4E 92 34      [ 4]  369 	anda	r2,[ADDR]		; 4E 92 34
+   0258 4F 92 34      [ 4]  370 	anda	r3,[ADDR]		; 4F 92 34
+                            371 
+   025B 4C B2 34      [ 4]  372 	anda	r0,[ADDR,+r0]		; 4C B2 34
+   025E 4D B2 34      [ 4]  373 	anda	r0,[ADDR,+r1]		; 4D B2 34
+   0261 4E B2 34      [ 4]  374 	anda	r0,[ADDR,+r2]		; 4E B2 34
+   0264 4F B2 34      [ 4]  375 	anda	r0,[ADDR,+r3]		; 4F B2 34
+                            376 
+   0267 4C D2 34      [ 4]  377 	anda	r0,[ADDR,-r0]		; 4C D2 34
+   026A 4D D2 34      [ 4]  378 	anda	r0,[ADDR,-r1]		; 4D D2 34
+   026D 4E D2 34      [ 4]  379 	anda	r0,[ADDR,-r2]		; 4E D2 34
+   0270 4F D2 34      [ 4]  380 	anda	r0,[ADDR,-r3]		; 4F D2 34
+                            381 
+   0273 4C F2 34      [ 4]  382 	anda	r0,[ADDR,r0]		; 4C F2 34
+   0276 4D F2 34      [ 4]  383 	anda	r0,[ADDR,r1]		; 4D F2 34
+   0279 4E F2 34      [ 4]  384 	anda	r0,[ADDR,r2]		; 4E F2 34
+   027C 4F F2 34      [ 4]  385 	anda	r0,[ADDR,r3]		; 4F F2 34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 8
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+and_ 'Default Indirect' Instruction Tests
+
+                            386 
+                            387 	.sbttl	and_ 'Alternate Indirect' Instruction Tests
+                            388 
+   027F 48 FE         [ 3]  389 	andr	r0,@DISP		; 48 FE
+   0281 49 FE         [ 3]  390 	andr	r1,@DISP		; 49 FE
+   0283 4A FE         [ 3]  391 	andr	r2,@DISP		; 4A FE
+   0285 4B FE         [ 3]  392 	andr	r3,@DISP		; 4B FE
+                            393 
+   0287 4C 92 34      [ 4]  394 	anda	r0,@ADDR		; 4C 92 34
+   028A 4D 92 34      [ 4]  395 	anda	r1,@ADDR		; 4D 92 34
+   028D 4E 92 34      [ 4]  396 	anda	r2,@ADDR		; 4E 92 34
+   0290 4F 92 34      [ 4]  397 	anda	r3,@ADDR		; 4F 92 34
+                            398 
+   0293 4C B2 34      [ 4]  399 	anda	r0,@ADDR,+r0		; 4C B2 34
+   0296 4D B2 34      [ 4]  400 	anda	r0,@ADDR,+r1		; 4D B2 34
+   0299 4E B2 34      [ 4]  401 	anda	r0,@ADDR,+r2		; 4E B2 34
+   029C 4F B2 34      [ 4]  402 	anda	r0,@ADDR,+r3		; 4F B2 34
+                            403 
+   029F 4C D2 34      [ 4]  404 	anda	r0,@ADDR,-r0		; 4C D2 34
+   02A2 4D D2 34      [ 4]  405 	anda	r0,@ADDR,-r1		; 4D D2 34
+   02A5 4E D2 34      [ 4]  406 	anda	r0,@ADDR,-r2		; 4E D2 34
+   02A8 4F D2 34      [ 4]  407 	anda	r0,@ADDR,-r3		; 4F D2 34
+                            408 
+   02AB 4C F2 34      [ 4]  409 	anda	r0,@ADDR,r0		; 4C F2 34
+   02AE 4D F2 34      [ 4]  410 	anda	r0,@ADDR,r1		; 4D F2 34
+   02B1 4E F2 34      [ 4]  411 	anda	r0,@ADDR,r2		; 4E F2 34
+   02B4 4F F2 34      [ 4]  412 	anda	r0,@ADDR,r3		; 4F F2 34
+                            413 
+                            414 
+                            415 	.sbttl	'Sequential' Instruction Tests
+                            416 
+   02B7 50            [ 2]  417 	rrr	r0			; 50
+   02B8 51            [ 2]  418 	rrr	r1			; 51
+   02B9 52            [ 2]  419 	rrr	r2			; 52
+   02BA 53            [ 2]  420 	rrr	r3			; 53
+                            421 
+   02BB 54 98         [ 3]  422 	rede	r0,#P			; 54 98
+   02BD 55 98         [ 3]  423 	rede	r1,#P			; 55 98
+   02BF 56 98         [ 3]  424 	rede	r2,#P			; 56 98
+   02C1 57 98         [ 3]  425 	rede	r3,#P			; 57 98
+                            426 
+                            427 	.sbttl	brnr 'Sequential' Instruction Test
+                            428 
+   02C3 58 7E         [ 3]  429 	brnr	r0,DISP			; 58 7E
+   02C5 59 7E         [ 3]  430 	brnr	r1,DISP			; 59 7E
+   02C7 5A 7E         [ 3]  431 	brnr	r2,DISP			; 5A 7E
+   02C9 5B 7E         [ 3]  432 	brnr	r3,DISP			; 5B 7E
+                            433 
+   02CB 58 FE         [ 3]  434 	brnr	r0,[DISP]		; 58 FE
+   02CD 59 FE         [ 3]  435 	brnr	r1,[DISP]		; 59 FE
+   02CF 5A FE         [ 3]  436 	brnr	r2,[DISP]		; 5A FE
+   02D1 5B FE         [ 3]  437 	brnr	r3,[DISP]		; 5B FE
+                            438 
+   02D3 58 FE         [ 3]  439 	brnr	r0,@DISP		; 58 FE
+   02D5 59 FE         [ 3]  440 	brnr	r1,@DISP		; 59 FE
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 9
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+brnr 'Sequential' Instruction Test
+
+   02D7 5A FE         [ 3]  441 	brnr	r2,@DISP		; 5A FE
+   02D9 5B FE         [ 3]  442 	brnr	r3,@DISP		; 5B FE
+                            443 
+                            444  	.sbttl	brna 'Sequential' Instruction Test
+                            445 
+   02DB 5C 76 54      [ 3]  446 	brna	r0,BADD			; 5C 76 54
+   02DE 5D 76 54      [ 3]  447 	brna	r1,BADD			; 5D 76 54
+   02E1 5E 76 54      [ 3]  448 	brna	r2,BADD			; 5E 76 54
+   02E4 5F 76 54      [ 3]  449 	brna	r3,BADD			; 5F 76 54
+                            450 
+   02E7 5C F6 54      [ 3]  451 	brna	r0,[BADD]		; 5C F6 54
+   02EA 5D F6 54      [ 3]  452 	brna	r1,[BADD]		; 5D F6 54
+   02ED 5E F6 54      [ 3]  453 	brna	r2,[BADD]		; 5E F6 54
+   02F0 5F F6 54      [ 3]  454 	brna	r3,[BADD]		; 5F F6 54
+                            455 
+   02F3 5C F6 54      [ 3]  456 	brna	r0,@BADD		; 5C F6 54
+   02F6 5D F6 54      [ 3]  457 	brna	r1,@BADD		; 5D F6 54
+   02F9 5E F6 54      [ 3]  458 	brna	r2,@BADD		; 5E F6 54
+   02FC 5F F6 54      [ 3]  459 	brna	r3,@BADD		; 5F F6 54
+                            460 
+                            461 
+                            462 	.sbttl	ior_ 'Sequential' Instruction Tests
+                            463 
+   02FF 60            [ 2]  464 	iorz	r0			; 60
+   0300 61            [ 2]  465 	iorz	r1			; 61
+   0301 62            [ 2]  466 	iorz	r2			; 62
+   0302 63            [ 2]  467 	iorz	r3			; 63
+   0303 64 21         [ 2]  468 	iori	r0,#DATA8		; 64 21
+   0305 65 21         [ 2]  469 	iori	r1,#DATA8		; 65 21
+   0307 66 21         [ 2]  470 	iori	r2,#DATA8		; 66 21
+   0309 67 21         [ 2]  471 	iori	r3,#DATA8		; 67 21
+   030B 68 7E         [ 3]  472 	iorr	r0,DISP			; 68 7E
+   030D 69 7E         [ 3]  473 	iorr	r1,DISP			; 69 7E
+   030F 6A 7E         [ 3]  474 	iorr	r2,DISP			; 6A 7E
+   0311 6B 7E         [ 3]  475 	iorr	r3,DISP			; 6B 7E
+   0313 6C 12 34      [ 4]  476 	iora	r0,ADDR			; 6C 12 34
+   0316 6D 12 34      [ 4]  477 	iora	r1,ADDR			; 6D 12 34
+   0319 6E 12 34      [ 4]  478 	iora	r2,ADDR			; 6E 12 34
+   031C 6F 12 34      [ 4]  479 	iora	r3,ADDR			; 6F 12 34
+                            480 
+                            481 	.sbttl	ior_ 'Default Indirect' Instruction Tests
+                            482 
+   031F 68 FE         [ 3]  483 	iorr	r0,[DISP]		; 68 FE
+   0321 69 FE         [ 3]  484 	iorr	r1,[DISP]		; 69 FE
+   0323 6A FE         [ 3]  485 	iorr	r2,[DISP]		; 6A FE
+   0325 6B FE         [ 3]  486 	iorr	r3,[DISP]		; 6B FE
+                            487 
+   0327 6C 92 34      [ 4]  488 	iora	r0,[ADDR]		; 6C 92 34
+   032A 6D 92 34      [ 4]  489 	iora	r1,[ADDR]		; 6D 92 34
+   032D 6E 92 34      [ 4]  490 	iora	r2,[ADDR]		; 6E 92 34
+   0330 6F 92 34      [ 4]  491 	iora	r3,[ADDR]		; 6F 92 34
+                            492 
+   0333 6C B2 34      [ 4]  493 	iora	r0,[ADDR,+r0]		; 6C B2 34
+   0336 6D B2 34      [ 4]  494 	iora	r0,[ADDR,+r1]		; 6D B2 34
+   0339 6E B2 34      [ 4]  495 	iora	r0,[ADDR,+r2]		; 6E B2 34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 10
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+ior_ 'Default Indirect' Instruction Tests
+
+   033C 6F B2 34      [ 4]  496 	iora	r0,[ADDR,+r3]		; 6F B2 34
+                            497 
+   033F 6C D2 34      [ 4]  498 	iora	r0,[ADDR,-r0]		; 6C D2 34
+   0342 6D D2 34      [ 4]  499 	iora	r0,[ADDR,-r1]		; 6D D2 34
+   0345 6E D2 34      [ 4]  500 	iora	r0,[ADDR,-r2]		; 6E D2 34
+   0348 6F D2 34      [ 4]  501 	iora	r0,[ADDR,-r3]		; 6F D2 34
+                            502 
+   034B 6C F2 34      [ 4]  503 	iora	r0,[ADDR,r0]		; 6C F2 34
+   034E 6D F2 34      [ 4]  504 	iora	r0,[ADDR,r1]		; 6D F2 34
+   0351 6E F2 34      [ 4]  505 	iora	r0,[ADDR,r2]		; 6E F2 34
+   0354 6F F2 34      [ 4]  506 	iora	r0,[ADDR,r3]		; 6F F2 34
+                            507 
+                            508 	.sbttl	ior_ 'Alternate Indirect' Instruction Tests
+                            509 
+   0357 68 FE         [ 3]  510 	iorr	r0,@DISP		; 68 FE
+   0359 69 FE         [ 3]  511 	iorr	r1,@DISP		; 69 FE
+   035B 6A FE         [ 3]  512 	iorr	r2,@DISP		; 6A FE
+   035D 6B FE         [ 3]  513 	iorr	r3,@DISP		; 6B FE
+                            514 
+   035F 6C 92 34      [ 4]  515 	iora	r0,@ADDR		; 6C 92 34
+   0362 6D 92 34      [ 4]  516 	iora	r1,@ADDR		; 6D 92 34
+   0365 6E 92 34      [ 4]  517 	iora	r2,@ADDR		; 6E 92 34
+   0368 6F 92 34      [ 4]  518 	iora	r3,@ADDR		; 6F 92 34
+                            519 
+   036B 6C B2 34      [ 4]  520 	iora	r0,@ADDR,+r0		; 6C B2 34
+   036E 6D B2 34      [ 4]  521 	iora	r0,@ADDR,+r1		; 6D B2 34
+   0371 6E B2 34      [ 4]  522 	iora	r0,@ADDR,+r2		; 6E B2 34
+   0374 6F B2 34      [ 4]  523 	iora	r0,@ADDR,+r3		; 6F B2 34
+                            524 
+   0377 6C D2 34      [ 4]  525 	iora	r0,@ADDR,-r0		; 6C D2 34
+   037A 6D D2 34      [ 4]  526 	iora	r0,@ADDR,-r1		; 6D D2 34
+   037D 6E D2 34      [ 4]  527 	iora	r0,@ADDR,-r2		; 6E D2 34
+   0380 6F D2 34      [ 4]  528 	iora	r0,@ADDR,-r3		; 6F D2 34
+                            529 
+   0383 6C F2 34      [ 4]  530 	iora	r0,@ADDR,r0		; 6C F2 34
+   0386 6D F2 34      [ 4]  531 	iora	r0,@ADDR,r1		; 6D F2 34
+   0389 6E F2 34      [ 4]  532 	iora	r0,@ADDR,r2		; 6E F2 34
+   038C 6F F2 34      [ 4]  533 	iora	r0,@ADDR,r3		; 6F F2 34
+                            534 
+                            535 
+                            536 	.sbttl	'Sequential' Instruction Tests
+                            537 
+   038F 70            [ 2]  538 	redd	r0			; 70
+   0390 71            [ 2]  539 	redd	r1			; 71
+   0391 72            [ 2]  540 	redd	r2			; 72
+   0392 73            [ 2]  541 	redd	r3			; 73
+                            542 
+   0393 74 21         [ 3]  543 	cpsu	#DATA8			; 74 21
+   0395 75 21         [ 3]  544 	cpsl	#DATA8			; 75 21
+   0397 76 21         [ 3]  545 	ppsu	#DATA8			; 76 21
+   0399 77 21         [ 3]  546 	ppsl	#DATA8			; 77 21
+                            547 
+                            548 	.sbttl	bsnr 'Sequential' Instruction Test
+                            549 
+   039B 78 7E         [ 3]  550 	bsnr	r0,DISP			; 78 7E
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 11
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bsnr 'Sequential' Instruction Test
+
+   039D 79 7E         [ 3]  551 	bsnr	r1,DISP			; 79 7E
+   039F 7A 7E         [ 3]  552 	bsnr	r2,DISP			; 7A 7E
+   03A1 7B 7E         [ 3]  553 	bsnr	r3,DISP			; 7B 7E
+                            554 
+   03A3 78 FE         [ 3]  555 	bsnr	r0,[DISP]		; 78 FE
+   03A5 79 FE         [ 3]  556 	bsnr	r1,[DISP]		; 79 FE
+   03A7 7A FE         [ 3]  557 	bsnr	r2,[DISP]		; 7A FE
+   03A9 7B FE         [ 3]  558 	bsnr	r3,[DISP]		; 7B FE
+                            559 
+   03AB 78 FE         [ 3]  560 	bsnr	r0,@DISP		; 78 FE
+   03AD 79 FE         [ 3]  561 	bsnr	r1,@DISP		; 79 FE
+   03AF 7A FE         [ 3]  562 	bsnr	r2,@DISP		; 7A FE
+   03B1 7B FE         [ 3]  563 	bsnr	r3,@DISP		; 7B FE
+                            564 
+                            565  	.sbttl	bsna 'Sequential' Instruction Test
+                            566 
+   03B3 7C 76 54      [ 3]  567 	bsna	r0,BADD			; 7C 76 54
+   03B6 7D 76 54      [ 3]  568 	bsna	r1,BADD			; 7D 76 54
+   03B9 7E 76 54      [ 3]  569 	bsna	r2,BADD			; 7E 76 54
+   03BC 7F 76 54      [ 3]  570 	bsna	r3,BADD			; 7F 76 54
+                            571 
+   03BF 7C F6 54      [ 3]  572 	bsna	r0,[BADD]		; 7C F6 54
+   03C2 7D F6 54      [ 3]  573 	bsna	r1,[BADD]		; 7D F6 54
+   03C5 7E F6 54      [ 3]  574 	bsna	r2,[BADD]		; 7E F6 54
+   03C8 7F F6 54      [ 3]  575 	bsna	r3,[BADD]		; 7F F6 54
+                            576 
+   03CB 7C F6 54      [ 3]  577 	bsna	r0,@BADD		; 7C F6 54
+   03CE 7D F6 54      [ 3]  578 	bsna	r1,@BADD		; 7D F6 54
+   03D1 7E F6 54      [ 3]  579 	bsna	r2,@BADD		; 7E F6 54
+   03D4 7F F6 54      [ 3]  580 	bsna	r3,@BADD		; 7F F6 54
+                            581 
+                            582 
+                            583 	.sbttl	add_ 'Sequential' Instruction Tests
+                            584 
+   03D7 80            [ 2]  585 	addz	r0			; 80
+   03D8 81            [ 2]  586 	addz	r1			; 81
+   03D9 82            [ 2]  587 	addz	r2			; 82
+   03DA 83            [ 2]  588 	addz	r3			; 83
+   03DB 84 21         [ 2]  589 	addi	r0,#DATA8		; 84 21
+   03DD 85 21         [ 2]  590 	addi	r1,#DATA8		; 85 21
+   03DF 86 21         [ 2]  591 	addi	r2,#DATA8		; 86 21
+   03E1 87 21         [ 2]  592 	addi	r3,#DATA8		; 87 21
+   03E3 88 7E         [ 3]  593 	addr	r0,DISP			; 88 7E
+   03E5 89 7E         [ 3]  594 	addr	r1,DISP			; 89 7E
+   03E7 8A 7E         [ 3]  595 	addr	r2,DISP			; 8A 7E
+   03E9 8B 7E         [ 3]  596 	addr	r3,DISP			; 8B 7E
+   03EB 8C 12 34      [ 4]  597 	adda	r0,ADDR			; 8C 12 34
+   03EE 8D 12 34      [ 4]  598 	adda	r1,ADDR			; 8D 12 34
+   03F1 8E 12 34      [ 4]  599 	adda	r2,ADDR			; 8E 12 34
+   03F4 8F 12 34      [ 4]  600 	adda	r3,ADDR			; 8F 12 34
+                            601 
+                            602 	.sbttl	add_ 'Default Indirect' Instruction Tests
+                            603 
+   03F7 88 FE         [ 3]  604 	addr	r0,[DISP]		; 88 FE
+   03F9 89 FE         [ 3]  605 	addr	r1,[DISP]		; 89 FE
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 12
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+add_ 'Default Indirect' Instruction Tests
+
+   03FB 8A FE         [ 3]  606 	addr	r2,[DISP]		; 8A FE
+   03FD 8B FE         [ 3]  607 	addr	r3,[DISP]		; 8B FE
+                            608 
+   03FF 8C 92 34      [ 4]  609 	adda	r0,[ADDR]		; 8C 92 34
+   0402 8D 92 34      [ 4]  610 	adda	r1,[ADDR]		; 8D 92 34
+   0405 8E 92 34      [ 4]  611 	adda	r2,[ADDR]		; 8E 92 34
+   0408 8F 92 34      [ 4]  612 	adda	r3,[ADDR]		; 8F 92 34
+                            613 
+   040B 8C B2 34      [ 4]  614 	adda	r0,[ADDR,+r0]		; 8C B2 34
+   040E 8D B2 34      [ 4]  615 	adda	r0,[ADDR,+r1]		; 8D B2 34
+   0411 8E B2 34      [ 4]  616 	adda	r0,[ADDR,+r2]		; 8E B2 34
+   0414 8F B2 34      [ 4]  617 	adda	r0,[ADDR,+r3]		; 8F B2 34
+                            618 
+   0417 8C D2 34      [ 4]  619 	adda	r0,[ADDR,-r0]		; 8C D2 34
+   041A 8D D2 34      [ 4]  620 	adda	r0,[ADDR,-r1]		; 8D D2 34
+   041D 8E D2 34      [ 4]  621 	adda	r0,[ADDR,-r2]		; 8E D2 34
+   0420 8F D2 34      [ 4]  622 	adda	r0,[ADDR,-r3]		; 8F D2 34
+                            623 
+   0423 8C F2 34      [ 4]  624 	adda	r0,[ADDR,r0]		; 8C F2 34
+   0426 8D F2 34      [ 4]  625 	adda	r0,[ADDR,r1]		; 8D F2 34
+   0429 8E F2 34      [ 4]  626 	adda	r0,[ADDR,r2]		; 8E F2 34
+   042C 8F F2 34      [ 4]  627 	adda	r0,[ADDR,r3]		; 8F F2 34
+                            628 
+                            629 	.sbttl	add_ 'Alternate Indirect' Instruction Tests
+                            630 
+   042F 88 FE         [ 3]  631 	addr	r0,@DISP		; 88 FE
+   0431 89 FE         [ 3]  632 	addr	r1,@DISP		; 89 FE
+   0433 8A FE         [ 3]  633 	addr	r2,@DISP		; 8A FE
+   0435 8B FE         [ 3]  634 	addr	r3,@DISP		; 8B FE
+                            635 
+   0437 8C 92 34      [ 4]  636 	adda	r0,@ADDR		; 8C 92 34
+   043A 8D 92 34      [ 4]  637 	adda	r1,@ADDR		; 8D 92 34
+   043D 8E 92 34      [ 4]  638 	adda	r2,@ADDR		; 8E 92 34
+   0440 8F 92 34      [ 4]  639 	adda	r3,@ADDR		; 8F 92 34
+                            640 
+   0443 8C B2 34      [ 4]  641 	adda	r0,@ADDR,+r0		; 8C B2 34
+   0446 8D B2 34      [ 4]  642 	adda	r0,@ADDR,+r1		; 8D B2 34
+   0449 8E B2 34      [ 4]  643 	adda	r0,@ADDR,+r2		; 8E B2 34
+   044C 8F B2 34      [ 4]  644 	adda	r0,@ADDR,+r3		; 8F B2 34
+                            645 
+   044F 8C D2 34      [ 4]  646 	adda	r0,@ADDR,-r0		; 8C D2 34
+   0452 8D D2 34      [ 4]  647 	adda	r0,@ADDR,-r1		; 8D D2 34
+   0455 8E D2 34      [ 4]  648 	adda	r0,@ADDR,-r2		; 8E D2 34
+   0458 8F D2 34      [ 4]  649 	adda	r0,@ADDR,-r3		; 8F D2 34
+                            650 
+   045B 8C F2 34      [ 4]  651 	adda	r0,@ADDR,r0		; 8C F2 34
+   045E 8D F2 34      [ 4]  652 	adda	r0,@ADDR,r1		; 8D F2 34
+   0461 8E F2 34      [ 4]  653 	adda	r0,@ADDR,r2		; 8E F2 34
+   0464 8F F2 34      [ 4]  654 	adda	r0,@ADDR,r3		; 8F F2 34
+                            655 
+                            656 
+                            657 	.sbttl	'Sequential' Instruction Tests
+                            658 
+                            659 					; 90
+                            660 					; 91
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 13
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+   0467 92            [ 2]  661 	lpsu				; 92
+   0468 93            [ 2]  662 	lpsl				; 93
+                            663 
+   0469 94            [ 3]  664 	dar	r0			; 94
+   046A 95            [ 3]  665 	dar	r1			; 95
+   046B 96            [ 3]  666 	dar	r2			; 96
+   046C 97            [ 3]  667 	dar	r3			; 97
+                            668 
+                            669 	.sbttl	bcfr 'Sequential' Instruction Test
+                            670 
+   046D 98 7E         [ 3]  671 	bcfr	.eq.,DISP		; 98 7E
+   046F 99 7E         [ 3]  672 	bcfr	.gt.,DISP		; 99 7E
+   0471 9A 7E         [ 3]  673 	bcfr	.lt.,DISP		; 9A 7E
+                            674 ;	bcfr	.un.,DISP		; 9B 7E
+                            675 
+   0473 9B 7E         [ 3]  676 	zbrr	DISP			; 9B 7E
+   0475 9B FE         [ 3]  677 	zbrr	[DISP]			; 9B FE
+   0477 9B FE         [ 3]  678 	zbrr	@DISP			; 9B FE
+                            679 
+   0479 98 7E         [ 3]  680 	bcfr	#DATA2 + 0,DISP		; 98 7E
+   047B 99 7E         [ 3]  681 	bcfr	#DATA2 + 1,DISP		; 99 7E
+   047D 9A 7E         [ 3]  682 	bcfr	#DATA2 + 2,DISP		; 9A 7E
+                            683 ;	bcfr	#DATA2 + 3,DISP		; 9B 7E
+                            684 
+   047F 98 FE         [ 3]  685 	bcfr	.eq.,[DISP]		; 98 FE
+   0481 99 FE         [ 3]  686 	bcfr	.gt.,[DISP]		; 99 FE
+   0483 9A FE         [ 3]  687 	bcfr	.lt.,[DISP]		; 9A FE
+                            688 ;	bcfr	.un.,[DISP]		; 9B FE
+                            689 
+   0485 98 FE         [ 3]  690 	bcfr	#DATA2 + 0,[DISP]	; 98 FE
+   0487 99 FE         [ 3]  691 	bcfr	#DATA2 + 1,[DISP]	; 99 FE
+   0489 9A FE         [ 3]  692 	bcfr	#DATA2 + 2,[DISP]	; 9A FE
+                            693 ;	bcfr	#DATA2 + 3,[DISP]	; 9B FE
+                            694 
+   048B 98 FE         [ 3]  695 	bcfr	.eq.,@DISP		; 98 FE
+   048D 99 FE         [ 3]  696 	bcfr	.gt.,@DISP		; 99 FE
+   048F 9A FE         [ 3]  697 	bcfr	.lt.,@DISP		; 9A FE
+                            698 ;	bcfr	.un.,@DISP		; 9B FE
+                            699 
+   0491 98 FE         [ 3]  700 	bcfr	#DATA2 + 0,@DISP	; 98 FE
+   0493 99 FE         [ 3]  701 	bcfr	#DATA2 + 1,@DISP	; 99 FE
+   0495 9A FE         [ 3]  702 	bcfr	#DATA2 + 2,@DISP	; 9A FE
+                            703 ;	bcfr	#DATA2 + 3,@DISP	; 9B FE
+                            704 
+                            705 	.sbttl	bcfa 'Sequential' Instruction Test
+                            706 
+   0497 9C 76 54      [ 3]  707 	bcfa	.eq.,BADD		; 9C 76 54
+   049A 9D 76 54      [ 3]  708 	bcfa	.gt.,BADD		; 9D 76 54
+   049D 9E 76 54      [ 3]  709 	bcfa	.lt.,BADD		; 9E 76 54
+                            710 ;	bcfa	.un.,BADD		; 9F 76 54
+                            711 
+   04A0 9F 76 54      [ 3]  712 	bxa	BADD			; 9F 76 54
+   04A3 9F F6 54      [ 3]  713 	bxa	[BADD]			; 9F F6 54
+   04A6 9F F6 54      [ 3]  714 	bxa	@BADD			; 9F F6 54
+                            715 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 14
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bcfa 'Sequential' Instruction Test
+
+   04A9 9C 76 54      [ 3]  716 	bcfa	#DATA2 + 0,BADD		; 9C 76 54
+   04AC 9D 76 54      [ 3]  717 	bcfa	#DATA2 + 1,BADD		; 9D 76 54
+   04AF 9E 76 54      [ 3]  718 	bcfa	#DATA2 + 2,BADD		; 9E 76 54
+                            719 ;	bcfa	#DATA2 + 3,BADD		; 9F 76 54
+                            720 
+   04B2 9C F6 54      [ 3]  721 	bcfa	.eq.,[BADD]		; 9C F6 54
+   04B5 9D F6 54      [ 3]  722 	bcfa	.gt.,[BADD]		; 9D F6 54
+   04B8 9E F6 54      [ 3]  723 	bcfa	.lt.,[BADD]		; 9E F6 54
+                            724 ;	bcfa	.un.,[BADD]		; 9F F6 54
+                            725 
+   04BB 9C F6 54      [ 3]  726 	bcfa	#DATA2 + 0,[BADD]	; 9C F6 54
+   04BE 9D F6 54      [ 3]  727 	bcfa	#DATA2 + 1,[BADD]	; 9D F6 54
+   04C1 9E F6 54      [ 3]  728 	bcfa	#DATA2 + 2,[BADD]	; 9E F6 54
+                            729 ;	bcfa	#DATA2 + 3,[BADD]	; 9F F6 54
+                            730 
+   04C4 9C F6 54      [ 3]  731 	bcfa	.eq.,@BADD		; 9C F6 54
+   04C7 9D F6 54      [ 3]  732 	bcfa	.gt.,@BADD		; 9D F6 54
+   04CA 9E F6 54      [ 3]  733 	bcfa	.lt.,@BADD		; 9E F6 54
+                            734 ;	bcfa	.un.,@BADD		; 9F F6 54
+                            735 
+   04CD 9C F6 54      [ 3]  736 	bcfa	#DATA2 + 0,@BADD	; 9C F6 54
+   04D0 9D F6 54      [ 3]  737 	bcfa	#DATA2 + 1,@BADD	; 9D F6 54
+   04D3 9E F6 54      [ 3]  738 	bcfa	#DATA2 + 2,@BADD	; 9E F6 54
+                            739 ;	bcfa	#DATA2 + 3,@BADD	; 9F F6 54
+                            740 
+                            741 
+                            742 	.sbttl	sub_ 'Sequential' Instruction Tests
+                            743 
+   04D6 A0            [ 2]  744 	subz	r0			; A0
+   04D7 A1            [ 2]  745 	subz	r1			; A1
+   04D8 A2            [ 2]  746 	subz	r2			; A2
+   04D9 A3            [ 2]  747 	subz	r3			; A3
+   04DA A4 21         [ 2]  748 	subi	r0,#DATA8		; A4 21
+   04DC A5 21         [ 2]  749 	subi	r1,#DATA8		; A5 21
+   04DE A6 21         [ 2]  750 	subi	r2,#DATA8		; A6 21
+   04E0 A7 21         [ 2]  751 	subi	r3,#DATA8		; A7 21
+   04E2 A8 7E         [ 3]  752 	subr	r0,DISP			; A8 7E
+   04E4 A9 7E         [ 3]  753 	subr	r1,DISP			; A9 7E
+   04E6 AA 7E         [ 3]  754 	subr	r2,DISP			; AA 7E
+   04E8 AB 7E         [ 3]  755 	subr	r3,DISP			; AB 7E
+   04EA AC 12 34      [ 4]  756 	suba	r0,ADDR			; AC 12 34
+   04ED AD 12 34      [ 4]  757 	suba	r1,ADDR			; AD 12 34
+   04F0 AE 12 34      [ 4]  758 	suba	r2,ADDR			; AE 12 34
+   04F3 AF 12 34      [ 4]  759 	suba	r3,ADDR			; AF 12 34
+                            760 
+                            761 	.sbttl	sub_ 'Default Indirect' Instruction Tests
+                            762 
+   04F6 A8 FE         [ 3]  763 	subr	r0,[DISP]		; A8 FE
+   04F8 A9 FE         [ 3]  764 	subr	r1,[DISP]		; A9 FE
+   04FA AA FE         [ 3]  765 	subr	r2,[DISP]		; AA FE
+   04FC AB FE         [ 3]  766 	subr	r3,[DISP]		; AB FE
+                            767 
+   04FE AC 92 34      [ 4]  768 	suba	r0,[ADDR]		; AC 92 34
+   0501 AD 92 34      [ 4]  769 	suba	r1,[ADDR]		; AD 92 34
+   0504 AE 92 34      [ 4]  770 	suba	r2,[ADDR]		; AE 92 34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 15
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+sub_ 'Default Indirect' Instruction Tests
+
+   0507 AF 92 34      [ 4]  771 	suba	r3,[ADDR]		; AF 92 34
+                            772 
+   050A AC B2 34      [ 4]  773 	suba	r0,[ADDR,+r0]		; AC B2 34
+   050D AD B2 34      [ 4]  774 	suba	r0,[ADDR,+r1]		; AD B2 34
+   0510 AE B2 34      [ 4]  775 	suba	r0,[ADDR,+r2]		; AE B2 34
+   0513 AF B2 34      [ 4]  776 	suba	r0,[ADDR,+r3]		; AF B2 34
+                            777 
+   0516 AC D2 34      [ 4]  778 	suba	r0,[ADDR,-r0]		; AC D2 34
+   0519 AD D2 34      [ 4]  779 	suba	r0,[ADDR,-r1]		; AD D2 34
+   051C AE D2 34      [ 4]  780 	suba	r0,[ADDR,-r2]		; AE D2 34
+   051F AF D2 34      [ 4]  781 	suba	r0,[ADDR,-r3]		; AF D2 34
+                            782 
+   0522 AC F2 34      [ 4]  783 	suba	r0,[ADDR,r0]		; AC F2 34
+   0525 AD F2 34      [ 4]  784 	suba	r0,[ADDR,r1]		; AD F2 34
+   0528 AE F2 34      [ 4]  785 	suba	r0,[ADDR,r2]		; AE F2 34
+   052B AF F2 34      [ 4]  786 	suba	r0,[ADDR,r3]		; AF F2 34
+                            787 
+                            788 	.sbttl	sub_ 'Alternate Indirect' Instruction Tests
+                            789 
+   052E A8 FE         [ 3]  790 	subr	r0,@DISP		; A8 FE
+   0530 A9 FE         [ 3]  791 	subr	r1,@DISP		; A9 FE
+   0532 AA FE         [ 3]  792 	subr	r2,@DISP		; AA FE
+   0534 AB FE         [ 3]  793 	subr	r3,@DISP		; AB FE
+                            794 
+   0536 AC 92 34      [ 4]  795 	suba	r0,@ADDR		; AC 92 34
+   0539 AD 92 34      [ 4]  796 	suba	r1,@ADDR		; AD 92 34
+   053C AE 92 34      [ 4]  797 	suba	r2,@ADDR		; AE 92 34
+   053F AF 92 34      [ 4]  798 	suba	r3,@ADDR		; AF 92 34
+                            799 
+   0542 AC B2 34      [ 4]  800 	suba	r0,@ADDR,+r0		; AC B2 34
+   0545 AD B2 34      [ 4]  801 	suba	r0,@ADDR,+r1		; AD B2 34
+   0548 AE B2 34      [ 4]  802 	suba	r0,@ADDR,+r2		; AE B2 34
+   054B AF B2 34      [ 4]  803 	suba	r0,@ADDR,+r3		; AF B2 34
+                            804 
+   054E AC D2 34      [ 4]  805 	suba	r0,@ADDR,-r0		; AC D2 34
+   0551 AD D2 34      [ 4]  806 	suba	r0,@ADDR,-r1		; AD D2 34
+   0554 AE D2 34      [ 4]  807 	suba	r0,@ADDR,-r2		; AE D2 34
+   0557 AF D2 34      [ 4]  808 	suba	r0,@ADDR,-r3		; AF D2 34
+                            809 
+   055A AC F2 34      [ 4]  810 	suba	r0,@ADDR,r0		; AC F2 34
+   055D AD F2 34      [ 4]  811 	suba	r0,@ADDR,r1		; AD F2 34
+   0560 AE F2 34      [ 4]  812 	suba	r0,@ADDR,r2		; AE F2 34
+   0563 AF F2 34      [ 4]  813 	suba	r0,@ADDR,r3		; AF F2 34
+                            814 
+                            815 
+                            816 	.sbttl	'Sequential' Instruction Tests
+                            817 
+   0566 B0            [ 2]  818 	wrtc	r0			; B0
+   0567 B1            [ 2]  819 	wrtc	r1			; B1
+   0568 B2            [ 2]  820 	wrtc	r2			; B2
+   0569 B3            [ 2]  821 	wrtc	r3			; B3
+                            822 
+   056A B4 21         [ 3]  823 	tpsu	#DATA8			; B4 21
+   056C B5 21         [ 3]  824 	tpsl	#DATA8			; B5 21
+                            825 					; B6
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 16
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+                            826 					; B7
+                            827 
+                            828 	.sbttl	bsfr 'Sequential' Instruction Test
+                            829 
+   056E B8 7E         [ 3]  830 	bsfr	.eq.,DISP		; B8 7E
+   0570 B9 7E         [ 3]  831 	bsfr	.gt.,DISP		; B9 7E
+   0572 BA 7E         [ 3]  832 	bsfr	.lt.,DISP		; BA 7E
+                            833 ;	bsfr	.un.,DISP		; BB 7E
+                            834 
+   0574 BB 7E         [ 3]  835 	zbsr	DISP			; BB 7E
+   0576 BB FE         [ 3]  836 	zbsr	[DISP]			; BB FE
+   0578 BB FE         [ 3]  837 	zbsr	@DISP			; BB FE
+                            838 
+   057A B8 7E         [ 3]  839 	bsfr	#DATA2 + 0,DISP		; B8 7E
+   057C B9 7E         [ 3]  840 	bsfr	#DATA2 + 1,DISP		; B9 7E
+   057E BA 7E         [ 3]  841 	bsfr	#DATA2 + 2,DISP		; BA 7E
+                            842 ;	bsfr	#DATA2 + 3,DISP		; BB 7E
+                            843 
+   0580 B8 FE         [ 3]  844 	bsfr	.eq.,[DISP]		; B8 FE
+   0582 B9 FE         [ 3]  845 	bsfr	.gt.,[DISP]		; B9 FE
+   0584 BA FE         [ 3]  846 	bsfr	.lt.,[DISP]		; BA FE
+                            847 ;	bsfr	.un.,[DISP]		; BB FE
+                            848 
+   0586 B8 FE         [ 3]  849 	bsfr	#DATA2 + 0,[DISP]	; B8 FE
+   0588 B9 FE         [ 3]  850 	bsfr	#DATA2 + 1,[DISP]	; B9 FE
+   058A BA FE         [ 3]  851 	bsfr	#DATA2 + 2,[DISP]	; BA FE
+                            852 ;	bsfr	#DATA2 + 3,[DISP]	; BB FE
+                            853 
+   058C B8 FE         [ 3]  854 	bsfr	.eq.,@DISP		; B8 FE
+   058E B9 FE         [ 3]  855 	bsfr	.gt.,@DISP		; B9 FE
+   0590 BA FE         [ 3]  856 	bsfr	.lt.,@DISP		; BA FE
+                            857 ;	bsfr	.un.,@DISP		; BB FE
+                            858 
+   0592 B8 FE         [ 3]  859 	bsfr	#DATA2 + 0,@DISP	; B8 FE
+   0594 B9 FE         [ 3]  860 	bsfr	#DATA2 + 1,@DISP	; B9 FE
+   0596 BA FE         [ 3]  861 	bsfr	#DATA2 + 2,@DISP	; BA FE
+                            862 ;	bsfr	#DATA2 + 3,@DISP	; BB FE
+                            863 
+                            864 	.sbttl	bsfa 'Sequential' Instruction Test
+                            865 
+   0598 BC 76 54      [ 3]  866 	bsfa	.eq.,BADD		; BC 76 54
+   059B BD 76 54      [ 3]  867 	bsfa	.gt.,BADD		; BD 76 54
+   059E BE 76 54      [ 3]  868 	bsfa	.lt.,BADD		; BE 76 54
+                            869 ;	bsfa	.un.,BADD		; BF 76 54
+                            870 
+   05A1 BF 76 54      [ 3]  871 	bsxa	BADD			; BF 76 54
+   05A4 BF F6 54      [ 3]  872 	bsxa	[BADD]			; BF F6 54
+   05A7 BF F6 54      [ 3]  873 	bsxa	@BADD			; BF F6 54
+                            874 
+   05AA BC 76 54      [ 3]  875 	bsfa	#DATA2 + 0,BADD		; BC 76 54
+   05AD BD 76 54      [ 3]  876 	bsfa	#DATA2 + 1,BADD		; BD 76 54
+   05B0 BE 76 54      [ 3]  877 	bsfa	#DATA2 + 2,BADD		; BE 76 54
+                            878 ;	bsfa	#DATA2 + 3,BADD		; BF 76 54
+                            879 
+   05B3 BC F6 54      [ 3]  880 	bsfa	.eq.,[BADD]		; BC F6 54
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 17
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bsfa 'Sequential' Instruction Test
+
+   05B6 BD F6 54      [ 3]  881 	bsfa	.gt.,[BADD]		; BD F6 54
+   05B9 BE F6 54      [ 3]  882 	bsfa	.lt.,[BADD]		; BE F6 54
+                            883 ;	bsfa	.un.,[BADD]		; BF F6 54
+                            884 
+   05BC BC F6 54      [ 3]  885 	bsfa	#DATA2 + 0,[BADD]	; BC F6 54
+   05BF BD F6 54      [ 3]  886 	bsfa	#DATA2 + 1,[BADD]	; BD F6 54
+   05C2 BE F6 54      [ 3]  887 	bsfa	#DATA2 + 2,[BADD]	; BE F6 54
+                            888 ;	bsfa	#DATA2 + 3,[BADD]	; BF F6 54
+                            889 
+   05C5 BC F6 54      [ 3]  890 	bsfa	.eq.,@BADD		; BC F6 54
+   05C8 BD F6 54      [ 3]  891 	bsfa	.gt.,@BADD		; BD F6 54
+   05CB BE F6 54      [ 3]  892 	bsfa	.lt.,@BADD		; BE F6 54
+                            893 ;	bsfa	.un.,@BADD		; BF F6 54
+                            894 
+   05CE BC F6 54      [ 3]  895 	bsfa	#DATA2 + 0,@BADD	; BC F6 54
+   05D1 BD F6 54      [ 3]  896 	bsfa	#DATA2 + 1,@BADD	; BD F6 54
+   05D4 BE F6 54      [ 3]  897 	bsfa	#DATA2 + 2,@BADD	; BE F6 54
+                            898 ;	bsfa	#DATA2 + 3,@BADD	; BF F6 54
+                            899 
+                            900 
+                            901 	.sbttl	str_ 'Sequential' Instruction Tests
+                            902 
+   05D7 C0            [ 2]  903 	strz	r0			; C0
+   05D8 C1            [ 2]  904 	strz	r1			; C1
+   05D9 C2            [ 2]  905 	strz	r2			; C2
+   05DA C3            [ 2]  906 	strz	r3			; C3
+                            907 ;	stri	r0,#DATA8		; C4 21
+                            908 ;	stri	r1,#DATA8		; C5 21
+                            909 ;	stri	r2,#DATA8		; C6 21
+                            910 ;	stri	r3,#DATA8		; C7 21
+   05DB C8 7E         [ 3]  911 	strr	r0,DISP			; C8 7E
+   05DD C9 7E         [ 3]  912 	strr	r1,DISP			; C9 7E
+   05DF CA 7E         [ 3]  913 	strr	r2,DISP			; CA 7E
+   05E1 CB 7E         [ 3]  914 	strr	r3,DISP			; CB 7E
+   05E3 CC 12 34      [ 4]  915 	stra	r0,ADDR			; CC 12 34
+   05E6 CD 12 34      [ 4]  916 	stra	r1,ADDR			; CD 12 34
+   05E9 CE 12 34      [ 4]  917 	stra	r2,ADDR			; CE 12 34
+   05EC CF 12 34      [ 4]  918 	stra	r3,ADDR			; CF 12 34
+                            919 
+                            920 	.sbttl	str_ 'Default Indirect' Instruction Tests
+                            921 
+   05EF C8 FE         [ 3]  922 	strr	r0,[DISP]		; C8 FE
+   05F1 C9 FE         [ 3]  923 	strr	r1,[DISP]		; C9 FE
+   05F3 CA FE         [ 3]  924 	strr	r2,[DISP]		; CA FE
+   05F5 CB FE         [ 3]  925 	strr	r3,[DISP]		; CB FE
+                            926 
+   05F7 CC 92 34      [ 4]  927 	stra	r0,[ADDR]		; CC 92 34
+   05FA CD 92 34      [ 4]  928 	stra	r1,[ADDR]		; CD 92 34
+   05FD CE 92 34      [ 4]  929 	stra	r2,[ADDR]		; CE 92 34
+   0600 CF 92 34      [ 4]  930 	stra	r3,[ADDR]		; CF 92 34
+                            931 
+   0603 CC B2 34      [ 4]  932 	stra	r0,[ADDR,+r0]		; CC B2 34
+   0606 CD B2 34      [ 4]  933 	stra	r0,[ADDR,+r1]		; CD B2 34
+   0609 CE B2 34      [ 4]  934 	stra	r0,[ADDR,+r2]		; CE B2 34
+   060C CF B2 34      [ 4]  935 	stra	r0,[ADDR,+r3]		; CF B2 34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 18
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+str_ 'Default Indirect' Instruction Tests
+
+                            936 
+   060F CC D2 34      [ 4]  937 	stra	r0,[ADDR,-r0]		; CC D2 34
+   0612 CD D2 34      [ 4]  938 	stra	r0,[ADDR,-r1]		; CD D2 34
+   0615 CE D2 34      [ 4]  939 	stra	r0,[ADDR,-r2]		; CE D2 34
+   0618 CF D2 34      [ 4]  940 	stra	r0,[ADDR,-r3]		; CF D2 34
+                            941 
+   061B CC F2 34      [ 4]  942 	stra	r0,[ADDR,r0]		; CC F2 34
+   061E CD F2 34      [ 4]  943 	stra	r0,[ADDR,r1]		; CD F2 34
+   0621 CE F2 34      [ 4]  944 	stra	r0,[ADDR,r2]		; CE F2 34
+   0624 CF F2 34      [ 4]  945 	stra	r0,[ADDR,r3]		; CF F2 34
+                            946 
+                            947 	.sbttl	str_ 'Alternate Indirect' Instruction Tests
+                            948 
+   0627 C8 FE         [ 3]  949 	strr	r0,@DISP		; C8 FE
+   0629 C9 FE         [ 3]  950 	strr	r1,@DISP		; C9 FE
+   062B CA FE         [ 3]  951 	strr	r2,@DISP		; CA FE
+   062D CB FE         [ 3]  952 	strr	r3,@DISP		; CB FE
+                            953 
+   062F CC 92 34      [ 4]  954 	stra	r0,@ADDR		; CC 92 34
+   0632 CD 92 34      [ 4]  955 	stra	r1,@ADDR		; CD 92 34
+   0635 CE 92 34      [ 4]  956 	stra	r2,@ADDR		; CE 92 34
+   0638 CF 92 34      [ 4]  957 	stra	r3,@ADDR		; CF 92 34
+                            958 
+   063B CC B2 34      [ 4]  959 	stra	r0,@ADDR,+r0		; CC B2 34
+   063E CD B2 34      [ 4]  960 	stra	r0,@ADDR,+r1		; CD B2 34
+   0641 CE B2 34      [ 4]  961 	stra	r0,@ADDR,+r2		; CE B2 34
+   0644 CF B2 34      [ 4]  962 	stra	r0,@ADDR,+r3		; CF B2 34
+                            963 
+   0647 CC D2 34      [ 4]  964 	stra	r0,@ADDR,-r0		; CC D2 34
+   064A CD D2 34      [ 4]  965 	stra	r0,@ADDR,-r1		; CD D2 34
+   064D CE D2 34      [ 4]  966 	stra	r0,@ADDR,-r2		; CE D2 34
+   0650 CF D2 34      [ 4]  967 	stra	r0,@ADDR,-r3		; CF D2 34
+                            968 
+   0653 CC F2 34      [ 4]  969 	stra	r0,@ADDR,r0		; CC F2 34
+   0656 CD F2 34      [ 4]  970 	stra	r0,@ADDR,r1		; CD F2 34
+   0659 CE F2 34      [ 4]  971 	stra	r0,@ADDR,r2		; CE F2 34
+   065C CF F2 34      [ 4]  972 	stra	r0,@ADDR,r3		; CF F2 34
+                            973 
+                            974 
+                            975 	.sbttl	'Sequential' Instruction Tests
+                            976 
+   065F D0            [ 2]  977 	rrl	r0			; D0
+   0660 D1            [ 2]  978 	rrl	r1			; D1
+   0661 D2            [ 2]  979 	rrl	r2			; D2
+   0662 D3            [ 2]  980 	rrl	r3			; D3
+                            981 
+   0663 D4 98         [ 3]  982 	wrte	r0,#P			; D4 98
+   0665 D5 98         [ 3]  983 	wrte	r1,#P			; D5 98
+   0667 D6 98         [ 3]  984 	wrte	r2,#P			; D6 98
+   0669 D7 98         [ 3]  985 	wrte	r3,#P			; D7 98
+                            986 
+                            987 	.sbttl	birr 'Sequential' Instruction Test
+                            988 
+   066B D8 7E         [ 3]  989 	birr	r0,DISP			; D8 7E
+   066D D9 7E         [ 3]  990 	birr	r1,DISP			; D9 7E
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 19
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+birr 'Sequential' Instruction Test
+
+   066F DA 7E         [ 3]  991 	birr	r2,DISP			; DA 7E
+   0671 DB 7E         [ 3]  992 	birr	r3,DISP			; DB 7E
+                            993 
+   0673 D8 FE         [ 3]  994 	birr	r0,[DISP]		; D8 FE
+   0675 D9 FE         [ 3]  995 	birr	r1,[DISP]		; D9 FE
+   0677 DA FE         [ 3]  996 	birr	r2,[DISP]		; DA FE
+   0679 DB FE         [ 3]  997 	birr	r3,[DISP]		; DB FE
+                            998 
+   067B D8 FE         [ 3]  999 	birr	r0,@DISP		; D8 FE
+   067D D9 FE         [ 3] 1000 	birr	r1,@DISP		; D9 FE
+   067F DA FE         [ 3] 1001 	birr	r2,@DISP		; DA FE
+   0681 DB FE         [ 3] 1002 	birr	r3,@DISP		; DB FE
+                           1003 
+                           1004  	.sbttl	bira 'Sequential' Instruction Test
+                           1005 
+   0683 DC 76 54      [ 3] 1006 	bira	r0,BADD			; DC 76 54
+   0686 DD 76 54      [ 3] 1007 	bira	r1,BADD			; DD 76 54
+   0689 DE 76 54      [ 3] 1008 	bira	r2,BADD			; DE 76 54
+   068C DF 76 54      [ 3] 1009 	bira	r3,BADD			; DF 76 54
+                           1010 
+   068F DC F6 54      [ 3] 1011 	bira	r0,[BADD]		; DC F6 54
+   0692 DD F6 54      [ 3] 1012 	bira	r1,[BADD]		; DD F6 54
+   0695 DE F6 54      [ 3] 1013 	bira	r2,[BADD]		; DE F6 54
+   0698 DF F6 54      [ 3] 1014 	bira	r3,[BADD]		; DF F6 54
+                           1015 
+   069B DC F6 54      [ 3] 1016 	bira	r0,@BADD		; DC F6 54
+   069E DD F6 54      [ 3] 1017 	bira	r1,@BADD		; DD F6 54
+   06A1 DE F6 54      [ 3] 1018 	bira	r2,@BADD		; DE F6 54
+   06A4 DF F6 54      [ 3] 1019 	bira	r3,@BADD		; DF F6 54
+                           1020 
+                           1021 
+                           1022 	.sbttl	com_ 'Sequential' Instruction Tests
+                           1023 
+   06A7 E0            [ 2] 1024 	comz	r0			; E0
+   06A8 E1            [ 2] 1025 	comz	r1			; E1
+   06A9 E2            [ 2] 1026 	comz	r2			; E2
+   06AA E3            [ 2] 1027 	comz	r3			; E3
+   06AB E4 21         [ 2] 1028 	comi	r0,#DATA8		; E4 21
+   06AD E5 21         [ 2] 1029 	comi	r1,#DATA8		; E5 21
+   06AF E6 21         [ 2] 1030 	comi	r2,#DATA8		; E6 21
+   06B1 E7 21         [ 2] 1031 	comi	r3,#DATA8		; E7 21
+   06B3 E8 7E         [ 3] 1032 	comr	r0,DISP			; E8 7E
+   06B5 E9 7E         [ 3] 1033 	comr	r1,DISP			; E9 7E
+   06B7 EA 7E         [ 3] 1034 	comr	r2,DISP			; EA 7E
+   06B9 EB 7E         [ 3] 1035 	comr	r3,DISP			; EB 7E
+   06BB EC 12 34      [ 4] 1036 	coma	r0,ADDR			; EC 12 34
+   06BE ED 12 34      [ 4] 1037 	coma	r1,ADDR			; ED 12 34
+   06C1 EE 12 34      [ 4] 1038 	coma	r2,ADDR			; EE 12 34
+   06C4 EF 12 34      [ 4] 1039 	coma	r3,ADDR			; EF 12 34
+                           1040 
+                           1041 	.sbttl	com_ 'Default Indirect' Instruction Tests
+                           1042 
+   06C7 E8 FE         [ 3] 1043 	comr	r0,[DISP]		; E8 FE
+   06C9 E9 FE         [ 3] 1044 	comr	r1,[DISP]		; E9 FE
+   06CB EA FE         [ 3] 1045 	comr	r2,[DISP]		; EA FE
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 20
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+com_ 'Default Indirect' Instruction Tests
+
+   06CD EB FE         [ 3] 1046 	comr	r3,[DISP]		; EB FE
+                           1047 
+   06CF EC 92 34      [ 4] 1048 	coma	r0,[ADDR]		; EC 92 34
+   06D2 ED 92 34      [ 4] 1049 	coma	r1,[ADDR]		; ED 92 34
+   06D5 EE 92 34      [ 4] 1050 	coma	r2,[ADDR]		; EE 92 34
+   06D8 EF 92 34      [ 4] 1051 	coma	r3,[ADDR]		; EF 92 34
+                           1052 
+   06DB EC B2 34      [ 4] 1053 	coma	r0,[ADDR,+r0]		; EC B2 34
+   06DE ED B2 34      [ 4] 1054 	coma	r0,[ADDR,+r1]		; ED B2 34
+   06E1 EE B2 34      [ 4] 1055 	coma	r0,[ADDR,+r2]		; EE B2 34
+   06E4 EF B2 34      [ 4] 1056 	coma	r0,[ADDR,+r3]		; EF B2 34
+                           1057 
+   06E7 EC D2 34      [ 4] 1058 	coma	r0,[ADDR,-r0]		; EC D2 34
+   06EA ED D2 34      [ 4] 1059 	coma	r0,[ADDR,-r1]		; ED D2 34
+   06ED EE D2 34      [ 4] 1060 	coma	r0,[ADDR,-r2]		; EE D2 34
+   06F0 EF D2 34      [ 4] 1061 	coma	r0,[ADDR,-r3]		; EF D2 34
+                           1062 
+   06F3 EC F2 34      [ 4] 1063 	coma	r0,[ADDR,r0]		; EC F2 34
+   06F6 ED F2 34      [ 4] 1064 	coma	r0,[ADDR,r1]		; ED F2 34
+   06F9 EE F2 34      [ 4] 1065 	coma	r0,[ADDR,r2]		; EE F2 34
+   06FC EF F2 34      [ 4] 1066 	coma	r0,[ADDR,r3]		; EF F2 34
+                           1067 
+                           1068 	.sbttl	com_ 'Alternate Indirect' Instruction Tests
+                           1069 
+   06FF E8 FE         [ 3] 1070 	comr	r0,@DISP		; E8 FE
+   0701 E9 FE         [ 3] 1071 	comr	r1,@DISP		; E9 FE
+   0703 EA FE         [ 3] 1072 	comr	r2,@DISP		; EA FE
+   0705 EB FE         [ 3] 1073 	comr	r3,@DISP		; EB FE
+                           1074 
+   0707 EC 92 34      [ 4] 1075 	coma	r0,@ADDR		; EC 92 34
+   070A ED 92 34      [ 4] 1076 	coma	r1,@ADDR		; ED 92 34
+   070D EE 92 34      [ 4] 1077 	coma	r2,@ADDR		; EE 92 34
+   0710 EF 92 34      [ 4] 1078 	coma	r3,@ADDR		; EF 92 34
+                           1079 
+   0713 EC B2 34      [ 4] 1080 	coma	r0,@ADDR,+r0		; EC B2 34
+   0716 ED B2 34      [ 4] 1081 	coma	r0,@ADDR,+r1		; ED B2 34
+   0719 EE B2 34      [ 4] 1082 	coma	r0,@ADDR,+r2		; EE B2 34
+   071C EF B2 34      [ 4] 1083 	coma	r0,@ADDR,+r3		; EF B2 34
+                           1084 
+   071F EC D2 34      [ 4] 1085 	coma	r0,@ADDR,-r0		; EC D2 34
+   0722 ED D2 34      [ 4] 1086 	coma	r0,@ADDR,-r1		; ED D2 34
+   0725 EE D2 34      [ 4] 1087 	coma	r0,@ADDR,-r2		; EE D2 34
+   0728 EF D2 34      [ 4] 1088 	coma	r0,@ADDR,-r3		; EF D2 34
+                           1089 
+   072B EC F2 34      [ 4] 1090 	coma	r0,@ADDR,r0		; EC F2 34
+   072E ED F2 34      [ 4] 1091 	coma	r0,@ADDR,r1		; ED F2 34
+   0731 EE F2 34      [ 4] 1092 	coma	r0,@ADDR,r2		; EE F2 34
+   0734 EF F2 34      [ 4] 1093 	coma	r0,@ADDR,r3		; EF F2 34
+                           1094 
+                           1095 
+                           1096 	.sbttl	cmp_ 'Sequential' Instruction Tests
+                           1097 
+   0737 E0            [ 2] 1098 	cmpz	r0			; E0
+   0738 E1            [ 2] 1099 	cmpz	r1			; E1
+   0739 E2            [ 2] 1100 	cmpz	r2			; E2
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 21
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+cmp_ 'Sequential' Instruction Tests
+
+   073A E3            [ 2] 1101 	cmpz	r3			; E3
+   073B E4 21         [ 2] 1102 	cmpi	r0,#DATA8		; E4 21
+   073D E5 21         [ 2] 1103 	cmpi	r1,#DATA8		; E5 21
+   073F E6 21         [ 2] 1104 	cmpi	r2,#DATA8		; E6 21
+   0741 E7 21         [ 2] 1105 	cmpi	r3,#DATA8		; E7 21
+   0743 E8 7E         [ 3] 1106 	cmpr	r0,DISP			; E8 7E
+   0745 E9 7E         [ 3] 1107 	cmpr	r1,DISP			; E9 7E
+   0747 EA 7E         [ 3] 1108 	cmpr	r2,DISP			; EA 7E
+   0749 EB 7E         [ 3] 1109 	cmpr	r3,DISP			; EB 7E
+   074B EC 12 34      [ 4] 1110 	cmpa	r0,ADDR			; EC 12 34
+   074E ED 12 34      [ 4] 1111 	cmpa	r1,ADDR			; ED 12 34
+   0751 EE 12 34      [ 4] 1112 	cmpa	r2,ADDR			; EE 12 34
+   0754 EF 12 34      [ 4] 1113 	cmpa	r3,ADDR			; EF 12 34
+                           1114 
+                           1115 	.sbttl	cmp_ 'Default Indirect' Instruction Tests
+                           1116 
+   0757 E8 FE         [ 3] 1117 	cmpr	r0,[DISP]		; E8 FE
+   0759 E9 FE         [ 3] 1118 	cmpr	r1,[DISP]		; E9 FE
+   075B EA FE         [ 3] 1119 	cmpr	r2,[DISP]		; EA FE
+   075D EB FE         [ 3] 1120 	cmpr	r3,[DISP]		; EB FE
+                           1121 
+   075F EC 92 34      [ 4] 1122 	cmpa	r0,[ADDR]		; EC 92 34
+   0762 ED 92 34      [ 4] 1123 	cmpa	r1,[ADDR]		; ED 92 34
+   0765 EE 92 34      [ 4] 1124 	cmpa	r2,[ADDR]		; EE 92 34
+   0768 EF 92 34      [ 4] 1125 	cmpa	r3,[ADDR]		; EF 92 34
+                           1126 
+   076B EC B2 34      [ 4] 1127 	cmpa	r0,[ADDR,+r0]		; EC B2 34
+   076E ED B2 34      [ 4] 1128 	cmpa	r0,[ADDR,+r1]		; ED B2 34
+   0771 EE B2 34      [ 4] 1129 	cmpa	r0,[ADDR,+r2]		; EE B2 34
+   0774 EF B2 34      [ 4] 1130 	cmpa	r0,[ADDR,+r3]		; EF B2 34
+                           1131 
+   0777 EC D2 34      [ 4] 1132 	cmpa	r0,[ADDR,-r0]		; EC D2 34
+   077A ED D2 34      [ 4] 1133 	cmpa	r0,[ADDR,-r1]		; ED D2 34
+   077D EE D2 34      [ 4] 1134 	cmpa	r0,[ADDR,-r2]		; EE D2 34
+   0780 EF D2 34      [ 4] 1135 	cmpa	r0,[ADDR,-r3]		; EF D2 34
+                           1136 
+   0783 EC F2 34      [ 4] 1137 	cmpa	r0,[ADDR,r0]		; EC F2 34
+   0786 ED F2 34      [ 4] 1138 	cmpa	r0,[ADDR,r1]		; ED F2 34
+   0789 EE F2 34      [ 4] 1139 	cmpa	r0,[ADDR,r2]		; EE F2 34
+   078C EF F2 34      [ 4] 1140 	cmpa	r0,[ADDR,r3]		; EF F2 34
+                           1141 
+                           1142 	.sbttl	cmp_ 'Alternate Indirect' Instruction Tests
+                           1143 
+   078F E8 FE         [ 3] 1144 	cmpr	r0,@DISP		; E8 FE
+   0791 E9 FE         [ 3] 1145 	cmpr	r1,@DISP		; E9 FE
+   0793 EA FE         [ 3] 1146 	cmpr	r2,@DISP		; EA FE
+   0795 EB FE         [ 3] 1147 	cmpr	r3,@DISP		; EB FE
+                           1148 
+   0797 EC 92 34      [ 4] 1149 	cmpa	r0,@ADDR		; EC 92 34
+   079A ED 92 34      [ 4] 1150 	cmpa	r1,@ADDR		; ED 92 34
+   079D EE 92 34      [ 4] 1151 	cmpa	r2,@ADDR		; EE 92 34
+   07A0 EF 92 34      [ 4] 1152 	cmpa	r3,@ADDR		; EF 92 34
+                           1153 
+   07A3 EC B2 34      [ 4] 1154 	cmpa	r0,@ADDR,+r0		; EC B2 34
+   07A6 ED B2 34      [ 4] 1155 	cmpa	r0,@ADDR,+r1		; ED B2 34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 22
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+cmp_ 'Alternate Indirect' Instruction Tests
+
+   07A9 EE B2 34      [ 4] 1156 	cmpa	r0,@ADDR,+r2		; EE B2 34
+   07AC EF B2 34      [ 4] 1157 	cmpa	r0,@ADDR,+r3		; EF B2 34
+                           1158 
+   07AF EC D2 34      [ 4] 1159 	cmpa	r0,@ADDR,-r0		; EC D2 34
+   07B2 ED D2 34      [ 4] 1160 	cmpa	r0,@ADDR,-r1		; ED D2 34
+   07B5 EE D2 34      [ 4] 1161 	cmpa	r0,@ADDR,-r2		; EE D2 34
+   07B8 EF D2 34      [ 4] 1162 	cmpa	r0,@ADDR,-r3		; EF D2 34
+                           1163 
+   07BB EC F2 34      [ 4] 1164 	cmpa	r0,@ADDR,r0		; EC F2 34
+   07BE ED F2 34      [ 4] 1165 	cmpa	r0,@ADDR,r1		; ED F2 34
+   07C1 EE F2 34      [ 4] 1166 	cmpa	r0,@ADDR,r2		; EE F2 34
+   07C4 EF F2 34      [ 4] 1167 	cmpa	r0,@ADDR,r3		; EF F2 34
+                           1168 
+                           1169 
+                           1170 	.sbttl	'Sequential' Instruction Tests
+                           1171 
+   07C7 F0            [ 2] 1172 	wrtd	r0			; F0
+   07C8 F1            [ 2] 1173 	wrtd	r1			; F1
+   07C9 F2            [ 2] 1174 	wrtd	r2			; F2
+   07CA F3            [ 2] 1175 	wrtd	r3			; F3
+                           1176 
+   07CB F4 98         [ 3] 1177 	tmi	r0,#P			; F4 98
+   07CD F5 98         [ 3] 1178 	tmi	r1,#P			; F5 98
+   07CF F6 98         [ 3] 1179 	tmi	r2,#P			; F6 98
+   07D1 F7 98         [ 3] 1180 	tmi	r3,#P			; F7 98
+                           1181 
+                           1182 	.sbttl	bdrr 'Sequential' Instruction Test
+                           1183 
+   07D3 F8 7E         [ 3] 1184 	bdrr	r0,DISP			; F8 7E
+   07D5 F9 7E         [ 3] 1185 	bdrr	r1,DISP			; F9 7E
+   07D7 FA 7E         [ 3] 1186 	bdrr	r2,DISP			; FA 7E
+   07D9 FB 7E         [ 3] 1187 	bdrr	r3,DISP			; FB 7E
+                           1188 
+   07DB F8 FE         [ 3] 1189 	bdrr	r0,[DISP]		; F8 FE
+   07DD F9 FE         [ 3] 1190 	bdrr	r1,[DISP]		; F9 FE
+   07DF FA FE         [ 3] 1191 	bdrr	r2,[DISP]		; FA FE
+   07E1 FB FE         [ 3] 1192 	bdrr	r3,[DISP]		; FB FE
+                           1193 
+   07E3 F8 FE         [ 3] 1194 	bdrr	r0,@DISP		; F8 FE
+   07E5 F9 FE         [ 3] 1195 	bdrr	r1,@DISP		; F9 FE
+   07E7 FA FE         [ 3] 1196 	bdrr	r2,@DISP		; FA FE
+   07E9 FB FE         [ 3] 1197 	bdrr	r3,@DISP		; FB FE
+                           1198 
+                           1199  	.sbttl	bdra 'Sequential' Instruction Test
+                           1200 
+   07EB FC 76 54      [ 3] 1201 	bdra	r0,BADD			; FC 76 54
+   07EE FD 76 54      [ 3] 1202 	bdra	r1,BADD			; FD 76 54
+   07F1 FE 76 54      [ 3] 1203 	bdra	r2,BADD			; FE 76 54
+   07F4 FF 76 54      [ 3] 1204 	bdra	r3,BADD			; FF 76 54
+                           1205 
+   07F7 FC F6 54      [ 3] 1206 	bdra	r0,[BADD]		; FC F6 54
+   07FA FD F6 54      [ 3] 1207 	bdra	r1,[BADD]		; FD F6 54
+   07FD FE F6 54      [ 3] 1208 	bdra	r2,[BADD]		; FE F6 54
+   0800 FF F6 54      [ 3] 1209 	bdra	r3,[BADD]		; FF F6 54
+                           1210 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 23
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bdra 'Sequential' Instruction Test
+
+   0803 FC F6 54      [ 3] 1211 	bdra	r0,@BADD		; FC F6 54
+   0806 FD F6 54      [ 3] 1212 	bdra	r1,@BADD		; FD F6 54
+   0809 FE F6 54      [ 3] 1213 	bdra	r2,@BADD		; FE F6 54
+   080C FF F6 54      [ 3] 1214 	bdra	r3,@BADD		; FF F6 54
+                           1215 
+                           1216 
+                           1217 
+                           1218 	.sbttl	Linked Code
+                           1219 
+                           1220 	; External Variables
+                           1221 
+                           1222 	.undefine	ADDR
+                           1223 	.undefine	BADD
+                           1224 	.undefine	DATA8
+                           1225 	.undefine	DATA2
+                           1226 	.undefine	P
+                           1227 	.undefine	DISP
+                           1228 
+                           1229 	.define	ADDR	"0x1234 + xADDR"
+                           1230 	.define	BADD	"0x7654 + xBADD"
+                           1231 	.define	DATA8	"0x21 + xDATA8"
+                           1232 	.define	DATA2	"0 + xDATA2"
+                           1233 	.define	P	"0x98 + xP"
+                           1234 	.define	DISP	"."
+                           1235 
+                           1236 
+                           1237 	.area	AS2650	(ABS,OVR)
+   1000                    1238 	.org	0x1000
+                           1239 
+                           1240 
+                           1241 	.sbttl	lod_ 'Sequential' Instruction Tests
+                           1242 
+                           1243 ;	lodz	r0			; 00
+   1000 60            [ 2] 1244 	lodz	r0			; 60
+   1001 01            [ 2] 1245 	lodz	r1			; 01
+   1002 02            [ 2] 1246 	lodz	r2			; 02
+   1003 03            [ 2] 1247 	lodz	r3			; 03
+   1004 04r21         [ 2] 1248 	lodi	r0,#DATA8		; 04r21
+   1006 05r21         [ 2] 1249 	lodi	r1,#DATA8		; 05r21
+   1008 06r21         [ 2] 1250 	lodi	r2,#DATA8		; 06r21
+   100A 07r21         [ 2] 1251 	lodi	r3,#DATA8		; 07r21
+   100C 08 7E         [ 3] 1252 	lodr	r0,DISP			; 08 7E
+   100E 09 7E         [ 3] 1253 	lodr	r1,DISP			; 09 7E
+   1010 0A 7E         [ 3] 1254 	lodr	r2,DISP			; 0A 7E
+   1012 0B 7E         [ 3] 1255 	lodr	r3,DISP			; 0B 7E
+   1014 0Cs12r34      [ 4] 1256 	loda	r0,ADDR			; 0Cs12r34
+   1017 0Ds12r34      [ 4] 1257 	loda	r1,ADDR			; 0Ds12r34
+   101A 0Es12r34      [ 4] 1258 	loda	r2,ADDR			; 0Es12r34
+   101D 0Fs12r34      [ 4] 1259 	loda	r3,ADDR			; 0Fs12r34
+                           1260 
+                           1261 	.sbttl	lod_ 'Default Indirect' Instruction Tests
+                           1262 
+   1020 08 FE         [ 3] 1263 	lodr	r0,[DISP]		; 08 FE
+   1022 09 FE         [ 3] 1264 	lodr	r1,[DISP]		; 09 FE
+   1024 0A FE         [ 3] 1265 	lodr	r2,[DISP]		; 0A FE
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 24
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+lod_ 'Default Indirect' Instruction Tests
+
+   1026 0B FE         [ 3] 1266 	lodr	r3,[DISP]		; 0B FE
+                           1267 
+   1028 0Cs92r34      [ 4] 1268 	loda	r0,[ADDR]		; 0Cs92r34
+   102B 0Ds92r34      [ 4] 1269 	loda	r1,[ADDR]		; 0Ds92r34
+   102E 0Es92r34      [ 4] 1270 	loda	r2,[ADDR]		; 0Es92r34
+   1031 0Fs92r34      [ 4] 1271 	loda	r3,[ADDR]		; 0Fs92r34
+                           1272 
+   1034 0CsB2r34      [ 4] 1273 	loda	r0,[ADDR,+r0]		; 0CsB2r34
+   1037 0DsB2r34      [ 4] 1274 	loda	r0,[ADDR,+r1]		; 0DsB2r34
+   103A 0EsB2r34      [ 4] 1275 	loda	r0,[ADDR,+r2]		; 0EsB2r34
+   103D 0FsB2r34      [ 4] 1276 	loda	r0,[ADDR,+r3]		; 0FsB2r34
+                           1277 
+   1040 0CsD2r34      [ 4] 1278 	loda	r0,[ADDR,-r0]		; 0CsD2r34
+   1043 0DsD2r34      [ 4] 1279 	loda	r0,[ADDR,-r1]		; 0DsD2r34
+   1046 0EsD2r34      [ 4] 1280 	loda	r0,[ADDR,-r2]		; 0EsD2r34
+   1049 0FsD2r34      [ 4] 1281 	loda	r0,[ADDR,-r3]		; 0FsD2r34
+                           1282 
+   104C 0CsF2r34      [ 4] 1283 	loda	r0,[ADDR,r0]		; 0CsF2r34
+   104F 0DsF2r34      [ 4] 1284 	loda	r0,[ADDR,r1]		; 0DsF2r34
+   1052 0EsF2r34      [ 4] 1285 	loda	r0,[ADDR,r2]		; 0EsF2r34
+   1055 0FsF2r34      [ 4] 1286 	loda	r0,[ADDR,r3]		; 0FsF2r34
+                           1287 
+                           1288 	.sbttl	lod_ 'Alternate Indirect' Instruction Tests
+                           1289 
+   1058 08 FE         [ 3] 1290 	lodr	r0,@DISP		; 08 FE
+   105A 09 FE         [ 3] 1291 	lodr	r1,@DISP		; 09 FE
+   105C 0A FE         [ 3] 1292 	lodr	r2,@DISP		; 0A FE
+   105E 0B FE         [ 3] 1293 	lodr	r3,@DISP		; 0B FE
+                           1294 
+   1060 0Cs92r34      [ 4] 1295 	loda	r0,@ADDR		; 0Cs92r34
+   1063 0Ds92r34      [ 4] 1296 	loda	r1,@ADDR		; 0Ds92r34
+   1066 0Es92r34      [ 4] 1297 	loda	r2,@ADDR		; 0Es92r34
+   1069 0Fs92r34      [ 4] 1298 	loda	r3,@ADDR		; 0Fs92r34
+                           1299 
+   106C 0CsB2r34      [ 4] 1300 	loda	r0,@ADDR,+r0		; 0CsB2r34
+   106F 0DsB2r34      [ 4] 1301 	loda	r0,@ADDR,+r1		; 0DsB2r34
+   1072 0EsB2r34      [ 4] 1302 	loda	r0,@ADDR,+r2		; 0EsB2r34
+   1075 0FsB2r34      [ 4] 1303 	loda	r0,@ADDR,+r3		; 0FsB2r34
+                           1304 
+   1078 0CsD2r34      [ 4] 1305 	loda	r0,@ADDR,-r0		; 0CsD2r34
+   107B 0DsD2r34      [ 4] 1306 	loda	r0,@ADDR,-r1		; 0DsD2r34
+   107E 0EsD2r34      [ 4] 1307 	loda	r0,@ADDR,-r2		; 0EsD2r34
+   1081 0FsD2r34      [ 4] 1308 	loda	r0,@ADDR,-r3		; 0FsD2r34
+                           1309 
+   1084 0CsF2r34      [ 4] 1310 	loda	r0,@ADDR,r0		; 0CsF2r34
+   1087 0DsF2r34      [ 4] 1311 	loda	r0,@ADDR,r1		; 0DsF2r34
+   108A 0EsF2r34      [ 4] 1312 	loda	r0,@ADDR,r2		; 0EsF2r34
+   108D 0FsF2r34      [ 4] 1313 	loda	r0,@ADDR,r3		; 0FsF2r34
+                           1314 
+                           1315 
+                           1316 	.sbttl	'Sequential' Instruction Tests
+                           1317 
+                           1318 					; 10
+                           1319 					; 11
+   1090 12            [ 2] 1320 	spsu				; 12
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 25
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+   1091 13            [ 2] 1321 	spsl				; 13
+                           1322 
+   1092 14            [ 3] 1323 	retc	.eq.			; 14
+   1093 15            [ 3] 1324 	retc	.gt.			; 15
+   1094 16            [ 3] 1325 	retc	.lt.			; 16
+   1095 17            [ 3] 1326 	retc	.un.			; 17
+                           1327 
+   1096u14            [ 3] 1328 	retc	#DATA2 + 0		;u14
+   1097u15            [ 3] 1329 	retc	#DATA2 + 1		;u15
+   1098u16            [ 3] 1330 	retc	#DATA2 + 2		;u16
+   1099u17            [ 3] 1331 	retc	#DATA2 + 3		;u17
+                           1332 
+                           1333 	.sbttl	bctr 'Sequential' Instruction Test
+                           1334 
+   109A 18 7E         [ 3] 1335 	bctr	.eq.,DISP		; 18 7E
+   109C 19 7E         [ 3] 1336 	bctr	.gt.,DISP		; 19 7E
+   109E 1A 7E         [ 3] 1337 	bctr	.lt.,DISP		; 1A 7E
+   10A0 1B 7E         [ 3] 1338 	bctr	.un.,DISP		; 1B 7E
+                           1339 
+   10A2u18 7E         [ 3] 1340 	bctr	#DATA2 + 0,DISP		;u18 7E
+   10A4u19 7E         [ 3] 1341 	bctr	#DATA2 + 1,DISP		;u19 7E
+   10A6u1A 7E         [ 3] 1342 	bctr	#DATA2 + 2,DISP		;u1A 7E
+   10A8u1B 7E         [ 3] 1343 	bctr	#DATA2 + 3,DISP		;u1B 7E
+                           1344 
+   10AA 18 FE         [ 3] 1345 	bctr	.eq.,[DISP]		; 18 FE
+   10AC 19 FE         [ 3] 1346 	bctr	.gt.,[DISP]		; 19 FE
+   10AE 1A FE         [ 3] 1347 	bctr	.lt.,[DISP]		; 1A FE
+   10B0 1B FE         [ 3] 1348 	bctr	.un.,[DISP]		; 1B FE
+                           1349 
+   10B2u18 FE         [ 3] 1350 	bctr	#DATA2 + 0,[DISP]	;u18 FE
+   10B4u19 FE         [ 3] 1351 	bctr	#DATA2 + 1,[DISP]	;u19 FE
+   10B6u1A FE         [ 3] 1352 	bctr	#DATA2 + 2,[DISP]	;u1A FE
+   10B8u1B FE         [ 3] 1353 	bctr	#DATA2 + 3,[DISP]	;u1B FE
+                           1354 
+   10BA 18 FE         [ 3] 1355 	bctr	.eq.,@DISP		; 18 FE
+   10BC 19 FE         [ 3] 1356 	bctr	.gt.,@DISP		; 19 FE
+   10BE 1A FE         [ 3] 1357 	bctr	.lt.,@DISP		; 1A FE
+   10C0 1B FE         [ 3] 1358 	bctr	.un.,@DISP		; 1B FE
+                           1359 
+   10C2u18 FE         [ 3] 1360 	bctr	#DATA2 + 0,@DISP	;u18 FE
+   10C4u19 FE         [ 3] 1361 	bctr	#DATA2 + 1,@DISP	;u19 FE
+   10C6u1A FE         [ 3] 1362 	bctr	#DATA2 + 2,@DISP	;u1A FE
+   10C8u1B FE         [ 3] 1363 	bctr	#DATA2 + 3,@DISP	;u1B FE
+                           1364 
+                           1365 
+                           1366 	.sbttl	bcta 'Sequential' Instruction Test
+                           1367 
+   10CA 1Cv76u54      [ 3] 1368 	bcta	.eq.,BADD		; 1Cv76u54
+   10CD 1Dv76u54      [ 3] 1369 	bcta	.gt.,BADD		; 1Dv76u54
+   10D0 1Ev76u54      [ 3] 1370 	bcta	.lt.,BADD		; 1Ev76u54
+   10D3 1Fv76u54      [ 3] 1371 	bcta	.un.,BADD		; 1Fv76u54
+                           1372 
+   10D6u1Cv76u54      [ 3] 1373 	bcta	#DATA2 + 0,BADD		;u1Cv76u54
+   10D9u1Dv76u54      [ 3] 1374 	bcta	#DATA2 + 1,BADD		;u1Dv76u54
+   10DCu1Ev76u54      [ 3] 1375 	bcta	#DATA2 + 2,BADD		;u1Ev76u54
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 26
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bcta 'Sequential' Instruction Test
+
+   10DFu1Fv76u54      [ 3] 1376 	bcta	#DATA2 + 3,BADD		;u1Fv76u54
+                           1377 
+   10E2 1CvF6u54      [ 3] 1378 	bcta	.eq.,[BADD]		; 1CvF6u54
+   10E5 1DvF6u54      [ 3] 1379 	bcta	.gt.,[BADD]		; 1DvF6u54
+   10E8 1EvF6u54      [ 3] 1380 	bcta	.lt.,[BADD]		; 1EvF6u54
+   10EB 1FvF6u54      [ 3] 1381 	bcta	.un.,[BADD]		; 1FvF6u54
+                           1382 
+   10EEu1CvF6u54      [ 3] 1383 	bcta	#DATA2 + 0,[BADD]	;u1CvF6u54
+   10F1u1DvF6u54      [ 3] 1384 	bcta	#DATA2 + 1,[BADD]	;u1DvF6u54
+   10F4u1EvF6u54      [ 3] 1385 	bcta	#DATA2 + 2,[BADD]	;u1EvF6u54
+   10F7u1FvF6u54      [ 3] 1386 	bcta	#DATA2 + 3,[BADD]	;u1FvF6u54
+                           1387 
+   10FA 1CvF6u54      [ 3] 1388 	bcta	.eq.,@BADD		; 1CvF6u54
+   10FD 1DvF6u54      [ 3] 1389 	bcta	.gt.,@BADD		; 1DvF6u54
+   1100 1EvF6u54      [ 3] 1390 	bcta	.lt.,@BADD		; 1EvF6u54
+   1103 1FvF6u54      [ 3] 1391 	bcta	.un.,@BADD		; 1FvF6u54
+                           1392 
+   1106u1CvF6u54      [ 3] 1393 	bcta	#DATA2 + 0,@BADD	;u1CvF6u54
+   1109u1DvF6u54      [ 3] 1394 	bcta	#DATA2 + 1,@BADD	;u1DvF6u54
+   110Cu1EvF6u54      [ 3] 1395 	bcta	#DATA2 + 2,@BADD	;u1EvF6u54
+   110Fu1FvF6u54      [ 3] 1396 	bcta	#DATA2 + 3,@BADD	;u1FvF6u54
+                           1397 
+                           1398 
+                           1399 	.sbttl	eor_ 'Sequential' Instruction Tests
+                           1400 
+   1112 20            [ 2] 1401 	eorz	r0			; 20
+   1113 21            [ 2] 1402 	eorz	r1			; 21
+   1114 22            [ 2] 1403 	eorz	r2			; 22
+   1115 23            [ 2] 1404 	eorz	r3			; 23
+   1116 24r21         [ 2] 1405 	eori	r0,#DATA8		; 24r21
+   1118 25r21         [ 2] 1406 	eori	r1,#DATA8		; 25r21
+   111A 26r21         [ 2] 1407 	eori	r2,#DATA8		; 26r21
+   111C 27r21         [ 2] 1408 	eori	r3,#DATA8		; 27r21
+   111E 28 7E         [ 3] 1409 	eorr	r0,DISP			; 28 7E
+   1120 29 7E         [ 3] 1410 	eorr	r1,DISP			; 29 7E
+   1122 2A 7E         [ 3] 1411 	eorr	r2,DISP			; 2A 7E
+   1124 2B 7E         [ 3] 1412 	eorr	r3,DISP			; 2B 7E
+   1126 2Cs12r34      [ 4] 1413 	eora	r0,ADDR			; 2Cs12r34
+   1129 2Ds12r34      [ 4] 1414 	eora	r1,ADDR			; 2Ds12r34
+   112C 2Es12r34      [ 4] 1415 	eora	r2,ADDR			; 2Es12r34
+   112F 2Fs12r34      [ 4] 1416 	eora	r3,ADDR			; 2Fs12r34
+                           1417 
+                           1418 	.sbttl	eor_ 'Default Indirect' Instruction Tests
+                           1419 
+   1132 28 FE         [ 3] 1420 	eorr	r0,[DISP]		; 28 FE
+   1134 29 FE         [ 3] 1421 	eorr	r1,[DISP]		; 29 FE
+   1136 2A FE         [ 3] 1422 	eorr	r2,[DISP]		; 2A FE
+   1138 2B FE         [ 3] 1423 	eorr	r3,[DISP]		; 2B FE
+                           1424 
+   113A 2Cs92r34      [ 4] 1425 	eora	r0,[ADDR]		; 2Cs92r34
+   113D 2Ds92r34      [ 4] 1426 	eora	r1,[ADDR]		; 2Ds92r34
+   1140 2Es92r34      [ 4] 1427 	eora	r2,[ADDR]		; 2Es92r34
+   1143 2Fs92r34      [ 4] 1428 	eora	r3,[ADDR]		; 2Fs92r34
+                           1429 
+   1146 2CsB2r34      [ 4] 1430 	eora	r0,[ADDR,+r0]		; 2CsB2r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 27
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+eor_ 'Default Indirect' Instruction Tests
+
+   1149 2DsB2r34      [ 4] 1431 	eora	r0,[ADDR,+r1]		; 2DsB2r34
+   114C 2EsB2r34      [ 4] 1432 	eora	r0,[ADDR,+r2]		; 2EsB2r34
+   114F 2FsB2r34      [ 4] 1433 	eora	r0,[ADDR,+r3]		; 2FsB2r34
+                           1434 
+   1152 2CsD2r34      [ 4] 1435 	eora	r0,[ADDR,-r0]		; 2CsD2r34
+   1155 2DsD2r34      [ 4] 1436 	eora	r0,[ADDR,-r1]		; 2DsD2r34
+   1158 2EsD2r34      [ 4] 1437 	eora	r0,[ADDR,-r2]		; 2EsD2r34
+   115B 2FsD2r34      [ 4] 1438 	eora	r0,[ADDR,-r3]		; 2FsD2r34
+                           1439 
+   115E 2CsF2r34      [ 4] 1440 	eora	r0,[ADDR,r0]		; 2CsF2r34
+   1161 2DsF2r34      [ 4] 1441 	eora	r0,[ADDR,r1]		; 2DsF2r34
+   1164 2EsF2r34      [ 4] 1442 	eora	r0,[ADDR,r2]		; 2EsF2r34
+   1167 2FsF2r34      [ 4] 1443 	eora	r0,[ADDR,r3]		; 2FsF2r34
+                           1444 
+                           1445 	.sbttl	eor_ 'Alternate Indirect' Instruction Tests
+                           1446 
+   116A 28 FE         [ 3] 1447 	eorr	r0,@DISP		; 28 FE
+   116C 29 FE         [ 3] 1448 	eorr	r1,@DISP		; 29 FE
+   116E 2A FE         [ 3] 1449 	eorr	r2,@DISP		; 2A FE
+   1170 2B FE         [ 3] 1450 	eorr	r3,@DISP		; 2B FE
+                           1451 
+   1172 2Cs92r34      [ 4] 1452 	eora	r0,@ADDR		; 2Cs92r34
+   1175 2Ds92r34      [ 4] 1453 	eora	r1,@ADDR		; 2Ds92r34
+   1178 2Es92r34      [ 4] 1454 	eora	r2,@ADDR		; 2Es92r34
+   117B 2Fs92r34      [ 4] 1455 	eora	r3,@ADDR		; 2Fs92r34
+                           1456 
+   117E 2CsB2r34      [ 4] 1457 	eora	r0,@ADDR,+r0		; 2CsB2r34
+   1181 2DsB2r34      [ 4] 1458 	eora	r0,@ADDR,+r1		; 2DsB2r34
+   1184 2EsB2r34      [ 4] 1459 	eora	r0,@ADDR,+r2		; 2EsB2r34
+   1187 2FsB2r34      [ 4] 1460 	eora	r0,@ADDR,+r3		; 2FsB2r34
+                           1461 
+   118A 2CsD2r34      [ 4] 1462 	eora	r0,@ADDR,-r0		; 2CsD2r34
+   118D 2DsD2r34      [ 4] 1463 	eora	r0,@ADDR,-r1		; 2DsD2r34
+   1190 2EsD2r34      [ 4] 1464 	eora	r0,@ADDR,-r2		; 2EsD2r34
+   1193 2FsD2r34      [ 4] 1465 	eora	r0,@ADDR,-r3		; 2FsD2r34
+                           1466 
+   1196 2CsF2r34      [ 4] 1467 	eora	r0,@ADDR,r0		; 2CsF2r34
+   1199 2DsF2r34      [ 4] 1468 	eora	r0,@ADDR,r1		; 2DsF2r34
+   119C 2EsF2r34      [ 4] 1469 	eora	r0,@ADDR,r2		; 2EsF2r34
+   119F 2FsF2r34      [ 4] 1470 	eora	r0,@ADDR,r3		; 2FsF2r34
+                           1471 
+                           1472 
+                           1473 	.sbttl	'Sequential' Instruction Tests
+                           1474 
+   11A2 30            [ 2] 1475 	redc	r0			; 30
+   11A3 31            [ 2] 1476 	redc	r1			; 31
+   11A4 32            [ 2] 1477 	redc	r2			; 32
+   11A5 33            [ 2] 1478 	redc	r3			; 33
+                           1479 
+   11A6 34            [ 3] 1480 	rete	.eq.			; 34
+   11A7 35            [ 3] 1481 	rete	.gt.			; 35
+   11A8 36            [ 3] 1482 	rete	.lt.			; 36
+   11A9 37            [ 3] 1483 	rete	.un.			; 37
+                           1484 
+   11AAu34            [ 3] 1485 	rete	#DATA2 + 0		;u34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 28
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+   11ABu35            [ 3] 1486 	rete	#DATA2 + 1		;u35
+   11ACu36            [ 3] 1487 	rete	#DATA2 + 2		;u36
+   11ADu37            [ 3] 1488 	rete	#DATA2 + 3		;u37
+                           1489 
+                           1490 	.sbttl	bstr 'Sequential' Instruction Test
+                           1491 
+   11AE 38 7E         [ 3] 1492 	bstr	.eq.,DISP		; 38 7E
+   11B0 39 7E         [ 3] 1493 	bstr	.gt.,DISP		; 39 7E
+   11B2 3A 7E         [ 3] 1494 	bstr	.lt.,DISP		; 3A 7E
+   11B4 3B 7E         [ 3] 1495 	bstr	.un.,DISP		; 3B 7E
+                           1496 
+   11B6u38 7E         [ 3] 1497 	bstr	#DATA2 + 0,DISP		;u38 7E
+   11B8u39 7E         [ 3] 1498 	bstr	#DATA2 + 1,DISP		;u39 7E
+   11BAu3A 7E         [ 3] 1499 	bstr	#DATA2 + 2,DISP		;u3A 7E
+   11BCu3B 7E         [ 3] 1500 	bstr	#DATA2 + 3,DISP		;u3B 7E
+                           1501 
+   11BE 38 FE         [ 3] 1502 	bstr	.eq.,[DISP]		; 38 FE
+   11C0 39 FE         [ 3] 1503 	bstr	.gt.,[DISP]		; 39 FE
+   11C2 3A FE         [ 3] 1504 	bstr	.lt.,[DISP]		; 3A FE
+   11C4 3B FE         [ 3] 1505 	bstr	.un.,[DISP]		; 3B FE
+                           1506 
+   11C6u38 FE         [ 3] 1507 	bstr	#DATA2 + 0,[DISP]	;u38 FE
+   11C8u39 FE         [ 3] 1508 	bstr	#DATA2 + 1,[DISP]	;u39 FE
+   11CAu3A FE         [ 3] 1509 	bstr	#DATA2 + 2,[DISP]	;u3A FE
+   11CCu3B FE         [ 3] 1510 	bstr	#DATA2 + 3,[DISP]	;u3B FE
+                           1511 
+   11CE 38 FE         [ 3] 1512 	bstr	.eq.,@DISP		; 38 FE
+   11D0 39 FE         [ 3] 1513 	bstr	.gt.,@DISP		; 39 FE
+   11D2 3A FE         [ 3] 1514 	bstr	.lt.,@DISP		; 3A FE
+   11D4 3B FE         [ 3] 1515 	bstr	.un.,@DISP		; 3B FE
+                           1516 
+   11D6u38 FE         [ 3] 1517 	bstr	#DATA2 + 0,@DISP	;u38 FE
+   11D8u39 FE         [ 3] 1518 	bstr	#DATA2 + 1,@DISP	;u39 FE
+   11DAu3A FE         [ 3] 1519 	bstr	#DATA2 + 2,@DISP	;u3A FE
+   11DCu3B FE         [ 3] 1520 	bstr	#DATA2 + 3,@DISP	;u3B FE
+                           1521 
+                           1522 
+                           1523 	.sbttl	bsta 'Sequential' Instruction Test
+                           1524 
+   11DE 3Cv76u54      [ 3] 1525 	bsta	.eq.,BADD		; 3Cv76u54
+   11E1 3Dv76u54      [ 3] 1526 	bsta	.gt.,BADD		; 3Dv76u54
+   11E4 3Ev76u54      [ 3] 1527 	bsta	.lt.,BADD		; 3Ev76u54
+   11E7 3Fv76u54      [ 3] 1528 	bsta	.un.,BADD		; 3Fv76u54
+                           1529 
+   11EAu3Cv76u54      [ 3] 1530 	bsta	#DATA2 + 0,BADD		;u3Cv76u54
+   11EDu3Dv76u54      [ 3] 1531 	bsta	#DATA2 + 1,BADD		;u3Dv76u54
+   11F0u3Ev76u54      [ 3] 1532 	bsta	#DATA2 + 2,BADD		;u3Ev76u54
+   11F3u3Fv76u54      [ 3] 1533 	bsta	#DATA2 + 3,BADD		;u3Fv76u54
+                           1534 
+   11F6 3CvF6u54      [ 3] 1535 	bsta	.eq.,[BADD]		; 3CvF6u54
+   11F9 3DvF6u54      [ 3] 1536 	bsta	.gt.,[BADD]		; 3DvF6u54
+   11FC 3EvF6u54      [ 3] 1537 	bsta	.lt.,[BADD]		; 3EvF6u54
+   11FF 3FvF6u54      [ 3] 1538 	bsta	.un.,[BADD]		; 3FvF6u54
+                           1539 
+   1202u3CvF6u54      [ 3] 1540 	bsta	#DATA2 + 0,[BADD]	;u3CvF6u54
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 29
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bsta 'Sequential' Instruction Test
+
+   1205u3DvF6u54      [ 3] 1541 	bsta	#DATA2 + 1,[BADD]	;u3DvF6u54
+   1208u3EvF6u54      [ 3] 1542 	bsta	#DATA2 + 2,[BADD]	;u3EvF6u54
+   120Bu3FvF6u54      [ 3] 1543 	bsta	#DATA2 + 3,[BADD]	;u3FvF6u54
+                           1544 
+   120E 3CvF6u54      [ 3] 1545 	bsta	.eq.,@BADD		; 3CvF6u54
+   1211 3DvF6u54      [ 3] 1546 	bsta	.gt.,@BADD		; 3DvF6u54
+   1214 3EvF6u54      [ 3] 1547 	bsta	.lt.,@BADD		; 3EvF6u54
+   1217 3FvF6u54      [ 3] 1548 	bsta	.un.,@BADD		; 3FvF6u54
+                           1549 
+   121Au3CvF6u54      [ 3] 1550 	bsta	#DATA2 + 0,@BADD	;u3CvF6u54
+   121Du3DvF6u54      [ 3] 1551 	bsta	#DATA2 + 1,@BADD	;u3DvF6u54
+   1220u3EvF6u54      [ 3] 1552 	bsta	#DATA2 + 2,@BADD	;u3EvF6u54
+   1223u3FvF6u54      [ 3] 1553 	bsta	#DATA2 + 3,@BADD	;u3FvF6u54
+                           1554 
+                           1555 
+                           1556 	.sbttl	and_ 'Sequential' Instruction Tests
+                           1557 
+   1226 40            [ 2] 1558 	halt				; 40
+   1227 40            [ 2] 1559 	wait				; 40
+                           1560 ;	andz	r0			; 40
+   1228 41            [ 2] 1561 	andz	r1			; 41
+   1229 42            [ 2] 1562 	andz	r2			; 42
+   122A 43            [ 2] 1563 	andz	r3			; 43
+   122B 44r21         [ 2] 1564 	andi	r0,#DATA8		; 44r21
+   122D 45r21         [ 2] 1565 	andi	r1,#DATA8		; 45r21
+   122F 46r21         [ 2] 1566 	andi	r2,#DATA8		; 46r21
+   1231 47r21         [ 2] 1567 	andi	r3,#DATA8		; 47r21
+   1233 48 7E         [ 3] 1568 	andr	r0,DISP			; 48 7E
+   1235 49 7E         [ 3] 1569 	andr	r1,DISP			; 49 7E
+   1237 4A 7E         [ 3] 1570 	andr	r2,DISP			; 4A 7E
+   1239 4B 7E         [ 3] 1571 	andr	r3,DISP			; 4B 7E
+   123B 4Cs12r34      [ 4] 1572 	anda	r0,ADDR			; 4Cs12r34
+   123E 4Ds12r34      [ 4] 1573 	anda	r1,ADDR			; 4Ds12r34
+   1241 4Es12r34      [ 4] 1574 	anda	r2,ADDR			; 4Es12r34
+   1244 4Fs12r34      [ 4] 1575 	anda	r3,ADDR			; 4Fs12r34
+                           1576 
+                           1577 	.sbttl	and_ 'Default Indirect' Instruction Tests
+                           1578 
+   1247 48 FE         [ 3] 1579 	andr	r0,[DISP]		; 48 FE
+   1249 49 FE         [ 3] 1580 	andr	r1,[DISP]		; 49 FE
+   124B 4A FE         [ 3] 1581 	andr	r2,[DISP]		; 4A FE
+   124D 4B FE         [ 3] 1582 	andr	r3,[DISP]		; 4B FE
+                           1583 
+   124F 4Cs92r34      [ 4] 1584 	anda	r0,[ADDR]		; 4Cs92r34
+   1252 4Ds92r34      [ 4] 1585 	anda	r1,[ADDR]		; 4Ds92r34
+   1255 4Es92r34      [ 4] 1586 	anda	r2,[ADDR]		; 4Es92r34
+   1258 4Fs92r34      [ 4] 1587 	anda	r3,[ADDR]		; 4Fs92r34
+                           1588 
+   125B 4CsB2r34      [ 4] 1589 	anda	r0,[ADDR,+r0]		; 4CsB2r34
+   125E 4DsB2r34      [ 4] 1590 	anda	r0,[ADDR,+r1]		; 4DsB2r34
+   1261 4EsB2r34      [ 4] 1591 	anda	r0,[ADDR,+r2]		; 4EsB2r34
+   1264 4FsB2r34      [ 4] 1592 	anda	r0,[ADDR,+r3]		; 4FsB2r34
+                           1593 
+   1267 4CsD2r34      [ 4] 1594 	anda	r0,[ADDR,-r0]		; 4CsD2r34
+   126A 4DsD2r34      [ 4] 1595 	anda	r0,[ADDR,-r1]		; 4DsD2r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 30
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+and_ 'Default Indirect' Instruction Tests
+
+   126D 4EsD2r34      [ 4] 1596 	anda	r0,[ADDR,-r2]		; 4EsD2r34
+   1270 4FsD2r34      [ 4] 1597 	anda	r0,[ADDR,-r3]		; 4FsD2r34
+                           1598 
+   1273 4CsF2r34      [ 4] 1599 	anda	r0,[ADDR,r0]		; 4CsF2r34
+   1276 4DsF2r34      [ 4] 1600 	anda	r0,[ADDR,r1]		; 4DsF2r34
+   1279 4EsF2r34      [ 4] 1601 	anda	r0,[ADDR,r2]		; 4EsF2r34
+   127C 4FsF2r34      [ 4] 1602 	anda	r0,[ADDR,r3]		; 4FsF2r34
+                           1603 
+                           1604 	.sbttl	and_ 'Alternate Indirect' Instruction Tests
+                           1605 
+   127F 48 FE         [ 3] 1606 	andr	r0,@DISP		; 48 FE
+   1281 49 FE         [ 3] 1607 	andr	r1,@DISP		; 49 FE
+   1283 4A FE         [ 3] 1608 	andr	r2,@DISP		; 4A FE
+   1285 4B FE         [ 3] 1609 	andr	r3,@DISP		; 4B FE
+                           1610 
+   1287 4Cs92r34      [ 4] 1611 	anda	r0,@ADDR		; 4Cs92r34
+   128A 4Ds92r34      [ 4] 1612 	anda	r1,@ADDR		; 4Ds92r34
+   128D 4Es92r34      [ 4] 1613 	anda	r2,@ADDR		; 4Es92r34
+   1290 4Fs92r34      [ 4] 1614 	anda	r3,@ADDR		; 4Fs92r34
+                           1615 
+   1293 4CsB2r34      [ 4] 1616 	anda	r0,@ADDR,+r0		; 4CsB2r34
+   1296 4DsB2r34      [ 4] 1617 	anda	r0,@ADDR,+r1		; 4DsB2r34
+   1299 4EsB2r34      [ 4] 1618 	anda	r0,@ADDR,+r2		; 4EsB2r34
+   129C 4FsB2r34      [ 4] 1619 	anda	r0,@ADDR,+r3		; 4FsB2r34
+                           1620 
+   129F 4CsD2r34      [ 4] 1621 	anda	r0,@ADDR,-r0		; 4CsD2r34
+   12A2 4DsD2r34      [ 4] 1622 	anda	r0,@ADDR,-r1		; 4DsD2r34
+   12A5 4EsD2r34      [ 4] 1623 	anda	r0,@ADDR,-r2		; 4EsD2r34
+   12A8 4FsD2r34      [ 4] 1624 	anda	r0,@ADDR,-r3		; 4FsD2r34
+                           1625 
+   12AB 4CsF2r34      [ 4] 1626 	anda	r0,@ADDR,r0		; 4CsF2r34
+   12AE 4DsF2r34      [ 4] 1627 	anda	r0,@ADDR,r1		; 4DsF2r34
+   12B1 4EsF2r34      [ 4] 1628 	anda	r0,@ADDR,r2		; 4EsF2r34
+   12B4 4FsF2r34      [ 4] 1629 	anda	r0,@ADDR,r3		; 4FsF2r34
+                           1630 
+                           1631 
+                           1632 	.sbttl	'Sequential' Instruction Tests
+                           1633 
+   12B7 50            [ 2] 1634 	rrr	r0			; 50
+   12B8 51            [ 2] 1635 	rrr	r1			; 51
+   12B9 52            [ 2] 1636 	rrr	r2			; 52
+   12BA 53            [ 2] 1637 	rrr	r3			; 53
+                           1638 
+   12BB 54r98         [ 3] 1639 	rede	r0,#P			; 54r98
+   12BD 55r98         [ 3] 1640 	rede	r1,#P			; 55r98
+   12BF 56r98         [ 3] 1641 	rede	r2,#P			; 56r98
+   12C1 57r98         [ 3] 1642 	rede	r3,#P			; 57r98
+                           1643 
+                           1644 	.sbttl	brnr 'Sequential' Instruction Test
+                           1645 
+   12C3 58 7E         [ 3] 1646 	brnr	r0,DISP			; 58 7E
+   12C5 59 7E         [ 3] 1647 	brnr	r1,DISP			; 59 7E
+   12C7 5A 7E         [ 3] 1648 	brnr	r2,DISP			; 5A 7E
+   12C9 5B 7E         [ 3] 1649 	brnr	r3,DISP			; 5B 7E
+                           1650 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 31
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+brnr 'Sequential' Instruction Test
+
+   12CB 58 FE         [ 3] 1651 	brnr	r0,[DISP]		; 58 FE
+   12CD 59 FE         [ 3] 1652 	brnr	r1,[DISP]		; 59 FE
+   12CF 5A FE         [ 3] 1653 	brnr	r2,[DISP]		; 5A FE
+   12D1 5B FE         [ 3] 1654 	brnr	r3,[DISP]		; 5B FE
+                           1655 
+   12D3 58 FE         [ 3] 1656 	brnr	r0,@DISP		; 58 FE
+   12D5 59 FE         [ 3] 1657 	brnr	r1,@DISP		; 59 FE
+   12D7 5A FE         [ 3] 1658 	brnr	r2,@DISP		; 5A FE
+   12D9 5B FE         [ 3] 1659 	brnr	r3,@DISP		; 5B FE
+                           1660 
+                           1661  	.sbttl	brna 'Sequential' Instruction Test
+                           1662 
+   12DB 5Cv76u54      [ 3] 1663 	brna	r0,BADD			; 5Cv76u54
+   12DE 5Dv76u54      [ 3] 1664 	brna	r1,BADD			; 5Dv76u54
+   12E1 5Ev76u54      [ 3] 1665 	brna	r2,BADD			; 5Ev76u54
+   12E4 5Fv76u54      [ 3] 1666 	brna	r3,BADD			; 5Fv76u54
+                           1667 
+   12E7 5CvF6u54      [ 3] 1668 	brna	r0,[BADD]		; 5CvF6u54
+   12EA 5DvF6u54      [ 3] 1669 	brna	r1,[BADD]		; 5DvF6u54
+   12ED 5EvF6u54      [ 3] 1670 	brna	r2,[BADD]		; 5EvF6u54
+   12F0 5FvF6u54      [ 3] 1671 	brna	r3,[BADD]		; 5FvF6u54
+                           1672 
+   12F3 5CvF6u54      [ 3] 1673 	brna	r0,@BADD		; 5CvF6u54
+   12F6 5DvF6u54      [ 3] 1674 	brna	r1,@BADD		; 5DvF6u54
+   12F9 5EvF6u54      [ 3] 1675 	brna	r2,@BADD		; 5EvF6u54
+   12FC 5FvF6u54      [ 3] 1676 	brna	r3,@BADD		; 5FvF6u54
+                           1677 
+                           1678 
+                           1679 	.sbttl	ior_ 'Sequential' Instruction Tests
+                           1680 
+   12FF 60            [ 2] 1681 	iorz	r0			; 60
+   1300 61            [ 2] 1682 	iorz	r1			; 61
+   1301 62            [ 2] 1683 	iorz	r2			; 62
+   1302 63            [ 2] 1684 	iorz	r3			; 63
+   1303 64r21         [ 2] 1685 	iori	r0,#DATA8		; 64r21
+   1305 65r21         [ 2] 1686 	iori	r1,#DATA8		; 65r21
+   1307 66r21         [ 2] 1687 	iori	r2,#DATA8		; 66r21
+   1309 67r21         [ 2] 1688 	iori	r3,#DATA8		; 67r21
+   130B 68 7E         [ 3] 1689 	iorr	r0,DISP			; 68 7E
+   130D 69 7E         [ 3] 1690 	iorr	r1,DISP			; 69 7E
+   130F 6A 7E         [ 3] 1691 	iorr	r2,DISP			; 6A 7E
+   1311 6B 7E         [ 3] 1692 	iorr	r3,DISP			; 6B 7E
+   1313 6Cs12r34      [ 4] 1693 	iora	r0,ADDR			; 6Cs12r34
+   1316 6Ds12r34      [ 4] 1694 	iora	r1,ADDR			; 6Ds12r34
+   1319 6Es12r34      [ 4] 1695 	iora	r2,ADDR			; 6Es12r34
+   131C 6Fs12r34      [ 4] 1696 	iora	r3,ADDR			; 6Fs12r34
+                           1697 
+                           1698 	.sbttl	ior_ 'Default Indirect' Instruction Tests
+                           1699 
+   131F 68 FE         [ 3] 1700 	iorr	r0,[DISP]		; 68 FE
+   1321 69 FE         [ 3] 1701 	iorr	r1,[DISP]		; 69 FE
+   1323 6A FE         [ 3] 1702 	iorr	r2,[DISP]		; 6A FE
+   1325 6B FE         [ 3] 1703 	iorr	r3,[DISP]		; 6B FE
+                           1704 
+   1327 6Cs92r34      [ 4] 1705 	iora	r0,[ADDR]		; 6Cs92r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 32
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+ior_ 'Default Indirect' Instruction Tests
+
+   132A 6Ds92r34      [ 4] 1706 	iora	r1,[ADDR]		; 6Ds92r34
+   132D 6Es92r34      [ 4] 1707 	iora	r2,[ADDR]		; 6Es92r34
+   1330 6Fs92r34      [ 4] 1708 	iora	r3,[ADDR]		; 6Fs92r34
+                           1709 
+   1333 6CsB2r34      [ 4] 1710 	iora	r0,[ADDR,+r0]		; 6CsB2r34
+   1336 6DsB2r34      [ 4] 1711 	iora	r0,[ADDR,+r1]		; 6DsB2r34
+   1339 6EsB2r34      [ 4] 1712 	iora	r0,[ADDR,+r2]		; 6EsB2r34
+   133C 6FsB2r34      [ 4] 1713 	iora	r0,[ADDR,+r3]		; 6FsB2r34
+                           1714 
+   133F 6CsD2r34      [ 4] 1715 	iora	r0,[ADDR,-r0]		; 6CsD2r34
+   1342 6DsD2r34      [ 4] 1716 	iora	r0,[ADDR,-r1]		; 6DsD2r34
+   1345 6EsD2r34      [ 4] 1717 	iora	r0,[ADDR,-r2]		; 6EsD2r34
+   1348 6FsD2r34      [ 4] 1718 	iora	r0,[ADDR,-r3]		; 6FsD2r34
+                           1719 
+   134B 6CsF2r34      [ 4] 1720 	iora	r0,[ADDR,r0]		; 6CsF2r34
+   134E 6DsF2r34      [ 4] 1721 	iora	r0,[ADDR,r1]		; 6DsF2r34
+   1351 6EsF2r34      [ 4] 1722 	iora	r0,[ADDR,r2]		; 6EsF2r34
+   1354 6FsF2r34      [ 4] 1723 	iora	r0,[ADDR,r3]		; 6FsF2r34
+                           1724 
+                           1725 	.sbttl	ior_ 'Alternate Indirect' Instruction Tests
+                           1726 
+   1357 68 FE         [ 3] 1727 	iorr	r0,@DISP		; 68 FE
+   1359 69 FE         [ 3] 1728 	iorr	r1,@DISP		; 69 FE
+   135B 6A FE         [ 3] 1729 	iorr	r2,@DISP		; 6A FE
+   135D 6B FE         [ 3] 1730 	iorr	r3,@DISP		; 6B FE
+                           1731 
+   135F 6Cs92r34      [ 4] 1732 	iora	r0,@ADDR		; 6Cs92r34
+   1362 6Ds92r34      [ 4] 1733 	iora	r1,@ADDR		; 6Ds92r34
+   1365 6Es92r34      [ 4] 1734 	iora	r2,@ADDR		; 6Es92r34
+   1368 6Fs92r34      [ 4] 1735 	iora	r3,@ADDR		; 6Fs92r34
+                           1736 
+   136B 6CsB2r34      [ 4] 1737 	iora	r0,@ADDR,+r0		; 6CsB2r34
+   136E 6DsB2r34      [ 4] 1738 	iora	r0,@ADDR,+r1		; 6DsB2r34
+   1371 6EsB2r34      [ 4] 1739 	iora	r0,@ADDR,+r2		; 6EsB2r34
+   1374 6FsB2r34      [ 4] 1740 	iora	r0,@ADDR,+r3		; 6FsB2r34
+                           1741 
+   1377 6CsD2r34      [ 4] 1742 	iora	r0,@ADDR,-r0		; 6CsD2r34
+   137A 6DsD2r34      [ 4] 1743 	iora	r0,@ADDR,-r1		; 6DsD2r34
+   137D 6EsD2r34      [ 4] 1744 	iora	r0,@ADDR,-r2		; 6EsD2r34
+   1380 6FsD2r34      [ 4] 1745 	iora	r0,@ADDR,-r3		; 6FsD2r34
+                           1746 
+   1383 6CsF2r34      [ 4] 1747 	iora	r0,@ADDR,r0		; 6CsF2r34
+   1386 6DsF2r34      [ 4] 1748 	iora	r0,@ADDR,r1		; 6DsF2r34
+   1389 6EsF2r34      [ 4] 1749 	iora	r0,@ADDR,r2		; 6EsF2r34
+   138C 6FsF2r34      [ 4] 1750 	iora	r0,@ADDR,r3		; 6FsF2r34
+                           1751 
+                           1752 
+                           1753 	.sbttl	'Sequential' Instruction Tests
+                           1754 
+   138F 70            [ 2] 1755 	redd	r0			; 70
+   1390 71            [ 2] 1756 	redd	r1			; 71
+   1391 72            [ 2] 1757 	redd	r2			; 72
+   1392 73            [ 2] 1758 	redd	r3			; 73
+                           1759 
+   1393 74r21         [ 3] 1760 	cpsu	#DATA8			; 74r21
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 33
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+   1395 75r21         [ 3] 1761 	cpsl	#DATA8			; 75r21
+   1397 76r21         [ 3] 1762 	ppsu	#DATA8			; 76r21
+   1399 77r21         [ 3] 1763 	ppsl	#DATA8			; 77r21
+                           1764 
+                           1765 	.sbttl	bsnr 'Sequential' Instruction Test
+                           1766 
+   139B 78 7E         [ 3] 1767 	bsnr	r0,DISP			; 78 7E
+   139D 79 7E         [ 3] 1768 	bsnr	r1,DISP			; 79 7E
+   139F 7A 7E         [ 3] 1769 	bsnr	r2,DISP			; 7A 7E
+   13A1 7B 7E         [ 3] 1770 	bsnr	r3,DISP			; 7B 7E
+                           1771 
+   13A3 78 FE         [ 3] 1772 	bsnr	r0,[DISP]		; 78 FE
+   13A5 79 FE         [ 3] 1773 	bsnr	r1,[DISP]		; 79 FE
+   13A7 7A FE         [ 3] 1774 	bsnr	r2,[DISP]		; 7A FE
+   13A9 7B FE         [ 3] 1775 	bsnr	r3,[DISP]		; 7B FE
+                           1776 
+   13AB 78 FE         [ 3] 1777 	bsnr	r0,@DISP		; 78 FE
+   13AD 79 FE         [ 3] 1778 	bsnr	r1,@DISP		; 79 FE
+   13AF 7A FE         [ 3] 1779 	bsnr	r2,@DISP		; 7A FE
+   13B1 7B FE         [ 3] 1780 	bsnr	r3,@DISP		; 7B FE
+                           1781 
+                           1782  	.sbttl	bsna 'Sequential' Instruction Test
+                           1783 
+   13B3 7Cv76u54      [ 3] 1784 	bsna	r0,BADD			; 7Cv76u54
+   13B6 7Dv76u54      [ 3] 1785 	bsna	r1,BADD			; 7Dv76u54
+   13B9 7Ev76u54      [ 3] 1786 	bsna	r2,BADD			; 7Ev76u54
+   13BC 7Fv76u54      [ 3] 1787 	bsna	r3,BADD			; 7Fv76u54
+                           1788 
+   13BF 7CvF6u54      [ 3] 1789 	bsna	r0,[BADD]		; 7CvF6u54
+   13C2 7DvF6u54      [ 3] 1790 	bsna	r1,[BADD]		; 7DvF6u54
+   13C5 7EvF6u54      [ 3] 1791 	bsna	r2,[BADD]		; 7EvF6u54
+   13C8 7FvF6u54      [ 3] 1792 	bsna	r3,[BADD]		; 7FvF6u54
+                           1793 
+   13CB 7CvF6u54      [ 3] 1794 	bsna	r0,@BADD		; 7CvF6u54
+   13CE 7DvF6u54      [ 3] 1795 	bsna	r1,@BADD		; 7DvF6u54
+   13D1 7EvF6u54      [ 3] 1796 	bsna	r2,@BADD		; 7EvF6u54
+   13D4 7FvF6u54      [ 3] 1797 	bsna	r3,@BADD		; 7FvF6u54
+                           1798 
+                           1799 
+                           1800 	.sbttl	add_ 'Sequential' Instruction Tests
+                           1801 
+   13D7 80            [ 2] 1802 	addz	r0			; 80
+   13D8 81            [ 2] 1803 	addz	r1			; 81
+   13D9 82            [ 2] 1804 	addz	r2			; 82
+   13DA 83            [ 2] 1805 	addz	r3			; 83
+   13DB 84r21         [ 2] 1806 	addi	r0,#DATA8		; 84r21
+   13DD 85r21         [ 2] 1807 	addi	r1,#DATA8		; 85r21
+   13DF 86r21         [ 2] 1808 	addi	r2,#DATA8		; 86r21
+   13E1 87r21         [ 2] 1809 	addi	r3,#DATA8		; 87r21
+   13E3 88 7E         [ 3] 1810 	addr	r0,DISP			; 88 7E
+   13E5 89 7E         [ 3] 1811 	addr	r1,DISP			; 89 7E
+   13E7 8A 7E         [ 3] 1812 	addr	r2,DISP			; 8A 7E
+   13E9 8B 7E         [ 3] 1813 	addr	r3,DISP			; 8B 7E
+   13EB 8Cs12r34      [ 4] 1814 	adda	r0,ADDR			; 8Cs12r34
+   13EE 8Ds12r34      [ 4] 1815 	adda	r1,ADDR			; 8Ds12r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 34
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+add_ 'Sequential' Instruction Tests
+
+   13F1 8Es12r34      [ 4] 1816 	adda	r2,ADDR			; 8Es12r34
+   13F4 8Fs12r34      [ 4] 1817 	adda	r3,ADDR			; 8Fs12r34
+                           1818 
+                           1819 	.sbttl	add_ 'Default Indirect' Instruction Tests
+                           1820 
+   13F7 88 FE         [ 3] 1821 	addr	r0,[DISP]		; 88 FE
+   13F9 89 FE         [ 3] 1822 	addr	r1,[DISP]		; 89 FE
+   13FB 8A FE         [ 3] 1823 	addr	r2,[DISP]		; 8A FE
+   13FD 8B FE         [ 3] 1824 	addr	r3,[DISP]		; 8B FE
+                           1825 
+   13FF 8Cs92r34      [ 4] 1826 	adda	r0,[ADDR]		; 8Cs92r34
+   1402 8Ds92r34      [ 4] 1827 	adda	r1,[ADDR]		; 8Ds92r34
+   1405 8Es92r34      [ 4] 1828 	adda	r2,[ADDR]		; 8Es92r34
+   1408 8Fs92r34      [ 4] 1829 	adda	r3,[ADDR]		; 8Fs92r34
+                           1830 
+   140B 8CsB2r34      [ 4] 1831 	adda	r0,[ADDR,+r0]		; 8CsB2r34
+   140E 8DsB2r34      [ 4] 1832 	adda	r0,[ADDR,+r1]		; 8DsB2r34
+   1411 8EsB2r34      [ 4] 1833 	adda	r0,[ADDR,+r2]		; 8EsB2r34
+   1414 8FsB2r34      [ 4] 1834 	adda	r0,[ADDR,+r3]		; 8FsB2r34
+                           1835 
+   1417 8CsD2r34      [ 4] 1836 	adda	r0,[ADDR,-r0]		; 8CsD2r34
+   141A 8DsD2r34      [ 4] 1837 	adda	r0,[ADDR,-r1]		; 8DsD2r34
+   141D 8EsD2r34      [ 4] 1838 	adda	r0,[ADDR,-r2]		; 8EsD2r34
+   1420 8FsD2r34      [ 4] 1839 	adda	r0,[ADDR,-r3]		; 8FsD2r34
+                           1840 
+   1423 8CsF2r34      [ 4] 1841 	adda	r0,[ADDR,r0]		; 8CsF2r34
+   1426 8DsF2r34      [ 4] 1842 	adda	r0,[ADDR,r1]		; 8DsF2r34
+   1429 8EsF2r34      [ 4] 1843 	adda	r0,[ADDR,r2]		; 8EsF2r34
+   142C 8FsF2r34      [ 4] 1844 	adda	r0,[ADDR,r3]		; 8FsF2r34
+                           1845 
+                           1846 	.sbttl	add_ 'Alternate Indirect' Instruction Tests
+                           1847 
+   142F 88 FE         [ 3] 1848 	addr	r0,@DISP		; 88 FE
+   1431 89 FE         [ 3] 1849 	addr	r1,@DISP		; 89 FE
+   1433 8A FE         [ 3] 1850 	addr	r2,@DISP		; 8A FE
+   1435 8B FE         [ 3] 1851 	addr	r3,@DISP		; 8B FE
+                           1852 
+   1437 8Cs92r34      [ 4] 1853 	adda	r0,@ADDR		; 8Cs92r34
+   143A 8Ds92r34      [ 4] 1854 	adda	r1,@ADDR		; 8Ds92r34
+   143D 8Es92r34      [ 4] 1855 	adda	r2,@ADDR		; 8Es92r34
+   1440 8Fs92r34      [ 4] 1856 	adda	r3,@ADDR		; 8Fs92r34
+                           1857 
+   1443 8CsB2r34      [ 4] 1858 	adda	r0,@ADDR,+r0		; 8CsB2r34
+   1446 8DsB2r34      [ 4] 1859 	adda	r0,@ADDR,+r1		; 8DsB2r34
+   1449 8EsB2r34      [ 4] 1860 	adda	r0,@ADDR,+r2		; 8EsB2r34
+   144C 8FsB2r34      [ 4] 1861 	adda	r0,@ADDR,+r3		; 8FsB2r34
+                           1862 
+   144F 8CsD2r34      [ 4] 1863 	adda	r0,@ADDR,-r0		; 8CsD2r34
+   1452 8DsD2r34      [ 4] 1864 	adda	r0,@ADDR,-r1		; 8DsD2r34
+   1455 8EsD2r34      [ 4] 1865 	adda	r0,@ADDR,-r2		; 8EsD2r34
+   1458 8FsD2r34      [ 4] 1866 	adda	r0,@ADDR,-r3		; 8FsD2r34
+                           1867 
+   145B 8CsF2r34      [ 4] 1868 	adda	r0,@ADDR,r0		; 8CsF2r34
+   145E 8DsF2r34      [ 4] 1869 	adda	r0,@ADDR,r1		; 8DsF2r34
+   1461 8EsF2r34      [ 4] 1870 	adda	r0,@ADDR,r2		; 8EsF2r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 35
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+add_ 'Alternate Indirect' Instruction Tests
+
+   1464 8FsF2r34      [ 4] 1871 	adda	r0,@ADDR,r3		; 8FsF2r34
+                           1872 
+                           1873 
+                           1874 	.sbttl	'Sequential' Instruction Tests
+                           1875 
+                           1876 					; 90
+                           1877 					; 91
+   1467 92            [ 2] 1878 	lpsu				; 92
+   1468 93            [ 2] 1879 	lpsl				; 93
+                           1880 
+   1469 94            [ 3] 1881 	dar	r0			; 94
+   146A 95            [ 3] 1882 	dar	r1			; 95
+   146B 96            [ 3] 1883 	dar	r2			; 96
+   146C 97            [ 3] 1884 	dar	r3			; 97
+                           1885 
+                           1886 	.sbttl	bcfr 'Sequential' Instruction Test
+                           1887 
+   146D 98 7E         [ 3] 1888 	bcfr	.eq.,DISP		; 98 7E
+   146F 99 7E         [ 3] 1889 	bcfr	.gt.,DISP		; 99 7E
+   1471 9A 7E         [ 3] 1890 	bcfr	.lt.,DISP		; 9A 7E
+                           1891 ;	bcfr	.un.,DISP		; 9B 7E
+                           1892 
+   1473 9B 7E         [ 3] 1893 	zbrr	DISP			; 9B 7E
+   1475 9B FE         [ 3] 1894 	zbrr	[DISP]			; 9B FE
+   1477 9B FE         [ 3] 1895 	zbrr	@DISP			; 9B FE
+                           1896 
+   1479u98 7E         [ 3] 1897 	bcfr	#DATA2 + 0,DISP		;u98 7E
+   147Bu99 7E         [ 3] 1898 	bcfr	#DATA2 + 1,DISP		;u99 7E
+   147Du9A 7E         [ 3] 1899 	bcfr	#DATA2 + 2,DISP		;u9A 7E
+                           1900 ;	bcfr	#DATA2 + 3,DISP		;u9B 7E
+                           1901 
+   147F 98 FE         [ 3] 1902 	bcfr	.eq.,[DISP]		; 98 FE
+   1481 99 FE         [ 3] 1903 	bcfr	.gt.,[DISP]		; 99 FE
+   1483 9A FE         [ 3] 1904 	bcfr	.lt.,[DISP]		; 9A FE
+                           1905 ;	bcfr	.un.,[DISP]		; 9B FE
+                           1906 
+   1485u98 FE         [ 3] 1907 	bcfr	#DATA2 + 0,[DISP]	;u98 FE
+   1487u99 FE         [ 3] 1908 	bcfr	#DATA2 + 1,[DISP]	;u99 FE
+   1489u9A FE         [ 3] 1909 	bcfr	#DATA2 + 2,[DISP]	;u9A FE
+                           1910 ;	bcfr	#DATA2 + 3,[DISP]	;u9B FE
+                           1911 
+   148B 98 FE         [ 3] 1912 	bcfr	.eq.,@DISP		; 98 FE
+   148D 99 FE         [ 3] 1913 	bcfr	.gt.,@DISP		; 99 FE
+   148F 9A FE         [ 3] 1914 	bcfr	.lt.,@DISP		; 9A FE
+                           1915 ;	bcfr	.un.,@DISP		; 9B FE
+                           1916 
+   1491u98 FE         [ 3] 1917 	bcfr	#DATA2 + 0,@DISP	;u98 FE
+   1493u99 FE         [ 3] 1918 	bcfr	#DATA2 + 1,@DISP	;u99 FE
+   1495u9A FE         [ 3] 1919 	bcfr	#DATA2 + 2,@DISP	;u9A FE
+                           1920 ;	bcfr	#DATA2 + 3,@DISP	;u9B FE
+                           1921 
+                           1922 	.sbttl	bcfa 'Sequential' Instruction Test
+                           1923 
+   1497 9Cv76u54      [ 3] 1924 	bcfa	.eq.,BADD		; 9Cv76u54
+   149A 9Dv76u54      [ 3] 1925 	bcfa	.gt.,BADD		; 9Dv76u54
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 36
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bcfa 'Sequential' Instruction Test
+
+   149D 9Ev76u54      [ 3] 1926 	bcfa	.lt.,BADD		; 9Ev76u54
+                           1927 ;	bcfa	.un.,BADD		; 9Fv76u54
+                           1928 
+   14A0 9Fv76u54      [ 3] 1929 	bxa	BADD			; 9Fv76u54
+   14A3 9FvF6u54      [ 3] 1930 	bxa	[BADD]			; 9FvF6u54
+   14A6 9FvF6u54      [ 3] 1931 	bxa	@BADD			; 9FvF6u54
+                           1932 
+   14A9u9Cv76u54      [ 3] 1933 	bcfa	#DATA2 + 0,BADD		;u9Cv76u54
+   14ACu9Dv76u54      [ 3] 1934 	bcfa	#DATA2 + 1,BADD		;u9Dv76u54
+   14AFu9Ev76u54      [ 3] 1935 	bcfa	#DATA2 + 2,BADD		;u9Ev76u54
+                           1936 ;	bcfa	#DATA2 + 3,BADD		;u9Fv76u54
+                           1937 
+   14B2 9CvF6u54      [ 3] 1938 	bcfa	.eq.,[BADD]		; 9CvF6u54
+   14B5 9DvF6u54      [ 3] 1939 	bcfa	.gt.,[BADD]		; 9DvF6u54
+   14B8 9EvF6u54      [ 3] 1940 	bcfa	.lt.,[BADD]		; 9EvF6u54
+                           1941 ;	bcfa	.un.,[BADD]		; 9FvF6u54
+                           1942 
+   14BBu9CvF6u54      [ 3] 1943 	bcfa	#DATA2 + 0,[BADD]	;u9CvF6u54
+   14BEu9DvF6u54      [ 3] 1944 	bcfa	#DATA2 + 1,[BADD]	;u9DvF6u54
+   14C1u9EvF6u54      [ 3] 1945 	bcfa	#DATA2 + 2,[BADD]	;u9EvF6u54
+                           1946 ;	bcfa	#DATA2 + 3,[BADD]	;u9FvF6u54
+                           1947 
+   14C4 9CvF6u54      [ 3] 1948 	bcfa	.eq.,@BADD		; 9CvF6u54
+   14C7 9DvF6u54      [ 3] 1949 	bcfa	.gt.,@BADD		; 9DvF6u54
+   14CA 9EvF6u54      [ 3] 1950 	bcfa	.lt.,@BADD		; 9EvF6u54
+                           1951 ;	bcfa	.un.,@BADD		; 9FvF6u54
+                           1952 
+   14CDu9CvF6u54      [ 3] 1953 	bcfa	#DATA2 + 0,@BADD	;u9CvF6u54
+   14D0u9DvF6u54      [ 3] 1954 	bcfa	#DATA2 + 1,@BADD	;u9DvF6u54
+   14D3u9EvF6u54      [ 3] 1955 	bcfa	#DATA2 + 2,@BADD	;u9EvF6u54
+                           1956 ;	bcfa	#DATA2 + 3,@BADD	;u9FvF6u54
+                           1957 
+                           1958 
+                           1959 	.sbttl	sub_ 'Sequential' Instruction Tests
+                           1960 
+   14D6 A0            [ 2] 1961 	subz	r0			; A0
+   14D7 A1            [ 2] 1962 	subz	r1			; A1
+   14D8 A2            [ 2] 1963 	subz	r2			; A2
+   14D9 A3            [ 2] 1964 	subz	r3			; A3
+   14DA A4r21         [ 2] 1965 	subi	r0,#DATA8		; A4r21
+   14DC A5r21         [ 2] 1966 	subi	r1,#DATA8		; A5r21
+   14DE A6r21         [ 2] 1967 	subi	r2,#DATA8		; A6r21
+   14E0 A7r21         [ 2] 1968 	subi	r3,#DATA8		; A7r21
+   14E2 A8 7E         [ 3] 1969 	subr	r0,DISP			; A8 7E
+   14E4 A9 7E         [ 3] 1970 	subr	r1,DISP			; A9 7E
+   14E6 AA 7E         [ 3] 1971 	subr	r2,DISP			; AA 7E
+   14E8 AB 7E         [ 3] 1972 	subr	r3,DISP			; AB 7E
+   14EA ACs12r34      [ 4] 1973 	suba	r0,ADDR			; ACs12r34
+   14ED ADs12r34      [ 4] 1974 	suba	r1,ADDR			; ADs12r34
+   14F0 AEs12r34      [ 4] 1975 	suba	r2,ADDR			; AEs12r34
+   14F3 AFs12r34      [ 4] 1976 	suba	r3,ADDR			; AFs12r34
+                           1977 
+                           1978 	.sbttl	sub_ 'Default Indirect' Instruction Tests
+                           1979 
+   14F6 A8 FE         [ 3] 1980 	subr	r0,[DISP]		; A8 FE
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 37
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+sub_ 'Default Indirect' Instruction Tests
+
+   14F8 A9 FE         [ 3] 1981 	subr	r1,[DISP]		; A9 FE
+   14FA AA FE         [ 3] 1982 	subr	r2,[DISP]		; AA FE
+   14FC AB FE         [ 3] 1983 	subr	r3,[DISP]		; AB FE
+                           1984 
+   14FE ACs92r34      [ 4] 1985 	suba	r0,[ADDR]		; ACs92r34
+   1501 ADs92r34      [ 4] 1986 	suba	r1,[ADDR]		; ADs92r34
+   1504 AEs92r34      [ 4] 1987 	suba	r2,[ADDR]		; AEs92r34
+   1507 AFs92r34      [ 4] 1988 	suba	r3,[ADDR]		; AFs92r34
+                           1989 
+   150A ACsB2r34      [ 4] 1990 	suba	r0,[ADDR,+r0]		; ACsB2r34
+   150D ADsB2r34      [ 4] 1991 	suba	r0,[ADDR,+r1]		; ADsB2r34
+   1510 AEsB2r34      [ 4] 1992 	suba	r0,[ADDR,+r2]		; AEsB2r34
+   1513 AFsB2r34      [ 4] 1993 	suba	r0,[ADDR,+r3]		; AFsB2r34
+                           1994 
+   1516 ACsD2r34      [ 4] 1995 	suba	r0,[ADDR,-r0]		; ACsD2r34
+   1519 ADsD2r34      [ 4] 1996 	suba	r0,[ADDR,-r1]		; ADsD2r34
+   151C AEsD2r34      [ 4] 1997 	suba	r0,[ADDR,-r2]		; AEsD2r34
+   151F AFsD2r34      [ 4] 1998 	suba	r0,[ADDR,-r3]		; AFsD2r34
+                           1999 
+   1522 ACsF2r34      [ 4] 2000 	suba	r0,[ADDR,r0]		; ACsF2r34
+   1525 ADsF2r34      [ 4] 2001 	suba	r0,[ADDR,r1]		; ADsF2r34
+   1528 AEsF2r34      [ 4] 2002 	suba	r0,[ADDR,r2]		; AEsF2r34
+   152B AFsF2r34      [ 4] 2003 	suba	r0,[ADDR,r3]		; AFsF2r34
+                           2004 
+                           2005 	.sbttl	sub_ 'Alternate Indirect' Instruction Tests
+                           2006 
+   152E A8 FE         [ 3] 2007 	subr	r0,@DISP		; A8 FE
+   1530 A9 FE         [ 3] 2008 	subr	r1,@DISP		; A9 FE
+   1532 AA FE         [ 3] 2009 	subr	r2,@DISP		; AA FE
+   1534 AB FE         [ 3] 2010 	subr	r3,@DISP		; AB FE
+                           2011 
+   1536 ACs92r34      [ 4] 2012 	suba	r0,@ADDR		; ACs92r34
+   1539 ADs92r34      [ 4] 2013 	suba	r1,@ADDR		; ADs92r34
+   153C AEs92r34      [ 4] 2014 	suba	r2,@ADDR		; AEs92r34
+   153F AFs92r34      [ 4] 2015 	suba	r3,@ADDR		; AFs92r34
+                           2016 
+   1542 ACsB2r34      [ 4] 2017 	suba	r0,@ADDR,+r0		; ACsB2r34
+   1545 ADsB2r34      [ 4] 2018 	suba	r0,@ADDR,+r1		; ADsB2r34
+   1548 AEsB2r34      [ 4] 2019 	suba	r0,@ADDR,+r2		; AEsB2r34
+   154B AFsB2r34      [ 4] 2020 	suba	r0,@ADDR,+r3		; AFsB2r34
+                           2021 
+   154E ACsD2r34      [ 4] 2022 	suba	r0,@ADDR,-r0		; ACsD2r34
+   1551 ADsD2r34      [ 4] 2023 	suba	r0,@ADDR,-r1		; ADsD2r34
+   1554 AEsD2r34      [ 4] 2024 	suba	r0,@ADDR,-r2		; AEsD2r34
+   1557 AFsD2r34      [ 4] 2025 	suba	r0,@ADDR,-r3		; AFsD2r34
+                           2026 
+   155A ACsF2r34      [ 4] 2027 	suba	r0,@ADDR,r0		; ACsF2r34
+   155D ADsF2r34      [ 4] 2028 	suba	r0,@ADDR,r1		; ADsF2r34
+   1560 AEsF2r34      [ 4] 2029 	suba	r0,@ADDR,r2		; AEsF2r34
+   1563 AFsF2r34      [ 4] 2030 	suba	r0,@ADDR,r3		; AFsF2r34
+                           2031 
+                           2032 
+                           2033 	.sbttl	'Sequential' Instruction Tests
+                           2034 
+   1566 B0            [ 2] 2035 	wrtc	r0			; B0
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 38
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+   1567 B1            [ 2] 2036 	wrtc	r1			; B1
+   1568 B2            [ 2] 2037 	wrtc	r2			; B2
+   1569 B3            [ 2] 2038 	wrtc	r3			; B3
+                           2039 
+   156A B4r21         [ 3] 2040 	tpsu	#DATA8			; B4r21
+   156C B5r21         [ 3] 2041 	tpsl	#DATA8			; B5r21
+                           2042 					; B6
+                           2043 					; B7
+                           2044 
+                           2045 	.sbttl	bsfr 'Sequential' Instruction Test
+                           2046 
+   156E B8 7E         [ 3] 2047 	bsfr	.eq.,DISP		; B8 7E
+   1570 B9 7E         [ 3] 2048 	bsfr	.gt.,DISP		; B9 7E
+   1572 BA 7E         [ 3] 2049 	bsfr	.lt.,DISP		; BA 7E
+                           2050 ;	bsfr	.un.,DISP		; BB 7E
+                           2051 
+   1574 BB 7E         [ 3] 2052 	zbsr	DISP			; BB 7E
+   1576 BB FE         [ 3] 2053 	zbsr	[DISP]			; BB FE
+   1578 BB FE         [ 3] 2054 	zbsr	@DISP			; BB FE
+                           2055 
+   157AuB8 7E         [ 3] 2056 	bsfr	#DATA2 + 0,DISP		;uB8 7E
+   157CuB9 7E         [ 3] 2057 	bsfr	#DATA2 + 1,DISP		;uB9 7E
+   157EuBA 7E         [ 3] 2058 	bsfr	#DATA2 + 2,DISP		;uBA 7E
+                           2059 ;	bsfr	#DATA2 + 3,DISP		;uBB 7E
+                           2060 
+   1580 B8 FE         [ 3] 2061 	bsfr	.eq.,[DISP]		; B8 FE
+   1582 B9 FE         [ 3] 2062 	bsfr	.gt.,[DISP]		; B9 FE
+   1584 BA FE         [ 3] 2063 	bsfr	.lt.,[DISP]		; BA FE
+                           2064 ;	bsfr	.un.,[DISP]		; BB FE
+                           2065 
+   1586uB8 FE         [ 3] 2066 	bsfr	#DATA2 + 0,[DISP]	;uB8 FE
+   1588uB9 FE         [ 3] 2067 	bsfr	#DATA2 + 1,[DISP]	;uB9 FE
+   158AuBA FE         [ 3] 2068 	bsfr	#DATA2 + 2,[DISP]	;uBA FE
+                           2069 ;	bsfr	#DATA2 + 3,[DISP]	;uBB FE
+                           2070 
+   158C B8 FE         [ 3] 2071 	bsfr	.eq.,@DISP		; B8 FE
+   158E B9 FE         [ 3] 2072 	bsfr	.gt.,@DISP		; B9 FE
+   1590 BA FE         [ 3] 2073 	bsfr	.lt.,@DISP		; BA FE
+                           2074 ;	bsfr	.un.,@DISP		; BB FE
+                           2075 
+   1592uB8 FE         [ 3] 2076 	bsfr	#DATA2 + 0,@DISP	;uB8 FE
+   1594uB9 FE         [ 3] 2077 	bsfr	#DATA2 + 1,@DISP	;uB9 FE
+   1596uBA FE         [ 3] 2078 	bsfr	#DATA2 + 2,@DISP	;uBA FE
+                           2079 ;	bsfr	#DATA2 + 3,@DISP	;uBB FE
+                           2080 
+                           2081 	.sbttl	bsfa 'Sequential' Instruction Test
+                           2082 
+   1598 BCv76u54      [ 3] 2083 	bsfa	.eq.,BADD		; BCv76u54
+   159B BDv76u54      [ 3] 2084 	bsfa	.gt.,BADD		; BDv76u54
+   159E BEv76u54      [ 3] 2085 	bsfa	.lt.,BADD		; BEv76u54
+                           2086 ;	bsfa	.un.,BADD		; BFv76u54
+                           2087 
+   15A1 BFv76u54      [ 3] 2088 	bsxa	BADD			; BFv76u54
+   15A4 BFvF6u54      [ 3] 2089 	bsxa	[BADD]			; BFvF6u54
+   15A7 BFvF6u54      [ 3] 2090 	bsxa	@BADD			; BFvF6u54
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 39
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bsfa 'Sequential' Instruction Test
+
+                           2091 
+   15AAuBCv76u54      [ 3] 2092 	bsfa	#DATA2 + 0,BADD		;uBCv76u54
+   15ADuBDv76u54      [ 3] 2093 	bsfa	#DATA2 + 1,BADD		;uBDv76u54
+   15B0uBEv76u54      [ 3] 2094 	bsfa	#DATA2 + 2,BADD		;uBEv76u54
+                           2095 ;	bsfa	#DATA2 + 3,BADD		;uBFv76u54
+                           2096 
+   15B3 BCvF6u54      [ 3] 2097 	bsfa	.eq.,[BADD]		; BCvF6u54
+   15B6 BDvF6u54      [ 3] 2098 	bsfa	.gt.,[BADD]		; BDvF6u54
+   15B9 BEvF6u54      [ 3] 2099 	bsfa	.lt.,[BADD]		; BEvF6u54
+                           2100 ;	bsfa	.un.,[BADD]		; BFvF6u54
+                           2101 
+   15BCuBCvF6u54      [ 3] 2102 	bsfa	#DATA2 + 0,[BADD]	;uBCvF6u54
+   15BFuBDvF6u54      [ 3] 2103 	bsfa	#DATA2 + 1,[BADD]	;uBDvF6u54
+   15C2uBEvF6u54      [ 3] 2104 	bsfa	#DATA2 + 2,[BADD]	;uBEvF6u54
+                           2105 ;	bsfa	#DATA2 + 3,[BADD]	;uBFvF6u54
+                           2106 
+   15C5 BCvF6u54      [ 3] 2107 	bsfa	.eq.,@BADD		; BCvF6u54
+   15C8 BDvF6u54      [ 3] 2108 	bsfa	.gt.,@BADD		; BDvF6u54
+   15CB BEvF6u54      [ 3] 2109 	bsfa	.lt.,@BADD		; BEvF6u54
+                           2110 ;	bsfa	.un.,@BADD		; BFvF6u54
+                           2111 
+   15CEuBCvF6u54      [ 3] 2112 	bsfa	#DATA2 + 0,@BADD	;uBCvF6u54
+   15D1uBDvF6u54      [ 3] 2113 	bsfa	#DATA2 + 1,@BADD	;uBDvF6u54
+   15D4uBEvF6u54      [ 3] 2114 	bsfa	#DATA2 + 2,@BADD	;uBEvF6u54
+                           2115 ;	bsfa	#DATA2 + 3,@BADD	;uBFvF6u54
+                           2116 
+                           2117 
+                           2118 	.sbttl	str_ 'Sequential' Instruction Tests
+                           2119 
+   15D7 C0            [ 2] 2120 	strz	r0			; C0
+   15D8 C1            [ 2] 2121 	strz	r1			; C1
+   15D9 C2            [ 2] 2122 	strz	r2			; C2
+   15DA C3            [ 2] 2123 	strz	r3			; C3
+                           2124 ;	stri	r0,#DATA8		; C4r21
+                           2125 ;	stri	r1,#DATA8		; C5r21
+                           2126 ;	stri	r2,#DATA8		; C6r21
+                           2127 ;	stri	r3,#DATA8		; C7r21
+   15DB C8 7E         [ 3] 2128 	strr	r0,DISP			; C8 7E
+   15DD C9 7E         [ 3] 2129 	strr	r1,DISP			; C9 7E
+   15DF CA 7E         [ 3] 2130 	strr	r2,DISP			; CA 7E
+   15E1 CB 7E         [ 3] 2131 	strr	r3,DISP			; CB 7E
+   15E3 CCs12r34      [ 4] 2132 	stra	r0,ADDR			; CCs12r34
+   15E6 CDs12r34      [ 4] 2133 	stra	r1,ADDR			; CDs12r34
+   15E9 CEs12r34      [ 4] 2134 	stra	r2,ADDR			; CEs12r34
+   15EC CFs12r34      [ 4] 2135 	stra	r3,ADDR			; CFs12r34
+                           2136 
+                           2137 	.sbttl	str_ 'Default Indirect' Instruction Tests
+                           2138 
+   15EF C8 FE         [ 3] 2139 	strr	r0,[DISP]		; C8 FE
+   15F1 C9 FE         [ 3] 2140 	strr	r1,[DISP]		; C9 FE
+   15F3 CA FE         [ 3] 2141 	strr	r2,[DISP]		; CA FE
+   15F5 CB FE         [ 3] 2142 	strr	r3,[DISP]		; CB FE
+                           2143 
+   15F7 CCs92r34      [ 4] 2144 	stra	r0,[ADDR]		; CCs92r34
+   15FA CDs92r34      [ 4] 2145 	stra	r1,[ADDR]		; CDs92r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 40
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+str_ 'Default Indirect' Instruction Tests
+
+   15FD CEs92r34      [ 4] 2146 	stra	r2,[ADDR]		; CEs92r34
+   1600 CFs92r34      [ 4] 2147 	stra	r3,[ADDR]		; CFs92r34
+                           2148 
+   1603 CCsB2r34      [ 4] 2149 	stra	r0,[ADDR,+r0]		; CCsB2r34
+   1606 CDsB2r34      [ 4] 2150 	stra	r0,[ADDR,+r1]		; CDsB2r34
+   1609 CEsB2r34      [ 4] 2151 	stra	r0,[ADDR,+r2]		; CEsB2r34
+   160C CFsB2r34      [ 4] 2152 	stra	r0,[ADDR,+r3]		; CFsB2r34
+                           2153 
+   160F CCsD2r34      [ 4] 2154 	stra	r0,[ADDR,-r0]		; CCsD2r34
+   1612 CDsD2r34      [ 4] 2155 	stra	r0,[ADDR,-r1]		; CDsD2r34
+   1615 CEsD2r34      [ 4] 2156 	stra	r0,[ADDR,-r2]		; CEsD2r34
+   1618 CFsD2r34      [ 4] 2157 	stra	r0,[ADDR,-r3]		; CFsD2r34
+                           2158 
+   161B CCsF2r34      [ 4] 2159 	stra	r0,[ADDR,r0]		; CCsF2r34
+   161E CDsF2r34      [ 4] 2160 	stra	r0,[ADDR,r1]		; CDsF2r34
+   1621 CEsF2r34      [ 4] 2161 	stra	r0,[ADDR,r2]		; CEsF2r34
+   1624 CFsF2r34      [ 4] 2162 	stra	r0,[ADDR,r3]		; CFsF2r34
+                           2163 
+                           2164 	.sbttl	str_ 'Alternate Indirect' Instruction Tests
+                           2165 
+   1627 C8 FE         [ 3] 2166 	strr	r0,@DISP		; C8 FE
+   1629 C9 FE         [ 3] 2167 	strr	r1,@DISP		; C9 FE
+   162B CA FE         [ 3] 2168 	strr	r2,@DISP		; CA FE
+   162D CB FE         [ 3] 2169 	strr	r3,@DISP		; CB FE
+                           2170 
+   162F CCs92r34      [ 4] 2171 	stra	r0,@ADDR		; CCs92r34
+   1632 CDs92r34      [ 4] 2172 	stra	r1,@ADDR		; CDs92r34
+   1635 CEs92r34      [ 4] 2173 	stra	r2,@ADDR		; CEs92r34
+   1638 CFs92r34      [ 4] 2174 	stra	r3,@ADDR		; CFs92r34
+                           2175 
+   163B CCsB2r34      [ 4] 2176 	stra	r0,@ADDR,+r0		; CCsB2r34
+   163E CDsB2r34      [ 4] 2177 	stra	r0,@ADDR,+r1		; CDsB2r34
+   1641 CEsB2r34      [ 4] 2178 	stra	r0,@ADDR,+r2		; CEsB2r34
+   1644 CFsB2r34      [ 4] 2179 	stra	r0,@ADDR,+r3		; CFsB2r34
+                           2180 
+   1647 CCsD2r34      [ 4] 2181 	stra	r0,@ADDR,-r0		; CCsD2r34
+   164A CDsD2r34      [ 4] 2182 	stra	r0,@ADDR,-r1		; CDsD2r34
+   164D CEsD2r34      [ 4] 2183 	stra	r0,@ADDR,-r2		; CEsD2r34
+   1650 CFsD2r34      [ 4] 2184 	stra	r0,@ADDR,-r3		; CFsD2r34
+                           2185 
+   1653 CCsF2r34      [ 4] 2186 	stra	r0,@ADDR,r0		; CCsF2r34
+   1656 CDsF2r34      [ 4] 2187 	stra	r0,@ADDR,r1		; CDsF2r34
+   1659 CEsF2r34      [ 4] 2188 	stra	r0,@ADDR,r2		; CEsF2r34
+   165C CFsF2r34      [ 4] 2189 	stra	r0,@ADDR,r3		; CFsF2r34
+                           2190 
+                           2191 
+                           2192 	.sbttl	'Sequential' Instruction Tests
+                           2193 
+   165F D0            [ 2] 2194 	rrl	r0			; D0
+   1660 D1            [ 2] 2195 	rrl	r1			; D1
+   1661 D2            [ 2] 2196 	rrl	r2			; D2
+   1662 D3            [ 2] 2197 	rrl	r3			; D3
+                           2198 
+   1663 D4r98         [ 3] 2199 	wrte	r0,#P			; D4r98
+   1665 D5r98         [ 3] 2200 	wrte	r1,#P			; D5r98
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 41
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+'Sequential' Instruction Tests
+
+   1667 D6r98         [ 3] 2201 	wrte	r2,#P			; D6r98
+   1669 D7r98         [ 3] 2202 	wrte	r3,#P			; D7r98
+                           2203 
+                           2204 	.sbttl	birr 'Sequential' Instruction Test
+                           2205 
+   166B D8 7E         [ 3] 2206 	birr	r0,DISP			; D8 7E
+   166D D9 7E         [ 3] 2207 	birr	r1,DISP			; D9 7E
+   166F DA 7E         [ 3] 2208 	birr	r2,DISP			; DA 7E
+   1671 DB 7E         [ 3] 2209 	birr	r3,DISP			; DB 7E
+                           2210 
+   1673 D8 FE         [ 3] 2211 	birr	r0,[DISP]		; D8 FE
+   1675 D9 FE         [ 3] 2212 	birr	r1,[DISP]		; D9 FE
+   1677 DA FE         [ 3] 2213 	birr	r2,[DISP]		; DA FE
+   1679 DB FE         [ 3] 2214 	birr	r3,[DISP]		; DB FE
+                           2215 
+   167B D8 FE         [ 3] 2216 	birr	r0,@DISP		; D8 FE
+   167D D9 FE         [ 3] 2217 	birr	r1,@DISP		; D9 FE
+   167F DA FE         [ 3] 2218 	birr	r2,@DISP		; DA FE
+   1681 DB FE         [ 3] 2219 	birr	r3,@DISP		; DB FE
+                           2220 
+                           2221  	.sbttl	bira 'Sequential' Instruction Test
+                           2222 
+   1683 DCv76u54      [ 3] 2223 	bira	r0,BADD			; DCv76u54
+   1686 DDv76u54      [ 3] 2224 	bira	r1,BADD			; DDv76u54
+   1689 DEv76u54      [ 3] 2225 	bira	r2,BADD			; DEv76u54
+   168C DFv76u54      [ 3] 2226 	bira	r3,BADD			; DFv76u54
+                           2227 
+   168F DCvF6u54      [ 3] 2228 	bira	r0,[BADD]		; DCvF6u54
+   1692 DDvF6u54      [ 3] 2229 	bira	r1,[BADD]		; DDvF6u54
+   1695 DEvF6u54      [ 3] 2230 	bira	r2,[BADD]		; DEvF6u54
+   1698 DFvF6u54      [ 3] 2231 	bira	r3,[BADD]		; DFvF6u54
+                           2232 
+   169B DCvF6u54      [ 3] 2233 	bira	r0,@BADD		; DCvF6u54
+   169E DDvF6u54      [ 3] 2234 	bira	r1,@BADD		; DDvF6u54
+   16A1 DEvF6u54      [ 3] 2235 	bira	r2,@BADD		; DEvF6u54
+   16A4 DFvF6u54      [ 3] 2236 	bira	r3,@BADD		; DFvF6u54
+                           2237 
+                           2238 
+                           2239 	.sbttl	com_ 'Sequential' Instruction Tests
+                           2240 
+   16A7 E0            [ 2] 2241 	comz	r0			; E0
+   16A8 E1            [ 2] 2242 	comz	r1			; E1
+   16A9 E2            [ 2] 2243 	comz	r2			; E2
+   16AA E3            [ 2] 2244 	comz	r3			; E3
+   16AB E4r21         [ 2] 2245 	comi	r0,#DATA8		; E4r21
+   16AD E5r21         [ 2] 2246 	comi	r1,#DATA8		; E5r21
+   16AF E6r21         [ 2] 2247 	comi	r2,#DATA8		; E6r21
+   16B1 E7r21         [ 2] 2248 	comi	r3,#DATA8		; E7r21
+   16B3 E8 7E         [ 3] 2249 	comr	r0,DISP			; E8 7E
+   16B5 E9 7E         [ 3] 2250 	comr	r1,DISP			; E9 7E
+   16B7 EA 7E         [ 3] 2251 	comr	r2,DISP			; EA 7E
+   16B9 EB 7E         [ 3] 2252 	comr	r3,DISP			; EB 7E
+   16BB ECs12r34      [ 4] 2253 	coma	r0,ADDR			; ECs12r34
+   16BE EDs12r34      [ 4] 2254 	coma	r1,ADDR			; EDs12r34
+   16C1 EEs12r34      [ 4] 2255 	coma	r2,ADDR			; EEs12r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 42
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+com_ 'Sequential' Instruction Tests
+
+   16C4 EFs12r34      [ 4] 2256 	coma	r3,ADDR			; EFs12r34
+                           2257 
+                           2258 	.sbttl	com_ 'Default Indirect' Instruction Tests
+                           2259 
+   16C7 E8 FE         [ 3] 2260 	comr	r0,[DISP]		; E8 FE
+   16C9 E9 FE         [ 3] 2261 	comr	r1,[DISP]		; E9 FE
+   16CB EA FE         [ 3] 2262 	comr	r2,[DISP]		; EA FE
+   16CD EB FE         [ 3] 2263 	comr	r3,[DISP]		; EB FE
+                           2264 
+   16CF ECs92r34      [ 4] 2265 	coma	r0,[ADDR]		; ECs92r34
+   16D2 EDs92r34      [ 4] 2266 	coma	r1,[ADDR]		; EDs92r34
+   16D5 EEs92r34      [ 4] 2267 	coma	r2,[ADDR]		; EEs92r34
+   16D8 EFs92r34      [ 4] 2268 	coma	r3,[ADDR]		; EFs92r34
+                           2269 
+   16DB ECsB2r34      [ 4] 2270 	coma	r0,[ADDR,+r0]		; ECsB2r34
+   16DE EDsB2r34      [ 4] 2271 	coma	r0,[ADDR,+r1]		; EDsB2r34
+   16E1 EEsB2r34      [ 4] 2272 	coma	r0,[ADDR,+r2]		; EEsB2r34
+   16E4 EFsB2r34      [ 4] 2273 	coma	r0,[ADDR,+r3]		; EFsB2r34
+                           2274 
+   16E7 ECsD2r34      [ 4] 2275 	coma	r0,[ADDR,-r0]		; ECsD2r34
+   16EA EDsD2r34      [ 4] 2276 	coma	r0,[ADDR,-r1]		; EDsD2r34
+   16ED EEsD2r34      [ 4] 2277 	coma	r0,[ADDR,-r2]		; EEsD2r34
+   16F0 EFsD2r34      [ 4] 2278 	coma	r0,[ADDR,-r3]		; EFsD2r34
+                           2279 
+   16F3 ECsF2r34      [ 4] 2280 	coma	r0,[ADDR,r0]		; ECsF2r34
+   16F6 EDsF2r34      [ 4] 2281 	coma	r0,[ADDR,r1]		; EDsF2r34
+   16F9 EEsF2r34      [ 4] 2282 	coma	r0,[ADDR,r2]		; EEsF2r34
+   16FC EFsF2r34      [ 4] 2283 	coma	r0,[ADDR,r3]		; EFsF2r34
+                           2284 
+                           2285 	.sbttl	com_ 'Alternate Indirect' Instruction Tests
+                           2286 
+   16FF E8 FE         [ 3] 2287 	comr	r0,@DISP		; E8 FE
+   1701 E9 FE         [ 3] 2288 	comr	r1,@DISP		; E9 FE
+   1703 EA FE         [ 3] 2289 	comr	r2,@DISP		; EA FE
+   1705 EB FE         [ 3] 2290 	comr	r3,@DISP		; EB FE
+                           2291 
+   1707 ECs92r34      [ 4] 2292 	coma	r0,@ADDR		; ECs92r34
+   170A EDs92r34      [ 4] 2293 	coma	r1,@ADDR		; EDs92r34
+   170D EEs92r34      [ 4] 2294 	coma	r2,@ADDR		; EEs92r34
+   1710 EFs92r34      [ 4] 2295 	coma	r3,@ADDR		; EFs92r34
+                           2296 
+   1713 ECsB2r34      [ 4] 2297 	coma	r0,@ADDR,+r0		; ECsB2r34
+   1716 EDsB2r34      [ 4] 2298 	coma	r0,@ADDR,+r1		; EDsB2r34
+   1719 EEsB2r34      [ 4] 2299 	coma	r0,@ADDR,+r2		; EEsB2r34
+   171C EFsB2r34      [ 4] 2300 	coma	r0,@ADDR,+r3		; EFsB2r34
+                           2301 
+   171F ECsD2r34      [ 4] 2302 	coma	r0,@ADDR,-r0		; ECsD2r34
+   1722 EDsD2r34      [ 4] 2303 	coma	r0,@ADDR,-r1		; EDsD2r34
+   1725 EEsD2r34      [ 4] 2304 	coma	r0,@ADDR,-r2		; EEsD2r34
+   1728 EFsD2r34      [ 4] 2305 	coma	r0,@ADDR,-r3		; EFsD2r34
+                           2306 
+   172B ECsF2r34      [ 4] 2307 	coma	r0,@ADDR,r0		; ECsF2r34
+   172E EDsF2r34      [ 4] 2308 	coma	r0,@ADDR,r1		; EDsF2r34
+   1731 EEsF2r34      [ 4] 2309 	coma	r0,@ADDR,r2		; EEsF2r34
+   1734 EFsF2r34      [ 4] 2310 	coma	r0,@ADDR,r3		; EFsF2r34
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 43
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+com_ 'Alternate Indirect' Instruction Tests
+
+                           2311 
+                           2312 
+                           2313 	.sbttl	cmp_ 'Sequential' Instruction Tests
+                           2314 
+   1737 E0            [ 2] 2315 	cmpz	r0			; E0
+   1738 E1            [ 2] 2316 	cmpz	r1			; E1
+   1739 E2            [ 2] 2317 	cmpz	r2			; E2
+   173A E3            [ 2] 2318 	cmpz	r3			; E3
+   173B E4r21         [ 2] 2319 	cmpi	r0,#DATA8		; E4r21
+   173D E5r21         [ 2] 2320 	cmpi	r1,#DATA8		; E5r21
+   173F E6r21         [ 2] 2321 	cmpi	r2,#DATA8		; E6r21
+   1741 E7r21         [ 2] 2322 	cmpi	r3,#DATA8		; E7r21
+   1743 E8 7E         [ 3] 2323 	cmpr	r0,DISP			; E8 7E
+   1745 E9 7E         [ 3] 2324 	cmpr	r1,DISP			; E9 7E
+   1747 EA 7E         [ 3] 2325 	cmpr	r2,DISP			; EA 7E
+   1749 EB 7E         [ 3] 2326 	cmpr	r3,DISP			; EB 7E
+   174B ECs12r34      [ 4] 2327 	cmpa	r0,ADDR			; ECs12r34
+   174E EDs12r34      [ 4] 2328 	cmpa	r1,ADDR			; EDs12r34
+   1751 EEs12r34      [ 4] 2329 	cmpa	r2,ADDR			; EEs12r34
+   1754 EFs12r34      [ 4] 2330 	cmpa	r3,ADDR			; EFs12r34
+                           2331 
+                           2332 	.sbttl	cmp_ 'Default Indirect' Instruction Tests
+                           2333 
+   1757 E8 FE         [ 3] 2334 	cmpr	r0,[DISP]		; E8 FE
+   1759 E9 FE         [ 3] 2335 	cmpr	r1,[DISP]		; E9 FE
+   175B EA FE         [ 3] 2336 	cmpr	r2,[DISP]		; EA FE
+   175D EB FE         [ 3] 2337 	cmpr	r3,[DISP]		; EB FE
+                           2338 
+   175F ECs92r34      [ 4] 2339 	cmpa	r0,[ADDR]		; ECs92r34
+   1762 EDs92r34      [ 4] 2340 	cmpa	r1,[ADDR]		; EDs92r34
+   1765 EEs92r34      [ 4] 2341 	cmpa	r2,[ADDR]		; EEs92r34
+   1768 EFs92r34      [ 4] 2342 	cmpa	r3,[ADDR]		; EFs92r34
+                           2343 
+   176B ECsB2r34      [ 4] 2344 	cmpa	r0,[ADDR,+r0]		; ECsB2r34
+   176E EDsB2r34      [ 4] 2345 	cmpa	r0,[ADDR,+r1]		; EDsB2r34
+   1771 EEsB2r34      [ 4] 2346 	cmpa	r0,[ADDR,+r2]		; EEsB2r34
+   1774 EFsB2r34      [ 4] 2347 	cmpa	r0,[ADDR,+r3]		; EFsB2r34
+                           2348 
+   1777 ECsD2r34      [ 4] 2349 	cmpa	r0,[ADDR,-r0]		; ECsD2r34
+   177A EDsD2r34      [ 4] 2350 	cmpa	r0,[ADDR,-r1]		; EDsD2r34
+   177D EEsD2r34      [ 4] 2351 	cmpa	r0,[ADDR,-r2]		; EEsD2r34
+   1780 EFsD2r34      [ 4] 2352 	cmpa	r0,[ADDR,-r3]		; EFsD2r34
+                           2353 
+   1783 ECsF2r34      [ 4] 2354 	cmpa	r0,[ADDR,r0]		; ECsF2r34
+   1786 EDsF2r34      [ 4] 2355 	cmpa	r0,[ADDR,r1]		; EDsF2r34
+   1789 EEsF2r34      [ 4] 2356 	cmpa	r0,[ADDR,r2]		; EEsF2r34
+   178C EFsF2r34      [ 4] 2357 	cmpa	r0,[ADDR,r3]		; EFsF2r34
+                           2358 
+                           2359 	.sbttl	cmp_ 'Alternate Indirect' Instruction Tests
+                           2360 
+   178F E8 FE         [ 3] 2361 	cmpr	r0,@DISP		; E8 FE
+   1791 E9 FE         [ 3] 2362 	cmpr	r1,@DISP		; E9 FE
+   1793 EA FE         [ 3] 2363 	cmpr	r2,@DISP		; EA FE
+   1795 EB FE         [ 3] 2364 	cmpr	r3,@DISP		; EB FE
+                           2365 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 44
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+cmp_ 'Alternate Indirect' Instruction Tests
+
+   1797 ECs92r34      [ 4] 2366 	cmpa	r0,@ADDR		; ECs92r34
+   179A EDs92r34      [ 4] 2367 	cmpa	r1,@ADDR		; EDs92r34
+   179D EEs92r34      [ 4] 2368 	cmpa	r2,@ADDR		; EEs92r34
+   17A0 EFs92r34      [ 4] 2369 	cmpa	r3,@ADDR		; EFs92r34
+                           2370 
+   17A3 ECsB2r34      [ 4] 2371 	cmpa	r0,@ADDR,+r0		; ECsB2r34
+   17A6 EDsB2r34      [ 4] 2372 	cmpa	r0,@ADDR,+r1		; EDsB2r34
+   17A9 EEsB2r34      [ 4] 2373 	cmpa	r0,@ADDR,+r2		; EEsB2r34
+   17AC EFsB2r34      [ 4] 2374 	cmpa	r0,@ADDR,+r3		; EFsB2r34
+                           2375 
+   17AF ECsD2r34      [ 4] 2376 	cmpa	r0,@ADDR,-r0		; ECsD2r34
+   17B2 EDsD2r34      [ 4] 2377 	cmpa	r0,@ADDR,-r1		; EDsD2r34
+   17B5 EEsD2r34      [ 4] 2378 	cmpa	r0,@ADDR,-r2		; EEsD2r34
+   17B8 EFsD2r34      [ 4] 2379 	cmpa	r0,@ADDR,-r3		; EFsD2r34
+                           2380 
+   17BB ECsF2r34      [ 4] 2381 	cmpa	r0,@ADDR,r0		; ECsF2r34
+   17BE EDsF2r34      [ 4] 2382 	cmpa	r0,@ADDR,r1		; EDsF2r34
+   17C1 EEsF2r34      [ 4] 2383 	cmpa	r0,@ADDR,r2		; EEsF2r34
+   17C4 EFsF2r34      [ 4] 2384 	cmpa	r0,@ADDR,r3		; EFsF2r34
+                           2385 
+                           2386 
+                           2387 	.sbttl	'Sequential' Instruction Tests
+                           2388 
+   17C7 F0            [ 2] 2389 	wrtd	r0			; F0
+   17C8 F1            [ 2] 2390 	wrtd	r1			; F1
+   17C9 F2            [ 2] 2391 	wrtd	r2			; F2
+   17CA F3            [ 2] 2392 	wrtd	r3			; F3
+                           2393 
+   17CB F4r98         [ 3] 2394 	tmi	r0,#P			; F4r98
+   17CD F5r98         [ 3] 2395 	tmi	r1,#P			; F5r98
+   17CF F6r98         [ 3] 2396 	tmi	r2,#P			; F6r98
+   17D1 F7r98         [ 3] 2397 	tmi	r3,#P			; F7r98
+                           2398 
+                           2399 	.sbttl	bdrr 'Sequential' Instruction Test
+                           2400 
+   17D3 F8 7E         [ 3] 2401 	bdrr	r0,DISP			; F8 7E
+   17D5 F9 7E         [ 3] 2402 	bdrr	r1,DISP			; F9 7E
+   17D7 FA 7E         [ 3] 2403 	bdrr	r2,DISP			; FA 7E
+   17D9 FB 7E         [ 3] 2404 	bdrr	r3,DISP			; FB 7E
+                           2405 
+   17DB F8 FE         [ 3] 2406 	bdrr	r0,[DISP]		; F8 FE
+   17DD F9 FE         [ 3] 2407 	bdrr	r1,[DISP]		; F9 FE
+   17DF FA FE         [ 3] 2408 	bdrr	r2,[DISP]		; FA FE
+   17E1 FB FE         [ 3] 2409 	bdrr	r3,[DISP]		; FB FE
+                           2410 
+   17E3 F8 FE         [ 3] 2411 	bdrr	r0,@DISP		; F8 FE
+   17E5 F9 FE         [ 3] 2412 	bdrr	r1,@DISP		; F9 FE
+   17E7 FA FE         [ 3] 2413 	bdrr	r2,@DISP		; FA FE
+   17E9 FB FE         [ 3] 2414 	bdrr	r3,@DISP		; FB FE
+                           2415 
+                           2416  	.sbttl	bdra 'Sequential' Instruction Test
+                           2417 
+   17EB FCv76u54      [ 3] 2418 	bdra	r0,BADD			; FCv76u54
+   17EE FDv76u54      [ 3] 2419 	bdra	r1,BADD			; FDv76u54
+   17F1 FEv76u54      [ 3] 2420 	bdra	r2,BADD			; FEv76u54
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 45
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+bdra 'Sequential' Instruction Test
+
+   17F4 FFv76u54      [ 3] 2421 	bdra	r3,BADD			; FFv76u54
+                           2422 
+   17F7 FCvF6u54      [ 3] 2423 	bdra	r0,[BADD]		; FCvF6u54
+   17FA FDvF6u54      [ 3] 2424 	bdra	r1,[BADD]		; FDvF6u54
+   17FD FEvF6u54      [ 3] 2425 	bdra	r2,[BADD]		; FEvF6u54
+   1800 FFvF6u54      [ 3] 2426 	bdra	r3,[BADD]		; FFvF6u54
+                           2427 
+   1803 FCvF6u54      [ 3] 2428 	bdra	r0,@BADD		; FCvF6u54
+   1806 FDvF6u54      [ 3] 2429 	bdra	r1,@BADD		; FDvF6u54
+   1809 FEvF6u54      [ 3] 2430 	bdra	r2,@BADD		; FEvF6u54
+   180C FFvF6u54      [ 3] 2431 	bdra	r3,@BADD		; FFvF6u54
+                           2432 
+                           2433 
+                           2434 
+                           2435 
+                           2436 
+                           2437 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 46
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+Symbol Table
+
+    .__.$$$.       =   2710 L   |     .__.ABS.       =   0000 G
+    .__.CPU.       =   0000 L   |     .__.H$L.       =   0001 L
+    xADDR              **** GX  |     xBADD              **** GX
+    xDATA2             **** GX  |     xDATA8             **** GX
+    xP                 **** GX
+
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 47
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:52:06 2020
+AS2650 Assembler Checks
+Area Table
+
+[_CSEG]
+   0 _CODE            size    0   flags C080
+   2 AS2650           size 180F   flags  D0C
+[_DSEG]
+   1 _DATA            size    0   flags C0C0
+

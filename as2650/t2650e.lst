@@ -1,0 +1,410 @@
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 1
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+
+
+                              1 	.title	AS2650 Assembler Checks
+                              2 
+                              3 	; Assembler this file:
+                              4 	;
+                              5 	;	as2650 -gloaxff t2650e
+                              6 	;
+                              7 
+                              8 	.sbttl	Absolute Code
+                              9 
+                             10 	; Absolute Variables
+                             11 
+                             12 	.define	ADDR	"0x1234"
+                             13 	.define	BADD	"0x7654"
+                             14 	.define	DATA8	"0x21"
+                             15 	.define	DATA2	"0"
+                             16 	.define	P	"0x98"
+                             17 	.define	DISP	"."
+                             18 
+                             19 
+                             20 	.area	AS2650	(ABS,OVR)
+   1000                      21 	.org	0x1000
+                             22 
+                             23 
+                             24 	.sbttl	Illegal Instruction Tests
+                             25 
+o  1000 40                   26 	andz	r0			; 40
+                             27 
+o  1001 9B 7E                28 	bcfr	.un.,DISP		; 9B 7E
+o  1003 9B 7E                29 	bcfr	#DATA2 + 3,DISP		; 9B 7E
+o  1005 9B FE                30 	bcfr	.un.,[DISP]		; 9B FE
+o  1007 9B FE                31 	bcfr	#DATA2 + 3,[DISP]	; 9B FE
+o  1009 9B FE                32 	bcfr	.un.,@DISP		; 9B FE
+o  100B 9B FE                33 	bcfr	#DATA2 + 3,@DISP	; 9B FE
+                             34 
+o  100D 9F 76 54             35 	bcfa	.un.,BADD		; 9F 76 54
+o  1010 9F 76 54             36 	bcfa	#DATA2 + 3,BADD		; 9F 76 54
+o  1013 9F F6 54             37 	bcfa	.un.,[BADD]		; 9F F6 54
+o  1016 9F F6 54             38 	bcfa	#DATA2 + 3,[BADD]	; 9F F6 54
+o  1019 9F F6 54             39 	bcfa	.un.,@BADD		; 9F F6 54
+o  101C 9F F6 54             40 	bcfa	#DATA2 + 3,@BADD	; 9F F6 54
+                             41 
+o  101F BB 7E                42 	bsfr	.un.,DISP		; BB 7E
+o  1021 BB 7E                43 	bsfr	#DATA2 + 3,DISP		; BB 7E
+o  1023 BB FE                44 	bsfr	.un.,[DISP]		; BB FE
+o  1025 BB FE                45 	bsfr	#DATA2 + 3,[DISP]	; BB FE
+o  1027 BB FE                46 	bsfr	.un.,@DISP		; BB FE
+o  1029 BB FE                47 	bsfr	#DATA2 + 3,@DISP	; BB FE
+                             48 
+o  102B BF 76 54             49 	bsfa	.un.,BADD		; BF 76 54
+o  102E BF 76 54             50 	bsfa	#DATA2 + 3,BADD		; BF 76 54
+o  1031 BF F6 54             51 	bsfa	.un.,[BADD]		; BF F6 54
+o  1034 BF F6 54             52 	bsfa	#DATA2 + 3,[BADD]	; BF F6 54
+o  1037 BF F6 54             53 	bsfa	.un.,@BADD		; BF F6 54
+o  103A BF F6 54             54 	bsfa	#DATA2 + 3,@BADD	; BF F6 54
+                             55 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 2
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Illegal Instruction Tests
+
+o  103D                      56 	stri	r0,#DATA8		; C4 21
+o  103D                      57 	stri	r1,#DATA8		; C5 21
+o  103D                      58 	stri	r2,#DATA8		; C6 21
+o  103D                      59 	stri	r3,#DATA8		; C7 21
+                             60 
+                             61 	.sbttl	Illegal Addressing Mode Tests
+                             62 
+                             63 	; Type: S_IO
+                             64 
+   103D 30                   65 	redc	r0
+                             66 
+a  103E 30                   67 	redc	.eq.
+a  103F 30                   68 	redc	#DATA8
+a  1040 30                   69 	redc	BADD
+a  1041 30                   70 	redc	[BADD]
+a  1042 30                   71 	redc	[BADD,r0]
+a  1043 30                   72 	redc	[BADD,r0+]
+a  1044 30                   73 	redc	[BADD,-r0]
+                             74 
+                             75 
+                             76 	; Type: S_IOE
+                             77 
+   1045 54 98                78 	rede	r0,#P
+                             79 
+a  1047 54 00                80 	rede	r0,.eq.
+a  1049 54 54                81 	rede	r0,BADD
+a  104B 54 54                82 	rede	r0,[BADD]
+a  104D 54 54                83 	rede	r0,[BADD,r0]
+a  104F 54 54                84 	rede	r0,[BADD,r0+]
+a  1051 54 54                85 	rede	r0,[BADD,-r0]
+                             86 
+q  1053                      87 	rede	.eq.
+q  1053                      88 	rede	#DATA8
+q  1053                      89 	rede	BADD
+q  1053                      90 	rede	[BADD]
+q  1053                      91 	rede	[BADD,r0]
+q  1053                      92 	rede	[BADD,r0+]
+q  1053                      93 	rede	[BADD,-r0]
+                             94 
+                             95 
+                             96 	; Type: S_TYP1
+                             97 
+   1053 08 7E                98 	lodr	r0,DISP
+                             99 
+   1055 08p21               100 	lodr	r0,#DATA8		; linker error
+aq 1057 08pD4               101 	lodr	r0,[BADD,r0]
+aq 1059 08pD4               102 	lodr	r0,[BADD,r0+]
+aq 105B 08pD4               103 	lodr	r0,[BADD,-r0]
+                            104 
+a  105D 08p00               105 	lodr	.eq.,r0
+a  105F 08p00               106 	lodr	#DATA8,r0
+a  1061 08p00               107 	lodr	BADD,r0
+a  1063 08p00               108 	lodr	[BADD],r0
+a  1065 08p00               109 	lodr	[BADD,r0],r0
+a  1067 08p00               110 	lodr	[BADD,r0+],r0
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 3
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Illegal Addressing Mode Tests
+
+a  1069 08p00               111 	lodr	[BADD,-r0],r0
+                            112 
+q  106B                     113 	lodr	r0
+q  106B                     114 	lodr	.eq.
+q  106B                     115 	lodr	#DATA8
+q  106B                     116 	lodr	BADD
+q  106B                     117 	lodr	[BADD]
+q  106B                     118 	lodr	[BADD,r0]
+q  106B                     119 	lodr	[BADD,r0+]
+q  106B                     120 	lodr	[BADD,-r0]
+                            121 
+aq 106B 08pD4               122 	lodr	r0,[BADD,r0]
+aq 106D 09pD4               123 	lodr	r1,[BADD,r1]
+aq 106F 0ApD4               124 	lodr	r2,[BADD,r2]
+aq 1071 0BpD4               125 	lodr	r3,[BADD,r3]
+                            126 
+aq 1073 08pD4               127 	lodr	r0,[BADD,+r0]
+aq 1075 09pD4               128 	lodr	r1,[BADD,+r1]
+aq 1077 0ApD4               129 	lodr	r2,[BADD,+r2]
+aq 1079 0BpD4               130 	lodr	r3,[BADD,+r3]
+                            131 
+aq 107B 08pD4               132 	lodr	r0,[BADD,-r0]
+aq 107D 09pD4               133 	lodr	r1,[BADD,-r1]
+aq 107F 0ApD4               134 	lodr	r2,[BADD,-r2]
+aq 1081 0BpD4               135 	lodr	r3,[BADD,-r3]
+                            136 
+                            137 	; Type: S_TYP2
+                            138 
+   1083 0C 92 34            139 	loda	r0,[ADDR]
+                            140 
+a  1086 0C 00 21            141 	loda	r0,#DATA8
+                            142 
+a  1089 0C 00 00            143 	loda	.eq.,r0
+a  108C 0C 00 00            144 	loda	#DATA8,r0
+a  108F 0C 00 00            145 	loda	BADD,r0
+a  1092 0C 00 00            146 	loda	[BADD],r0
+a  1095 0C 00 00            147 	loda	[BADD,r0],r0
+a  1098 0C 00 00            148 	loda	[BADD,r0+],r0
+a  109B 0C 00 00            149 	loda	[BADD,-r0],r0
+                            150 
+q  109E                     151 	loda	r0
+q  109E                     152 	loda	.eq.
+q  109E                     153 	loda	#DATA8
+q  109E                     154 	loda	BADD
+q  109E                     155 	loda	[BADD]
+q  109E                     156 	loda	[BADD,r0]
+q  109E                     157 	loda	[BADD,r0+]
+q  109E                     158 	loda	[BADD,-r0]
+                            159 
+   109E 0C F6 54            160 	loda	r0,[BADD,r0]
+a  10A1 0D F6 54            161 	loda	r1,[BADD,r1]
+a  10A4 0E F6 54            162 	loda	r2,[BADD,r2]
+a  10A7 0F F6 54            163 	loda	r3,[BADD,r3]
+                            164 
+   10AA 0C B6 54            165 	loda	r0,[BADD,+r0]
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 4
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Illegal Addressing Mode Tests
+
+a  10AD 0D B6 54            166 	loda	r1,[BADD,+r1]
+a  10B0 0E B6 54            167 	loda	r2,[BADD,+r2]
+a  10B3 0F B6 54            168 	loda	r3,[BADD,+r3]
+                            169 
+   10B6 0C D6 54            170 	loda	r0,[BADD,-r0]
+a  10B9 0D D6 54            171 	loda	r1,[BADD,-r1]
+a  10BC 0E D6 54            172 	loda	r2,[BADD,-r2]
+a  10BF 0F D6 54            173 	loda	r3,[BADD,-r3]
+                            174 
+                            175 	; Type: S_TYP3
+                            176 
+   10C2 04 21               177 	lodi	r0,#DATA8
+                            178 
+a  10C4 04 54               179 	lodi	r0,[BADD,r0]
+a  10C6 04 54               180 	lodi	r0,[BADD,r0+]
+a  10C8 04 54               181 	lodi	r0,[BADD,-r0]
+                            182 
+a  10CA 04 00               183 	lodi	.eq.,r0
+a  10CC 04 00               184 	lodi	#DATA8,r0
+a  10CE 04 00               185 	lodi	BADD,r0
+a  10D0 04 00               186 	lodi	[BADD],r0
+a  10D2 04 00               187 	lodi	[BADD,r0],r0
+a  10D4 04 00               188 	lodi	[BADD,r0+],r0
+a  10D6 04 00               189 	lodi	[BADD,-r0],r0
+                            190 
+q  10D8                     191 	lodi	r0
+q  10D8                     192 	lodi	.eq.
+q  10D8                     193 	lodi	#DATA8
+q  10D8                     194 	lodi	BADD
+q  10D8                     195 	lodi	[BADD]
+q  10D8                     196 	lodi	[BADD,r0]
+q  10D8                     197 	lodi	[BADD,r0+]
+q  10D8                     198 	lodi	[BADD,-r0]
+                            199 
+a  10D8 04 54               200 	lodi	r0,[BADD,r0]
+a  10DA 05 54               201 	lodi	r1,[BADD,r1]
+a  10DC 06 54               202 	lodi	r2,[BADD,r2]
+a  10DE 07 54               203 	lodi	r3,[BADD,r3]
+                            204 
+a  10E0 04 54               205 	lodi	r0,[BADD,+r0]
+a  10E2 05 54               206 	lodi	r1,[BADD,+r1]
+a  10E4 06 54               207 	lodi	r2,[BADD,+r2]
+a  10E6 07 54               208 	lodi	r3,[BADD,+r3]
+                            209 
+a  10E8 04 54               210 	lodi	r0,[BADD,-r0]
+a  10EA 05 54               211 	lodi	r1,[BADD,-r1]
+a  10EC 06 54               212 	lodi	r2,[BADD,-r2]
+a  10EE 07 54               213 	lodi	r3,[BADD,-r3]
+                            214 
+                            215 	; Type: S_TYP4
+                            216 
+   10F0 01                  217 	lodz	r1
+                            218 
+a  10F1 60                  219 	lodz	.eq.
+a  10F2 60                  220 	lodz	#DATA8
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 5
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Illegal Addressing Mode Tests
+
+a  10F3 60                  221 	lodz	BADD
+a  10F4 60                  222 	lodz	[BADD]
+a  10F5 60                  223 	lodz	[BADD,r0]
+a  10F6 60                  224 	lodz	[BADD,r0+]
+a  10F7 60                  225 	lodz	[BADD,-r0]
+                            226 
+                            227 	; Type: S_TYP5
+                            228 
+   10F8 76 21               229 	ppsu	#DATA8
+                            230 
+a  10FA 76 00               231 	ppsu	r0
+a  10FC 76 00               232 	ppsu	.eq.
+a  10FE 76 54               233 	ppsu	BADD
+a  1100 76 54               234 	ppsu	[BADD]
+a  1102 76 54               235 	ppsu	[BADD,r0]
+a  1104 76 54               236 	ppsu	[BADD,r0+]
+a  1106 76 54               237 	ppsu	[BADD,-r0]
+                            238 
+                            239 	; Type: S_BRAZ
+                            240 
+a  1108 9B 3F               241 	zbrr	.-63
+   110A 9B 40               242 	zbrr	.-62
+   110C 9B 7E               243 	zbrr	.+0
+   110E 9B 00               244 	zbrr	.+2
+   1110 9B 02               245 	zbrr	.+4
+   1112 9B 3F               246 	zbrr	.+65
+a  1114 9B 40               247 	zbrr	.+66
+                            248 
+a  1116 9B BF               249 	zbrr	[.-63]
+   1118 9B C0               250 	zbrr	[.-62]
+   111A 9B FE               251 	zbrr	[.+0]
+   111C 9B 80               252 	zbrr	[.+2]
+   111E 9B 82               253 	zbrr	[.+4]
+   1120 9B BF               254 	zbrr	[.+65]
+a  1122 9B C0               255 	zbrr	[.+66]
+                            256 
+                            257 	; Type: S_BRAE
+                            258 
+a  1124 9F 00 00            259 	bxa	r0
+a  1127 9F 00 00            260 	bxa	.eq.
+a  112A 9F 00 21            261 	bxa	#DATA8
+a  112D 9F 00 00            262 	bxa	0x8000
+a  1130 9F 80 00            263 	bxa	[0x8000]
+a  1133 9F 80 00            264 	bxa	[0x8000,r0]
+a  1136 9F 80 00            265 	bxa	[0x8000,r0+]
+a  1139 9F 80 00            266 	bxa	[0x8000,-r0]
+                            267 
+                            268 	; Type: S_BRCR
+                            269 
+a  113C 18 3F               270 	bctr	#DATA2,DISP-63
+   113E 18 40               271 	bctr	#DATA2,DISP-62
+   1140 18 7E               272 	bctr	#DATA2,DISP+0
+   1142 18 00               273 	bctr	#DATA2,DISP+2
+   1144 18 02               274 	bctr	#DATA2,DISP+4
+   1146 18 3F               275 	bctr	#DATA2,DISP+65
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 6
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Illegal Addressing Mode Tests
+
+a  1148 18 40               276 	bctr	#DATA2,DISP+66
+                            277 
+a  114A 18 7E               278 	bctr	r0,DISP
+a  114C 18 7E               279 	bctr	ADDR,DISP
+a  114E 18 7E               280 	bctr	[ADDR],DISP
+a  1150 18 7E               281 	bctr	[ADDR,r0],DISP
+a  1152 18 7E               282 	bctr	[ADDR,r0+],DISP
+a  1154 18 7E               283 	bctr	[ADDR,-r0],DISP
+                            284 
+                            285 	; Type: S_BRCA
+                            286 
+   1156 1C F6 54            287 	bcta	.eq.,[BADD]
+   1159 1C F6 54            288 	bcta	#DATA2,[BADD]
+                            289 
+a  115C 1C 76 54            290 	bcta	r0,BADD
+a  115F 1D 76 54            291 	bcta	#DATA8,BADD
+a  1162 1C 76 54            292 	bcta	ADDR,BADD
+a  1165 1C 76 54            293 	bcta	[ADDR],BADD
+a  1168 1C 76 54            294 	bcta	[ADDR,r0],BADD
+a  116B 1C 76 54            295 	bcta	[ADDR,r0+],BADD
+a  116E 1C 76 54            296 	bcta	[ADDR,-r0],BADD
+                            297 
+a  1171 1C 00 00            298 	bcta	#DATA2,r0
+a  1174 1C 00 21            299 	bcta	#DATA2,#DATA8
+a  1177 1C 92 34            300 	bcta	#DATA2,[ADDR,r0]
+a  117A 1C 92 34            301 	bcta	#DATA2,[ADDR,r0+]
+a  117D 1C 92 34            302 	bcta	#DATA2,[ADDR,-r0]
+                            303 
+                            304 	; Type: S_BRRR
+                            305 
+a  1180 D8 3F               306 	birr	r0,DISP-63
+   1182 D8 40               307 	birr	r0,DISP-62
+   1184 D8 7E               308 	birr	r0,DISP+0
+   1186 D8 00               309 	birr	r0,DISP+2
+   1188 D8 02               310 	birr	r0,DISP+4
+   118A D8 3F               311 	birr	r0,DISP+65
+a  118C D8 40               312 	birr	r0,DISP+66
+                            313 
+a  118E D8 7E               314 	birr	#DATA8,DISP
+a  1190 D8 7E               315 	birr	ADDR,DISP
+a  1192 D8 7E               316 	birr	[ADDR],DISP
+a  1194 D8 7E               317 	birr	[ADDR,r0],DISP
+a  1196 D8 7E               318 	birr	[ADDR,r0+],DISP
+a  1198 D8 7E               319 	birr	[ADDR,-r0],DISP
+                            320 
+                            321 	; Type: S_BRRA
+                            322 
+   119A DC F6 54            323 	bira	r0,[BADD]
+                            324 
+a  119D DC 00 00            325 	bira	r0,r0
+a  11A0 DC 00 00            326 	bira	r0,.eq.
+a  11A3 DC 00 21            327 	bira	r0,#DATA8
+a  11A6 DC 00 00            328 	bira	r0,0x8000
+a  11A9 DC 80 00            329 	bira	r0,[0x8000]
+a  11AC DC 80 00            330 	bira	r0,[0x8000,r0]
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 7
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Illegal Addressing Mode Tests
+
+a  11AF DC 80 00            331 	bira	r0,[0x8000,r0+]
+a  11B2 DC 80 00            332 	bira	r0,[0x8000,-r0]
+                            333 
+a  11B5 DC F6 54            334 	bira	.eq.,[BADD]
+a  11B8 DC F6 54            335 	bira	#DATA8,[BADD]
+a  11BB DC F6 54            336 	bira	ADDR,[BADD]
+a  11BE DC F6 54            337 	bira	[ADDR],[BADD]
+a  11C1 DC F6 54            338 	bira	[ADDR,r0],[BADD]
+a  11C4 DC F6 54            339 	bira	[ADDR,r0+],[BADD]
+a  11C7 DC F6 54            340 	bira	[ADDR,-r0],[BADD]
+                            341 
+                            342 	; Type: S_RET
+                            343 
+   11CA 14                  344 	retc	.eq.
+   11CB 14                  345 	retc	#DATA2
+                            346 
+a  11CC 14                  347 	retc	r0
+a  11CD 15                  348 	retc	#DATA8
+a  11CE 14                  349 	retc	ADDR
+a  11CF 14                  350 	retc	[ADDR]
+a  11D0 14                  351 	retc	[ADDR,r0]
+a  11D1 14                  352 	retc	[ADDR,r0+]
+a  11D2 14                  353 	retc	[ADDR,-r0]
+                            354 
+                            355 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 8
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Symbol Table
+
+    .__.$$$.       =   2710 L   |     .__.ABS.       =   0000 G
+    .__.CPU.       =   0000 L   |     .__.H$L.       =   0001 L
+    r0                 **** GX
+
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 9
+Hexadecimal [16-Bits]                                 Tue Jun 30 15:49:51 2020
+AS2650 Assembler Checks
+Area Table
+
+[_CSEG]
+   0 _CODE            size    0   flags C080
+   2 AS2650           size 11D3   flags  D0C
+[_DSEG]
+   1 _DATA            size    0   flags C0C0
+

@@ -1,0 +1,697 @@
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 1
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+
+
+                              1 	.title	AS2650 Assembler Checks
+                              2 
+                              3 	; Assembler this file:
+                              4 	;
+                              5 	;	as2650 -gloaxff t2650
+                              6 	;
+                              7 
+                              8 
+                              9 	.sbttl	lod_ 'Sequential' Instruction Tests
+                             10 
+                             11 
+                             12 
+                     0001    13 P      =:       1
+                     0002    14 N      =:       2
+                     0000    15 Z      =:       0
+                     0002    16 LCOM   =:       0x02
+                     0001    17 CAR    =:       0x01
+                     0080    18 SENS   =:       0x80
+                     0040    19 FLAG   =:       0x40
+                     0020    20 II     =:       0x20
+                     0020    21 IDC    =:       0x20
+                     0004    22 OVF    =:       0x04
+                     0003    23 UN     =:       3
+                     0000    24 EQ     =:       0
+                     0002    25 LT     =:       2
+                     0001    26 GT     =:       1
+                     0008    27 WC     =:       0x08
+                     0010    28 RS     =:       0x10
+                     0020    29 SPAC   =:       0x20
+                     0001    30 BMAX   =:       1
+                     007F    31 DELE   =:       0x7F
+                     000D    32 CR     =:       13
+                     000A    33 LF     =:       10
+                     0014    34 BLEN   =:       20
+                     003A    35 STAR   =:       ':
+                             36 ;DISP	=: 2
+                             37 ;ADDR	=: 3
+                             38 
+                             39 		.area	PipBug	(ABS)
+   0000                      40 		.org	0x0000
+                             41        			         ;Zero mark vector and 0
+   0000 07 3F         [ 2]   42 INIT:   LODI	R3,#63
+   0002 20            [ 2]   43 		EORZ    R0
+                             44 
+                             45 
+                             46 ;	loda	r0,[ADDR,+r0]		; 0C B2 34
+                             47 
+                             48 		
+                             49                                ; LOAD   R0,(COM,+R3)
+                             50                                ; LOAD   R0,(@COM,+R3)
+                             51                                ; LOAD   R0,([COM],+R3)
+                             52 
+   0003 CF 44 00      [ 4]   53 AINI:   STRA	R0,COM,-R3
+   0006 5B 7B         [ 3]   54 		BRNR	R3,AINI
+   0008 04 77         [ 2]   55 		LODI	R0,#0x77
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 2
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+lod_ 'Sequential' Instruction Tests
+
+   000A CC 04 09      [ 4]   56 		STRA	R0,XGOT
+   000D 04 1B         [ 2]   57 		LODI	R0,#0x1B
+   000F CC 04 0B      [ 4]   58 		STRA	R0,XGOT+2
+   0012 04 80         [ 2]   59 		LODI	R0,#0x80
+   0014 CC 04 0C      [ 4]   60 		STRA	R0,XGOT+3
+   0017 1B 09         [ 3]   61 		BCTR	.UN.,MBUG
+                             62 
+   0019 01 60                63 VEC: 	.DW     BK01      ; Breakpoint vector
+   001B 01 6E                64 		.DW     BK02
+                             65 
+                             66 		.sbttl	COMMAND HANDLER
+                             67 
+                             68 ; COMMAND HANDLER
+   001D 04 3F         [ 2]   69 EBUG:   LODI	R0,#'?
+   001F 3F 02 B4      [ 3]   70 		BSTA	.UN.,COUT
+   0022 75 FF         [ 3]   71 MBUG:   CPSL    #0xFF
+   0024 3F 00 8A      [ 3]   72 		BSTA	.UN.,  CRLF
+   0027 04 2A         [ 2]   73 		LODI	R0,#'*
+   0029 3F 02 B4      [ 3]   74 		BSTA	.UN.,  COUT
+   002C 3B 2D         [ 3]   75 		BSTR	.UN.,  LINE      ; Don't care if there is
+   002E 20            [ 2]   76 		EORZ    R0
+   002F CC 04 27      [ 4]   77 		STRA	R0,  BPTR
+   0032 0C 04 13      [ 4]   78 		LODA	R0,BUFF
+   0035 E4 41         [ 2]   79 		COMI	R0,#'A
+   0037 1C 00 AB      [ 3]   80 		BCTA	.EQ.,   ALTE
+   003A E4 42         [ 2]   81 		COMI	R0,#'B
+   003C 1C 01 E5      [ 3]   82 		BCTA	.EQ.,  BKPT
+   003F E4 43         [ 2]   83 		COMI	R0,#'C
+   0041 1C 01 CA      [ 3]   84 		BCTA	.EQ.,  CLR
+   0044 E4 44         [ 2]   85 		COMI	R0,#'D
+   0046 1C 03 10      [ 3]   86 		BCTA	.EQ.,  DUMP
+   0049 E4 47         [ 2]   87 		COMI	R0,#'G
+   004B 1C 01 3A      [ 3]   88 		BCTA	.EQ.,  GOTO
+   004E E4 4C         [ 2]   89 		COMI	R0,#'L
+   0050 1C 03 B5      [ 3]   90 		BCTA	.EQ.,   LOAD
+   0053 E4 53         [ 2]   91 		COMI	R0,#'S
+   0055 1C 00 F4      [ 3]   92 		BCTA	.EQ.,   SREG
+   0058 1F 00 1D      [ 3]   93 		BCTA	.UN.,   EBUG
+                             94 		
+                             95 ; Input a CMD line into buffer
+                             96 ; Code is 1=CR  2=LF  3=MSG+CR  4=MSG+LF
+   005B 07 FF         [ 2]   97 LINE:   LODI	R3,#0xFF      ; -1
+   005D CF 04 27      [ 4]   98 		STRA	R3,   BPTR
+                             99 		
+   0060 E7 14         [ 2]  100 LLIN:   COMI	R3,#BLEN
+   0062 18 19         [ 3]  101 		BCTR	.EQ.,   ELIN      ; On buffer overflow
+   0064 3F 02 86      [ 3]  102 		BSTA	.UN.,   CHIN      ; Get char
+   0067 E4 7F         [ 2]  103 		COMI	R0,#DELE
+   0069 98 0E         [ 3]  104 		BCFR	.EQ.,   ALIN
+   006B E7 FF         [ 2]  105 		COMI	R3,#0xFF      ; -1 Echo and back ptr
+   006D 18 71         [ 3]  106 		BCTR	.EQ.,   LLIN
+   006F 0F E4 13      [ 4]  107 		LODA	R0,   [BUFF,R3]
+   0072 3F 02 B4      [ 3]  108 		BSTA	.UN.,   COUT
+   0075 A7 01         [ 2]  109 		SUBI	R3,#1
+   0077 1B 67         [ 3]  110 		BCTR	.UN.,   LLIN
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 3
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   0079 E4 0D         [ 2]  111 ALIN:   COMI	R0,#CR
+   007B 98 18         [ 3]  112 		BCFR	.EQ.,   BLIN
+   007D 05 01         [ 2]  113 ELIN:   LODI	R1,#1
+   007F 03            [ 2]  114 CLIN:   LODZ    R3
+   0080 1A 02         [ 3]  115 		BCTR	.LT.,DLIN
+   0082 85 02         [ 2]  116 		ADDI	R1,#2
+   0084 CD 04 2A      [ 4]  117 DLIN:   STRA	R1,   CODE
+   0087 CF 04 29      [ 4]  118 		STRA	R3,   CNT
+   008A 04 0D         [ 2]  119 CRLF:   LODI	R0,#CR
+   008C 3F 02 B4      [ 3]  120 		BSTA	.UN.,   COUT
+   008F 04 0A         [ 2]  121 		LODI	R0,#LF
+   0091 3F 02 B4      [ 3]  122 		BSTA	.UN.,   COUT
+   0094 17            [ 3]  123 		RETC	.UN.
+   0095 05 02         [ 2]  124 BLIN:   LODI	R1,#2
+   0097 E4 0A         [ 2]  125 		COMI	R0,#LF
+   0099 18 64         [ 3]  126 		BCTR	.EQ.,   CLIN
+   009B CF A4 13      [ 4]  127 		STRA	R0,   [BUFF,+R3] ; Store char and echo
+   009E 3F 02 B4      [ 3]  128 		BSTA	.UN.,   COUT
+   00A1 1F 00 60      [ 3]  129 		BCTA	.UN.,   LLIN
+                            130 
+                            131 ; Subr that stores double precision into temp
+   00A4 CD 04 0D      [ 4]  132 STRT:   STRA	R1,   TEMP
+   00A7 CE 04 0E      [ 4]  133 		STRA	R2,   TEMP+1
+   00AA 17            [ 3]  134 		RETC	.UN.
+                            135 	   
+                            136 ; Display and alter memory
+   00AB 3F 02 DB      [ 3]  137 ALTE:   BSTA	.UN.,   GNUM
+   00AE 3B 74         [ 3]  138 LALT:   BSTR	.UN.,   STRT                
+   00B0 3F 02 69      [ 3]  139 		BSTA	.UN.,   BOUT
+   00B3 0D 04 0E      [ 4]  140 		LODA	R1,   TEMP+1
+   00B6 3F 02 69      [ 3]  141 		BSTA	.UN.,   BOUT
+   00B9 3F 03 5B      [ 3]  142 		BSTA	.UN.,   FORM
+   00BC 0D 84 0D      [ 4]  143 		LODA	R1,   [TEMP]     ; Display content
+   00BF 3F 02 69      [ 3]  144 		BSTA	.UN.,   BOUT
+   00C2 3F 03 5B      [ 3]  145 		BSTA	.UN.,   FORM
+   00C5 3F 00 5B      [ 3]  146 		BSTA	.UN.,   LINE
+   00C8 0C 04 2A      [ 4]  147 		LODA	R0,   CODE
+   00CB E4 02         [ 2]  148 		COMI	R0,#2
+   00CD 1E 00 22      [ 3]  149 		BCTA	.LT.,   MBUG
+   00D0 18 11         [ 3]  150 		BCTR	.EQ.,   DALT
+   00D2 CC 04 11      [ 4]  151 CALT:   STRA	R0,   TEMR
+   00D5 3F 02 DB      [ 3]  152 		BSTA	.UN.,   GNUM
+   00D8 CE 84 0D      [ 4]  153 		STRA	R2,   [TEMP]     ; Update contents
+   00DB 0C 04 11      [ 4]  154 		LODA	R0,   TEMR
+   00DE E4 04         [ 2]  155 		COMI	R0,#4
+   00E0 9C 00 22      [ 3]  156 		BCFA	.EQ.,MBUG
+   00E3 06 01         [ 2]  157 DALT:   LODI	R2,#1
+   00E5 8E 04 0E      [ 4]  158 		ADDA	R2,   TEMP+1
+   00E8 05 00         [ 2]  159 		LODI	R1,#0
+   00EA 77 08         [ 3]  160 		PPSL    #WC
+   00EC 8D 04 0D      [ 4]  161 		ADDA	R1,   TEMP
+   00EF 75 08         [ 3]  162 		CPSL    #WC
+   00F1 1F 00 AE      [ 3]  163 		BCTA	.UN.,   LALT
+                            164 ; Selectively display and alter registers
+   00F4 3F 02 DB      [ 3]  165 SREG:   BSTA	.UN.,   GNUM      ; Get index of reg
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 4
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   00F7 E6 08         [ 2]  166 LSRE:   COMI	R2,#8         ; Check range
+   00F9 1D 00 1D      [ 3]  167 		BCTA	.GT.,   EBUG
+   00FC CE 04 11      [ 4]  168 		STRA	R2,   TEMR
+   00FF 0E E4 00      [ 4]  169 		LODA	R0,   [COM,R2]    ; Display contents
+   0102 C1            [ 2]  170 		STRZ    R1
+   0103 3F 02 69      [ 3]  171 		BSTA	.UN.,   BOUT
+   0106 3F 03 5B      [ 3]  172 		BSTA	.UN.,   FORM
+   0109 3F 00 5B      [ 3]  173 		BSTA	.UN.,   LINE
+   010C 0C 04 2A      [ 4]  174 		LODA	R0,   CODE
+   010F E4 02         [ 2]  175 		COMI	R0,#2
+   0111 1E 00 22      [ 3]  176 		BCTA	.LT.,MBUG      ; CR
+   0114 18 1C         [ 3]  177 		BCTR	.EQ.,CSRE      ; LF
+   0116 CC 04 0F      [ 4]  178 ASRE:   STRA	R0,   TEMQ      ; Upate contents, then
+   0119 3F 02 DB      [ 3]  179 		BSTA	.UN.,   GNUM
+   011C 02            [ 2]  180 		LODZ    R2
+   011D 0E 04 11      [ 4]  181 		LODA	R2,   TEMR
+   0120 CE E4 00      [ 4]  182 		STRA	R0,   [COM,R2]
+   0123 E6 08         [ 2]  183 		COMI	R2,#8         ; Must update PSW lower
+   0125 98 03         [ 3]  184 		BCFR	.EQ.,   BSRE
+   0127 CC 04 0A      [ 4]  185 		STRA	R0,   XGOT+1
+   012A 0C 04 0F      [ 4]  186 BSRE:  	LODA	R0,   TEMQ
+   012D E4 03         [ 2]  187 		COMI	R0,#3
+   012F 1C 00 22      [ 3]  188 		BCTA	.EQ.,   MBUG
+   0132 0E 04 11      [ 4]  189 CSRE:   LODA	R2,   TEMR
+   0135 86 01         [ 2]  190 		ADDI	R2,#1
+   0137 1F 00 F7      [ 3]  191 		BCTA	.UN.,   LSRE
+                            192 		
+                            193 ; Goto Address
+   013A 3F 02 DB      [ 3]  194 GOTO:   BSTA	.UN.,   GNUM
+   013D 3F 00 A4      [ 3]  195 		BSTA	.UN.,   STRT      ; Put addr in RAM
+   0140 0C 04 07      [ 4]  196 		LODA	R0,   COM+7
+   0143 92            [ 2]  197 		LPSU
+   0144 0D 04 01      [ 4]  198 		LODA	R1,COM+1     ; Bank zero
+   0147 0E 04 02      [ 4]  199 		LODA	R2,COM+2
+   014A 0F 04 03      [ 4]  200 		LODA	R3,COM+3
+   014D 77 10         [ 3]  201 		PPSL    #RS        ; Bank one
+   014F 0D 04 04      [ 4]  202 		LODA	R1,COM+4
+   0152 0E 04 05      [ 4]  203 		LODA	R2,COM+5
+   0155 0F 04 06      [ 4]  204 		LODA	R3,COM+6
+   0158 0C 04 00      [ 4]  205 		LODA	R0,COM
+   015B 75 FF         [ 3]  206 		CPSL    #0xFF
+   015D 1F 04 09      [ 3]  207 		BCTA	.UN.,   XGOT      ; and BCTA,UN $TEMP
+                            208 ;
+                            209 ; Breakpoint Runtime Code
+   0160 CC 04 00      [ 4]  210 BK01:   STRA	R0,   COM       ; Entry for BKPT-1 VIA V
+   0163 13            [ 2]  211 		SPSL
+   0164 CC 04 08      [ 4]  212 		STRA	R0,   COM+8
+   0167 CC 04 0A      [ 4]  213 		STRA	R0,   XGOT+1    ; In RAM for reg restore
+   016A 04 00         [ 2]  214 		LODI	R0,#0         ; BKPT index
+   016C 1B 0C         [ 3]  215 		BCTR	.UN.,  BKEN
+   016E CC 04 00      [ 4]  216 BK02:  	STRA	R0,   COM       ; Entry for BKPT-2
+   0171 13            [ 2]  217 		SPSL
+   0172 CC 04 08      [ 4]  218 		STRA	R0,   COM+8
+   0175 CC 04 0A      [ 4]  219 		STRA	R0,XGOT+1
+   0178 04 01         [ 2]  220 		LODI	R0,#1
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 5
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   017A CC 04 11      [ 4]  221 BKEN:   STRA	R0,   TEMR
+   017D 12            [ 2]  222 		SPSU
+   017E CC 04 07      [ 4]  223 		STRA	R0,   COM+7
+   0181 77 10         [ 3]  224 		PPSL    #RS
+   0183 CD 04 04      [ 4]  225 		STRA	R1,   COM+4
+   0186 CE 04 05      [ 4]  226 		STRA	R2,   COM+5
+   0189 CF 04 06      [ 4]  227 		STRA	R3,   COM+6
+   018C 75 10         [ 3]  228 		CPSL    #RS        ; Force to bank zero
+   018E CD 04 01      [ 4]  229 		STRA	R1,   COM+1
+   0191 CE 04 02      [ 4]  230 		STRA	R2,   COM+2
+   0194 CF 04 03      [ 4]  231 		STRA	R3,   COM+3
+   0197 0E 04 11      [ 4]  232 		LODA	R2,   TEMR
+   019A 3B 0F         [ 3]  233 		BSTR	.UN.,  CLBK
+   019C 0D 04 0D      [ 4]  234 		LODA	R1,   TEMP      ; Print BKPT addr
+   019F 3F 02 69      [ 3]  235 		BSTA	.UN.,   BOUT
+   01A2 0D 04 0E      [ 4]  236 		LODA	R1,   TEMP+1
+   01A5 3F 02 69      [ 3]  237 		BSTA	.UN.,   BOUT
+   01A8 1F 00 22      [ 3]  238 		BCTA	.UN.,   MBUG
+                            239 		
+                            240 ; Subr to clear a BKPT  Like many subr has rel addr   
+   01AB 20            [ 2]  241 CLBK:   	EORZ      R0
+   01AC CE E4 2D      [ 4]  242 		STRA	R0,   [MARK,R2]
+   01AF 0E E4 33      [ 4]  243 		LODA	R0,   [HADR,R2]
+   01B2 CC 04 0D      [ 4]  244 		STRA	R0,   TEMP
+   01B5 0E E4 35      [ 4]  245 		LODA	R0,   [LADR,R2]
+   01B8 CC 04 0E      [ 4]  246 		STRA	R0,   TEMP+1
+   01BB 0E E4 2F      [ 4]  247 		LODA	R0,   [HDAT,R2]
+   01BE CC 84 0D      [ 4]  248 		STRA	R0,   [TEMP]
+   01C1 0E E4 31      [ 4]  249 		LODA	R0,   [LDAT,R2]
+   01C4 07 01         [ 2]  250 		LODI	R3,#1
+   01C6 CF E4 0D      [ 4]  251 		STRA	R0,   [TEMP,R3]
+   01C9 17            [ 3]  252 		RETC	.UN.
+                            253 ; Break point  Mark indicates if set
+                            254 ; HADR +LADR is BKPT addr,  HDAT + LDAT is two byte
+   01CA 3B 0B         [ 3]  255 CLR:    BSTR	.UN.,   NOK
+   01CC 0E E4 2D      [ 4]  256 		LODA	R0,   [MARK,R2]   ; Clear it if set
+   01CF 1C 00 1D      [ 3]  257 		BCTA	.EQ.,    EBUG
+   01D2 3B 57         [ 3]  258 		BSTR	.UN.,   CLBK
+   01D4 1F 00 22      [ 3]  259 		BCTA	.UN.,   MBUG
+   01D7 3F 02 DB      [ 3]  260 NOK:    BSTA	.UN.,   GNUM      ; Check range on BKPT number
+   01DA A6 01         [ 2]  261 		SUBI	R2,#1
+   01DC 1E 02 50      [ 3]  262 		BCTA	.LT.,    ABRT
+   01DF E6 01         [ 2]  263 		COMI	R2,   #BMAX
+   01E1 1D 02 50      [ 3]  264 		BCTA	.GT.,   ABRT
+   01E4 17            [ 3]  265 		RETC	.UN.
+                            266 		
+   01E5 3B 70         [ 3]  267 BKPT:   BSTR	.UN.,   NOK
+   01E7 0E E4 2D      [ 4]  268 		LODA	R0,   [MARK,R2]
+   01EA BC 01 AB      [ 3]  269 		BSFA	.EQ. ,   CLBK      ; Clear existing
+   01ED CE 04 11      [ 4]  270 		STRA	R2,  TEMR
+   01F0 3F 02 DB      [ 3]  271 		BSTA	.UN.,   GNUM      ; Get BKPT addr
+   01F3 3F 00 A4      [ 3]  272 		BSTA	.UN.,   STRT      ; Subr to store r1-r2 in
+   01F6 0F 04 11      [ 4]  273 		LODA	R3,   TEMR
+   01F9 02            [ 2]  274 		LODZ    R2
+   01FA CF E4 35      [ 4]  275 		STRA	R0,   [LADR,R3]
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 6
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   01FD 01            [ 2]  276 		LODZ    R1
+   01FE CF E4 33      [ 4]  277 		STRA	R0,   [HADR,R3]
+   0201 0C 84 0D      [ 4]  278 		LODA	R0,   [TEMP]    ; Save contents
+   0204 CF E4 2F      [ 4]  279 		STRA	R0,   [HDAT,R3]
+   0207 05 9B         [ 2]  280 		LODI	R1,   #0x9B       ; = ZBBR
+   0209 CD 84 0D      [ 4]  281 		STRA	R1,   [TEMP]
+   020C 06 01         [ 2]  282 		LODI	R2,   #1
+   020E 0E E4 0D      [ 4]  283 		LODA	R0,   [TEMP,R2]
+   0211 CF E4 31      [ 4]  284 		STRA	R0,   [LDAT,R3]
+   0214 0F E2 22      [ 4]  285 		LODA	R0,   [DISP,R3]
+   0217 CE E4 0D      [ 4]  286 		STRA	R0,   [TEMP,R2]
+   021A 04 FF         [ 2]  287 		LODI	R0,   #0xFF      ; -1
+   021C CF E4 2D      [ 4]  288 		STRA	R0,   [MARK, R3]
+   021F 1F 00 22      [ 3]  289 		BCTA	.UN.,   MBUG
+                            290 		
+   0222 99                  291 DISP:   	.DB        VEC+0x80       
+   0223 9B                  292        		.DB        VEC+0x80+2
+                            293 ;
+                            294 ; Input two hex chars and form as byte in R1
+   0224 3F 02 86      [ 3]  295 BIN:    BSTA	.UN.,   CHIN
+   0227 3B 1D         [ 3]  296 		BSTR	.UN.,   LKUP
+   0229 D3            [ 2]  297 		RRL		R3
+   022A D3            [ 2]  298 		RRL		R3
+   022B D3            [ 2]  299 		RRL		R3
+   022C D3            [ 2]  300 		RRL		R3
+   022D CF 04 12      [ 4]  301 		STRA	R3,   TEMS
+   0230 3F 02 86      [ 3]  302 		BSTA	.UN.,   CHIN
+   0233 3B 11         [ 3]  303 		BSTR	.UN.,   LKUP
+   0235 6F 04 12      [ 4]  304 		IORA	R3,   TEMS
+   0238 03            [ 2]  305 		LODZ    R3
+   0239 C1            [ 2]  306 		STRZ    R1
+   023A 3B 01         [ 3]  307 		BSTR	.UN.,   CBCC
+   023C 17            [ 3]  308 		RETC	.UN.
+                            309 ;		
+                            310 ; Calculate the BCC char, EOR and then rotate left
+   023D 01            [ 2]  311 CBCC:   LODZ    R1
+   023E 2C 04 2C      [ 4]  312 		EORA	R0,   BCC
+   0241 D0            [ 2]  313 		RRL		R0
+   0242 CC 04 2C      [ 4]  314 		STRA	R0,   BCC
+   0245 17            [ 3]  315 		RETC	.UN.
+                            316 
+                            317 ;
+                            318 ; Lookup ASCII char in hex value table
+   0246 07 10         [ 2]  319 LKUP:   LODI	R3, #16
+   0248 EF C2 59      [ 4]  320 ALKU:   COMA	R0,   [ANSI,-R3]
+   024B 14            [ 3]  321        	RETC	.EQ.
+   024C E7 01         [ 2]  322        	COMI	R3,#1
+   024E 9A 78         [ 3]  323        	BCFR	.LT.,ALKU
+                            324 
+                            325 ; Abort exit from any level of subr
+                            326 ; Use RAS ptr since possible BKPT prog using it
+   0250 0C 04 07      [ 4]  327 ABRT:   LODA	R0,   COM+7
+   0253 64 40         [ 2]  328 		IORI	R0,#0x40
+   0255 12            [ 2]  329 		SPSU
+   0256 1F 00 1D      [ 3]  330 		BCTA	.UN.,   EBUG
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 7
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+                            331 		
+   0259 30 31 32 33 34 35   332 ANSI:   .STR      '0123456789ABCDEF'
+        36 37 38 39 41 42
+        43 44 45 46
+                            333 		
+                            334 ; Byte in R1 output in hex
+   0269 CD 04 12      [ 4]  335 BOUT:   STRA	R1,   TEMS
+   026C 3B 4F         [ 3]  336 		BSTR	.UN.,   CBCC
+   026E 51            [ 2]  337 		RRR	R1
+   026F 51            [ 2]  338        		RRR	R1
+   0270 51            [ 2]  339        		RRR	R1
+   0271 51            [ 2]  340        		RRR	R1
+   0272 45 0F         [ 2]  341        		ANDI	R1,#0x0F
+   0274 0D E2 59      [ 4]  342        		LODA	R0,   [ANSI,R1]
+   0277 3F 02 B4      [ 3]  343        		BSTA	.UN.,   COUT
+   027A 0D 04 12      [ 4]  344        		LODA	R1,   TEMS
+   027D 45 0F         [ 2]  345        		ANDI	R1,#0x0F
+   027F 0D E2 59      [ 4]  346        		LODA	R0,[ANSI,R1]
+   0282 3F 02 B4      [ 3]  347        		BSTA	.UN.,COUT
+   0285 17            [ 3]  348        		RETC	.UN.
+                            349 
+                            350 ;* 110 baud input for papertape and char  1Mhz clock
+   0286 77 10         [ 3]  351 CHIN:   	PPSL      #RS
+   0288 04 80         [ 2]  352        		LODI	R0,#0x80
+   028A B0            [ 2]  353        		WRTC	R0
+   028B 05 00         [ 2]  354        		LODI	R1,#0
+   028D 06 08         [ 2]  355        		LODI	R2,#8
+   028F 12            [ 2]  356 ACHI:   	SPSU
+   0290 1A 74         [ 3]  357        		BCTR	.LT.,CHIN
+   0292 20            [ 2]  358        		EORZ      R0
+   0293 B0            [ 2]  359        		WRTC	R0
+   0294 3B 17         [ 3]  360        		BSTR	.UN., DLY
+   0296 3B 10         [ 3]  361 BCHI:   	BSTR	.UN., DLAY
+   0298 12            [ 2]  362        		SPSU
+   0299 44 80         [ 2]  363        ANDI	R0,#0x80
+   029B 51            [ 2]  364        RRR	R1
+   029C 61            [ 2]  365        IORZ      R1
+   029D C1            [ 2]  366        STRZ      R1
+   029E FA 76         [ 3]  367        BDRR	R2,   BCHI
+   02A0 3B 06         [ 3]  368        BSTR	.UN.,#DLAY
+   02A2 45 7F         [ 2]  369        ANDI	R1,#0x7F       ; Delete parity bit
+   02A4 01            [ 2]  370        LODZ      R1
+   02A5 75 18         [ 3]  371        CPSL      #RS+WC
+   02A7 17            [ 3]  372        RETC	.UN.
+                            373 ; Delay for one bit time
+   02A8 20            [ 2]  374 DLAY:   EORZ      R0
+   02A9 F8 7E         [ 3]  375        BDRR	R0,   .
+   02AB F8 7E         [ 3]  376        BDRR	R0,   .
+   02AD F8 7E         [ 3]  377 DLY:    BDRR	R0,.
+   02AF 04 E5         [ 2]  378        LODI	R0,#0xE5
+   02B1 F8 7E         [ 3]  379        BDRR	R0,.
+   02B3 17            [ 3]  380        RETC	.UN.
+                            381 ;
+   02B4 77 10         [ 3]  382 COUT:   PPSL      #RS
+   02B6 76 40         [ 3]  383        PPSU      #FLAG
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 8
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   02B8 C2            [ 2]  384        STRZ      R2
+   02B9 05 08         [ 2]  385        LODI	R1,#8
+   02BB 3B 6B         [ 3]  386        BSTR	.UN.,   DLAY
+   02BD 3B 69         [ 3]  387        BSTR	.UN. ,  DLAY
+   02BF 74 40         [ 3]  388        CPSU      #FLAG
+   02C1 3B 65         [ 3]  389 ACOU:   BSTR	.UN.,   DLAY
+   02C3 52            [ 2]  390        RRR	R2
+   02C4 1A 04         [ 3]  391        BCTR	.LT.,   ONE
+   02C6 74 40         [ 3]  392        CPSU      #FLAG
+   02C8 1B 02         [ 3]  393        BCTR	.UN.,   ZERO
+   02CA 76 40         [ 3]  394 ONE:    PPSU      #FLAG
+   02CC F9 73         [ 3]  395 ZERO:   BDRR	R1,   ACOU
+   02CE 3B 58         [ 3]  396        BSTR	.UN. ,  DLAY
+   02D0 76 40         [ 3]  397        PPSU      #FLAG
+   02D2 75 10         [ 3]  398        CPSL      #RS
+   02D4 17            [ 3]  399        RETC	.UN.
+                            400 ;
+                            401 ; Get a number from the buffer into R1 - R2
+   02D5 0C 04 2A      [ 4]  402 DNUM:   LODA	R0 ,  CODE
+   02D8 18 07         [ 3]  403        BCTR	.EQ.,   LNUM      ; Skip spaces until EOB
+   02DA 17            [ 3]  404        RETC	.UN.             ; or space ending number
+   02DB 20            [ 2]  405 GNUM:   EORZ      R0
+   02DC C1            [ 2]  406        STRZ      R1
+   02DD C2            [ 2]  407        STRZ     R2
+   02DE CC 04 2A      [ 4]  408        STRA	R0 ,  CODE
+   02E1 0F 04 27      [ 4]  409 LNUM:   LODA	R3,   BPTR
+   02E4 EF 04 29      [ 4]  410        COMA	R3,   CNT       ; Check for EOB
+   02E7 14            [ 3]  411        RETC	.EQ.
+   02E8 0F A4 13      [ 4]  412        LODA	R0 ,  [BUFF,R3+] ; Get char
+   02EB CF 04 27      [ 4]  413        STRA	R3,   BPTR
+   02EE E4 20         [ 2]  414        COMI	R0,   #SPAC
+   02F0 18 63         [ 3]  415        BCTR	.EQ.,   DNUM
+   02F2 3F 02 46      [ 3]  416 BNUM:   BSTA	.UN.,   LKUP       
+   02F5 04 0F         [ 2]  417 CNUM:   LODI	R0,#0x0F       ; R1=AB R2=DD
+   02F7 D2            [ 2]  418 		RRL		R2
+   02F8 D2            [ 2]  419 		RRL		R2
+   02F9 D2            [ 2]  420 		RRL		R2
+   02FA D2            [ 2]  421 		RRL		R2
+   02FB 42            [ 2]  422 		ANDZ    R2
+   02FC D1            [ 2]  423 		RRL		R1
+   02FD D1            [ 2]  424 		RRL		R1
+   02FE D1            [ 2]  425 		RRL		R1
+   02FF D1            [ 2]  426 		RRL		R1
+   0300 45 F0         [ 2]  427 		ANDI	R1,#0xF0;
+   0302 46 F0         [ 2]  428 		ANDI	R2,#0xF0      ; R0=C R1=B0 R2=D0 R3=V
+   0304 61            [ 2]  429 		IORZ    R1
+   0305 C1            [ 2]  430 		STRZ    R1
+   0306 03            [ 2]  431 		LODZ    R3
+   0307 62            [ 2]  432 		IORZ    R2
+   0308 C2            [ 2]  433 		STRZ    R2        ; R1=BC R2=DV
+   0309 04 01         [ 2]  434 		LODI	R0,#1
+   030B CC 04 2A      [ 4]  435 		STRA	R0,   CODE
+   030E 1B 51         [ 3]  436 		BCTR	.UN. ,  LNUM
+                            437 ; Dump to paper tape in object format
+   0310 3B 49         [ 3]  438 DUMP: 	BSTR	.UN. ,  GNUM      ; Start address
+ASxxxx Assembler V05.31  (Signetics S2650(A))                           Page 9
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   0312 3F 00 A4      [ 3]  439 		BSTA	.UN. ,  STRT
+   0315 3B 44         [ 3]  440 		BSTR	.UN. ,  GNUM
+   0317 86 01         [ 2]  441 		ADDI	R2 ,  #1
+   0319 77 08         [ 3]  442 		PPSL    #WC
+   031B 85 00         [ 2]  443 		ADDI	R1,   #0
+   031D 75 08         [ 3]  444 		CPSL    #WC        ; Make end addr not incl
+   031F CD 04 0F      [ 4]  445 		STRA	R1 ,  TEMQ
+   0322 CE 04 10      [ 4]  446 		STRA	R2 ,  TEMQ+1
+   0325 3B 38         [ 3]  447 FDUM:   BSTR	.UN.,   GAP
+   0327 04 FF         [ 2]  448 		LODI	R0 ,  #0xFF      ; -1
+   0329 CC 04 29      [ 4]  449 		STRA	R0 ,  CNT
+   032C 3F 00 8A      [ 3]  450 		BSTA	.UN. ,  CRLF      ; Punch for CR/LF and star
+   032F 04 3A         [ 2]  451 		LODI	R0 ,#STAR
+   0331 3F 02 B4      [ 3]  452 		BSTA	.UN. ,  COUT
+   0334 20            [ 2]  453 		EORZ      R0
+   0335 CC 04 2C      [ 4]  454 		STRA	R0 ,  BCC
+   0338 0D 04 0F      [ 4]  455 		LODA	R1 ,  TEMQ
+   033B 0E 04 10      [ 4]  456 		LODA	R2,   TEMQ+1
+   033E AE 04 0E      [ 4]  457 		SUBA	R2,   TEMP+1    ; Get byte count
+   0341 77 08         [ 3]  458 		PPSL    #WC
+   0343 AD 04 0D      [ 4]  459 		SUBA	R1,   TEMP
+   0346 75 08         [ 3]  460 		CPSL    #WC
+   0348 1E 00 1D      [ 3]  461 		BCTA	.LT.,    EBUG      ; Start > end addr
+   034B 19 1C         [ 3]  462 		BCTR	.GT.,   ADUM      ; Cnt > normal block size
+   034D 5A 1C         [ 3]  463 		BRNR	R2 ,  BDUM      ; This is short block
+   034F 07 04         [ 2]  464 		LODI	R3,#4         ; EOF. Punch zero blk
+   0351 3F 02 69      [ 3]  465 CDUM:   BSTA	.UN.,   BOUT
+   0354 FB 7B         [ 3]  466 		BDRR	R3,   CDUM
+   0356 3B 07         [ 3]  467 		BSTR	.UN. ,  GAP
+   0358 1F 00 22      [ 3]  468 		BCTA	.UN.,   MBUG
+                            469 ; Subrs for outputting blanks
+   035B 07 03         [ 2]  470 FORM:   LODI	R3 ,#3
+   035D 1B 02         [ 3]  471 		BCTR	.UN. ,  AGAP
+   035F 07 32         [ 2]  472 GAP:    LODI	R3 ,#50
+   0361 04 20         [ 2]  473 AGAP:   LODI	R0 ,#SPAC
+   0363 3F 02 B4      [ 3]  474 		BSTA	.UN. ,  COUT
+   0366 FB 79         [ 3]  475 		BDRR	R3,   AGAP
+   0368 17            [ 3]  476 		RETC	.UN.
+   0369 06 FF         [ 2]  477 ADUM:   LODI	R2,#255
+   036B CE 04 28      [ 4]  478 BDUM:   STRA	R2,   MCNT
+   036E 0D 04 0D      [ 4]  479 		LODA	R1 ,  TEMP      ; Starting address
+   0371 3F 02 69      [ 3]  480 		BSTA	.UN. ,  BOUT
+   0374 0D 04 0E      [ 4]  481 		LODA	R1,   TEMP+1
+   0377 3F 02 69      [ 3]  482 		BSTA	.UN.,   BOUT
+   037A 0D 04 28      [ 4]  483 		LODA	R1,   MCNT      ; Count of data bytes in
+   037D 3F 02 69      [ 3]  484 		BSTA	.UN.,   BOUT
+   0380 0D 04 2C      [ 4]  485 		LODA	R1,   BCC
+   0383 3F 02 69      [ 3]  486 		BSTA	.UN. ,  BOUT
+   0386 0F 04 29      [ 4]  487 DDUM:   LODA	R3 ,  CNT
+   0389 0F A4 0D      [ 4]  488 		LODA	R0 ,  [TEMP,R3+]
+   038C EF 04 28      [ 4]  489 		COMA	R3 ,  MCNT
+   038F 18 09         [ 3]  490 		BCTR	.EQ. ,  EDUM      ; Output BCC
+   0391 CF 04 29      [ 4]  491 		STRA	R3,   CNT
+   0394 C1            [ 2]  492 		STRZ      R1
+   0395 3F 02 69      [ 3]  493 		BSTA	.UN.,   BOUT
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 10
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   0398 1B 6C         [ 3]  494 		BCTR	.UN.,   DDUM
+   039A 0D 04 2C      [ 4]  495 EDUM:   LODA	R1,   BCC
+   039D 3F 02 69      [ 3]  496 		BSTA	.UN.,   BOUT
+   03A0 0E 04 0E      [ 4]  497 		LODA	R2,   TEMP+1
+   03A3 8E 04 28      [ 4]  498 		ADDA	R2,   MCNT
+   03A6 05 00         [ 2]  499 		LODI	R1,#0
+   03A8 77 08         [ 3]  500 		PPSL    #WC
+   03AA 8D 04 0D      [ 4]  501 		ADDA	R1,   TEMP
+   03AD 75 08         [ 3]  502 		CPSL    #WC
+   03AF 3F 00 A4      [ 3]  503 		BSTA	.UN.,   STRT
+   03B2 1F 03 25      [ 3]  504 		BCTA	.UN.,   FDUM
+                            505 ; Load from papertape in object format
+   03B5 3F 02 86      [ 3]  506 LOAD:   BSTA	.UN.,   CHIN      ; Look for start char
+   03B8 E4 3A         [ 2]  507 		COMI	R0,#STAR
+   03BA 98 79         [ 3]  508 		BCFR	.EQ.,   LOAD
+   03BC 20            [ 2]  509 		EORZ      R0
+   03BD CC 04 2C      [ 4]  510 		STRA	R0,   BCC
+   03C0 3F 02 24      [ 3]  511 		BSTA	.UN.,   BIN       ; Read addr and count in
+   03C3 CD 04 0D      [ 4]  512 		STRA	R1,   TEMP
+   03C6 3F 02 24      [ 3]  513 		BSTA	.UN.,   BIN
+   03C9 CD 04 0E      [ 4]  514 		STRA	R1,   TEMP+1
+   03CC 3F 02 24      [ 3]  515 		BSTA	.UN.,   BIN
+   03CF 59 03         [ 3]  516 		BRNR	R1,   ALOA
+   03D1 1F 84 0D      [ 3]  517 		BCTA	.UN.,   [TEMP]
+   03D4 CD 04 28      [ 4]  518 ALOA:   STRA	R1,   MCNT
+   03D7 3F 02 24      [ 3]  519 		BSTA	.UN.,   BIN       ; Check BCC on information
+   03DA 0C 04 2C      [ 4]  520 		LODA	R0,   BCC
+   03DD 9C 00 1D      [ 3]  521 		BCFA	.EQ. ,   EBUG
+   03E0 C3            [ 2]  522 		STRZ      R3        ; Read data
+   03E1 CF 04 29      [ 4]  523 BLOA:   STRA	R3,   CNT
+   03E4 3F 02 24      [ 3]  524 		BSTA	.UN.,   BIN
+   03E7 0F 04 29      [ 4]  525 		LODA	R3,   CNT
+   03EA EF 04 28      [ 4]  526 		COMA	R3,   MCNT
+   03ED 18 06         [ 3]  527 		BCTR	.EQ.,   CLOA      ; Have read BCC
+   03EF 01            [ 2]  528 		LODZ    R1
+   03F0 CF E4 0D      [ 4]  529 		STRA	R0,[TEMP,R3]  ; Store data
+   03F3 DB 6C         [ 3]  530 		BIRR	R3,   BLOA
+   03F5 0C 04 2C      [ 4]  531 CLOA:   LODA	R0,   BCC
+   03F8 9C 00 1D      [ 3]  532 		BCFA	.EQ. ,   EBUG
+   03FB 1F 03 B5      [ 3]  533 		BCTA	.UN. ,  LOAD
+                            534 ;
+   0400                     535        .ORG       0x0400
+                            536 ;******     RAM Definitions
+   0400                     537 COM:    .DS        9
+   0409                     538 XGOT:   .DS        2         ; PPSL      0
+   040B                     539        .DS        2         ; BCTR,UN   *$+2      
+                            540                            ; Must precede the TEMP
+   040D                     541 TEMP:   .DS        2
+   040F                     542 TEMQ:   .DS        2
+   0411                     543 TEMR:   .DS        1
+   0412                     544 TEMS:   .DS        1
+   0413                     545 BUFF:   .DS        BLEN
+   0427                     546 BPTR:   .DS        1
+   0428                     547 MCNT:   .DS        1
+   0429                     548 CNT:    .DS        1
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 11
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+COMMAND HANDLER
+
+   042A                     549 CODE:   .DS        1
+   042B                     550 OKGO:   .DS        1
+   042C                     551 BCC:   .DS        1
+   042D                     552 MARK:   .DS        BMAX+1
+   042F                     553 HDAT:   .DS        BMAX+1
+   0431                     554 LDAT:   .DS        BMAX+1
+   0433                     555 HADR:   .DS        BMAX+1
+   0435                     556 LADR:   .DS        BMAX+1
+                            557 
+                            558 
+                            559 
+                            560 
+                            561 	.END
+                            562 
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 12
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+Symbol Table
+
+    .__.$$$.       =   2710 L   |     .__.ABS.       =   0000 G
+    .__.CPU.       =   0000 L   |     .__.H$L.       =   0001 L
+  2 ABRT               0250 GR  |   2 ACHI               028F GR
+  2 ACOU               02C1 GR  |   2 ADUM               0369 GR
+  2 AGAP               0361 GR  |   2 AINI               0003 GR
+  2 ALIN               0079 GR  |   2 ALKU               0248 GR
+  2 ALOA               03D4 GR  |   2 ALTE               00AB GR
+  2 ANSI               0259 GR  |   2 ASRE               0116 GR
+  2 BCC                042C GR  |   2 BCHI               0296 GR
+  2 BDUM               036B GR  |   2 BIN                0224 GR
+  2 BK01               0160 GR  |   2 BK02               016E GR
+  2 BKEN               017A GR  |   2 BKPT               01E5 GR
+    BLEN           =   0014 L   |   2 BLIN               0095 GR
+  2 BLOA               03E1 GR  |     BMAX           =   0001 L
+  2 BNUM               02F2 GR  |   2 BOUT               0269 GR
+  2 BPTR               0427 GR  |   2 BSRE               012A GR
+  2 BUFF               0413 GR  |   2 CALT               00D2 GR
+    CAR            =   0001 L   |   2 CBCC               023D GR
+  2 CDUM               0351 GR  |   2 CHIN               0286 GR
+  2 CLBK               01AB GR  |   2 CLIN               007F GR
+  2 CLOA               03F5 GR  |   2 CLR                01CA GR
+  2 CNT                0429 GR  |   2 CNUM               02F5 GR
+  2 CODE               042A GR  |   2 COM                0400 GR
+  2 COUT               02B4 GR  |     CR             =   000D L
+  2 CRLF               008A GR  |   2 CSRE               0132 GR
+  2 DALT               00E3 GR  |   2 DDUM               0386 GR
+    DELE           =   007F L   |   2 DISP               0222 GR
+  2 DLAY               02A8 GR  |   2 DLIN               0084 GR
+  2 DLY                02AD GR  |   2 DNUM               02D5 GR
+  2 DUMP               0310 GR  |   2 EBUG               001D GR
+  2 EDUM               039A GR  |   2 ELIN               007D GR
+    EQ             =   0000 L   |   2 FDUM               0325 GR
+    FLAG           =   0040 L   |   2 FORM               035B GR
+  2 GAP                035F GR  |   2 GNUM               02DB GR
+  2 GOTO               013A GR  |     GT             =   0001 L
+  2 HADR               0433 GR  |   2 HDAT               042F GR
+    IDC            =   0020 L   |     II             =   0020 L
+  2 INIT               0000 GR  |   2 LADR               0435 GR
+  2 LALT               00AE GR  |     LCOM           =   0002 L
+  2 LDAT               0431 GR  |     LF             =   000A L
+  2 LINE               005B GR  |   2 LKUP               0246 GR
+  2 LLIN               0060 GR  |   2 LNUM               02E1 GR
+  2 LOAD               03B5 GR  |   2 LSRE               00F7 GR
+    LT             =   0002 L   |   2 MARK               042D GR
+  2 MBUG               0022 GR  |   2 MCNT               0428 GR
+    N              =   0002 L   |   2 NOK                01D7 GR
+  2 OKGO               042B GR  |   2 ONE                02CA GR
+    OVF            =   0004 L   |     P              =   0001 L
+    RS             =   0010 L   |     SENS           =   0080 L
+    SPAC           =   0020 L   |   2 SREG               00F4 GR
+    STAR           =   003A L   |   2 STRT               00A4 GR
+  2 TEMP               040D GR  |   2 TEMQ               040F GR
+  2 TEMR               0411 GR  |   2 TEMS               0412 GR
+    UN             =   0003 L   |   2 VEC                0019 GR
+    WC             =   0008 L   |   2 XGOT               0409 GR
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 13
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+Symbol Table
+
+    Z              =   0000 L   |   2 ZERO               02CC GR
+
+ASxxxx Assembler V05.31  (Signetics S2650(A))                          Page 14
+Hexadecimal [16-Bits]                                 Mon Jul 13 23:51:34 2020
+AS2650 Assembler Checks
+Area Table
+
+[_CSEG]
+   0 _CODE            size    0   flags C080
+   2 PipBug           size  437   flags  908
+[_DSEG]
+   1 _DATA            size    0   flags C0C0
+
